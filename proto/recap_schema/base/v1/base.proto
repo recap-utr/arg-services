@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package recap_schema.base.v1;
+
+enum Language {
+    LANGUAGE_EN_UNSPECIFIED = 0;
+    LANGUAGE_DE = 1;
+}

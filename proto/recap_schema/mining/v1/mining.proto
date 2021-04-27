@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package recap_schema.mining.v1;
+import "recap_schema/base/v1/base.proto";
+
+service ArgumentMiningService {
+    rpc Entailment (EntailmentRequest) returns (EntailmentResponse);
+}
+
+message EntailmentRequest {
+    recap_schema.base.v1.Language language = 1;
+    string premise = 2;
+    string claim = 3;
+}
+
+message EntailmentResponse {
+    Prediction prediction = 1;
+    repeated Probability probabilities = 2;
+}
+
+message Probability {
+    double probability = 1;
+    Prediction prediction = 2;
+}
+
+enum Prediction {
+    PREDICTION_UNSPECIFIED = 0;
+    PREDICTION_ENTAILMENT = 1;
+    PREDICTION_CONTRADICATION = 2;
+}

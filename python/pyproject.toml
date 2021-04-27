@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "recap_schema"
+version = "0.1.0"
+description = "GraphQL and gRPC schemas for ReCAP."
+authors = ["Mirko Lenz <info@mirko-lenz.de>"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "http://recap.uni-trier.de"
+repository = "https://github.com/ReCAP-UTR/Schema"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+grpcio = "^1.32"
+protobuf = "^3.15.8"
+
+[tool.poetry.dev-dependencies]
+grpcio-tools = "^1.32"
+mypy-protobuf = "^2.4"
+mypy = "^0.812"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
