@@ -53,12 +53,13 @@ message EmbeddingModel {
 }
 
 enum Pooling {
-    POOLING_MEAN_UNSPECIFIED = 0;
-    POOLING_MAX = 1;
-    POOLING_MIN = 2;
-    POOLING_SUM = 3;
-    POOLING_FIRST = 4;
-    POOLING_LAST = 5;
+    POOLING_UNSPECIFIED = 0;
+    POOLING_MEAN = 1;
+    POOLING_MAX = 2;
+    POOLING_MIN = 3;
+    POOLING_SUM = 4;
+    POOLING_FIRST = 5;
+    POOLING_LAST = 6;
 }
 
 enum EmbeddingType {

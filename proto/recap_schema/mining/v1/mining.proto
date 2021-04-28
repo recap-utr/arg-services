@@ -15,10 +15,10 @@ message EntailmentRequest {
 
 message EntailmentResponse {
     Prediction prediction = 1;
-    repeated Probability probabilities = 2;
+    repeated Detail details = 2;
 }
 
-message Probability {
+message Detail {
     double probability = 1;
     Prediction prediction = 2;
 }
@@ -27,4 +27,5 @@ enum Prediction {
     PREDICTION_UNSPECIFIED = 0;
     PREDICTION_ENTAILMENT = 1;
     PREDICTION_CONTRADICATION = 2;
+    PREDICTION_NEUTRAL = 3;
 }
