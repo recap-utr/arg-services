@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package recap_schema.base.v1;
+package arg_services.base.v1;
 
 // Select the language which should be processed.
 enum Language {

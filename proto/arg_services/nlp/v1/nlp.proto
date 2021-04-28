@@ -1,15 +1,15 @@
 syntax = "proto3";
 
-package recap_schema.spacy.v1;
-import "recap_schema/base/v1/base.proto";
+package arg_services.nlp.v1;
+import "arg_services/base/v1/base.proto";
 
-service SpacyService {
+service NlpService {
     rpc DocBin (DocBinRequest) returns (DocBinResponse);
     rpc Vector (VectorRequest) returns (VectorResponse);
 }
 
 message DocBinRequest {
-    recap_schema.base.v1.Language language = 1;
+    arg_services.base.v1.Language language = 1;
     repeated string texts = 2;
     string spacy_model = 3;
     repeated string attributes = 4;
@@ -22,7 +22,7 @@ message DocBinResponse {
 }
 
 message VectorRequest {
-    recap_schema.base.v1.Language language = 1;
+    arg_services.base.v1.Language language = 1;
     repeated string texts = 2;
     string spacy_model = 3;
     repeated EmbeddingLevel embedding_levels = 4;
