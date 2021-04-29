@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "arg-services"
-version = "0.1.4"
+version = "0.1.6"
 description = "GraphQL and gRPC schemas for Microservice-based Argumentation Machines."
 authors = ["Mirko Lenz <info@mirko-lenz.de>"]
 license = "Apache-2.0"
 readme = "README.md"
 homepage = "http://recap.uni-trier.de"
 repository = "https://github.com/ReCAP-UTR/Schema"
-include = ["arg_services/**/*.py"]
+include = ["arg_services/**/*.py", "arg_services/**/*.pyi"]
 packages = [{ include = "arg_services" }, { include = "arg_services_helper" }]
 
 [tool.poetry.dependencies]

@@ -1,11 +1,11 @@
-VERSION = 0.1.4
+VERSION = 0.1.6
 PY = poetry run python
 PY_DIR = python
 JAVA_DIR = java
 PROJECT = arg_services
 PROTOS = $(wildcard proto/${PROJECT}/*/v*/*.proto)
 
-.PHONY: python all java version
+.PHONY: python all java version publish-python
 
 all: python java
 
@@ -15,7 +15,7 @@ version:
 java:
 	cd ${JAVA_DIR} && gradle build
 
-publish-python:
+publish-python: python version
 	cd python && poetry publish --build
 
 python:
