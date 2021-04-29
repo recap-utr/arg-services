@@ -60,6 +60,8 @@ def _serve_single(
     add_services: t.Callable[[grpc.Server], None],
     threads: int,
     reuse_port: bool,
+    current_process: int = 1,
+    total_processes: int = 1,
 ):
     """Helper function to start a server for a single process.
 
@@ -68,6 +70,8 @@ def _serve_single(
         add_services: Function to inject the gRPC services into the server instance.
         threads: Number of workers per process.
         reuse_port: If using multiple processes, the port has to be reused.
+        current_process: Number of current process.
+        total_processes: Total number of spawned processes.
     """
 
     server = grpc.server(
@@ -78,6 +82,9 @@ def _serve_single(
 
     server.add_insecure_port(bind_address)
     server.start()
+
+    print(f"Worker {current_process}/{total_processes} serving on '{bind_address}'.")
+
     server.wait_for_termination()
 
 
@@ -108,7 +115,6 @@ def serve(
 
     with _reserve_port(port, reuse_port) as actual_port:
         bind_address = f"{host}:{actual_port}"
-        print(f"Serving on {bind_address}")
         args = (bind_address, add_services, threads, reuse_port)
 
         if processes == 1:
@@ -116,8 +122,10 @@ def serve(
         else:
             workers = []
 
-            for _ in range(processes):
-                worker = multiprocessing.Process(target=_serve_single, args=args)
+            for i in range(processes):
+                worker = multiprocessing.Process(
+                    target=_serve_single, args=args + (i, processes)
+                )
                 worker.start()
                 workers.append(worker)
 
