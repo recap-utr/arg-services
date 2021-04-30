@@ -6,6 +6,36 @@ import "arg_services/base/v1/base.proto";
 service NlpService {
     rpc DocBin (DocBinRequest) returns (DocBinResponse);
     rpc Vector (VectorRequest) returns (VectorResponse);
+    rpc Similarity (SimilarityRequest) returns (SimilarityResponse);
+}
+
+message SimilarityRequest {
+    arg_services.base.v1.Language language = 1;
+    repeated TextTuple text_tuples = 2;
+    string spacy_model = 3;
+    repeated EmbeddingModel embedding_models = 4;
+    SimilarityMethod similarity_method = 5;
+}
+
+message SimilarityResponse {
+    repeated double similarities = 1;
+}
+
+enum SimilarityMethod {
+    SIMILARITY_METHOD_UNSPECIFIED = 0;
+    SIMILARITY_METHOD_COSINE = 1;
+    SIMILARITY_METHOD_DYNAMAX_JACCARD = 2;
+    SIMILARITY_METHOD_MAXPOOL_JACCARD = 3;
+    SIMILARITY_METHOD_DYNAMAX_DICE = 3;
+    SIMILARITY_METHOD_DYNAMAX_OTSUKA = 3;
+    SIMILARITY_METHOD_WMD = 4;
+    SIMILARITY_METHOD_EDIT = 5;
+    SIMILARITY_METHOD_JACCARD = 6;
+}
+
+message TextTuple {
+    string text1 = 1;
+    string text2 = 2;
 }
 
 message DocBinRequest {
