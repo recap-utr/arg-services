@@ -27,7 +27,7 @@ def require(
     attrs: t.Collection[str],
     obj: object,
     ctx: grpc.ServicerContext,
-    parent: t.Optional[str] = None,
+    parent: str = "request",
 ) -> None:
     """Verify that all required arguments are supplied by the client.
 
@@ -39,9 +39,6 @@ def require(
         ctx: Current gRPC context.
         parent: Name of the parent message. Only used to compose more helpful error.
     """
-    if not parent:
-        parent = "request"
-
     func = attrgetter(*attrs)
     attr_result = func(obj)
 
@@ -53,6 +50,28 @@ def require(
             grpc.StatusCode.INVALID_ARGUMENT,
             f"The message '{parent}' requires the following attributes: {attrs}.",
         )
+
+
+def require_repeated(
+    key: str,
+    attrs: t.Collection[str],
+    obj: object,
+    ctx: grpc.ServicerContext,
+) -> None:
+    """Verify that all required arguments are supplied by the client.
+
+    If arguments are missing, the context will be aborted
+
+    Args:
+        attrs: Names of the required parameters.
+        obj: Current request message (e.g., a subclass of google.protobuf.message.Message).
+        key: Name of repeated attribute.
+        ctx: Current gRPC context.
+    """
+    func = attrgetter(key)
+
+    for item in func(obj):
+        require(attrs, item, ctx, key)
 
 
 def _serve_single(
