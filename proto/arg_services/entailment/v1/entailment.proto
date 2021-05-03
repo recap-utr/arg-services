@@ -8,7 +8,7 @@ service EntailmentService {
 }
 
 message EntailmentRequest {
-    arg_services.base.v1.Language language = 1;
+    string language = 1;
     string premise = 2;
     string claim = 3;
 }

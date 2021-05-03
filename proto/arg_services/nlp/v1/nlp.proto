@@ -5,19 +5,19 @@ import "arg_services/base/v1/base.proto";
 
 service NlpService {
     rpc DocBin (DocBinRequest) returns (DocBinResponse);
-    rpc Vector (VectorRequest) returns (VectorResponse);
-    rpc Similarity (SimilarityRequest) returns (SimilarityResponse);
+    rpc Vectors (VectorsRequest) returns (VectorsResponse);
+    rpc Similarities (SimilaritiesRequest) returns (SimilaritiesResponse);
 }
 
-message SimilarityRequest {
-    arg_services.base.v1.Language language = 1;
+message SimilaritiesRequest {
+    string language = 1;
     repeated TextTuple text_tuples = 2;
     string spacy_model = 3;
     repeated EmbeddingModel embedding_models = 4;
     SimilarityMethod similarity_method = 5;
 }
 
-message SimilarityResponse {
+message SimilaritiesResponse {
     repeated double similarities = 1;
 }
 
@@ -39,7 +39,7 @@ message TextTuple {
 }
 
 message DocBinRequest {
-    arg_services.base.v1.Language language = 1;
+    string language = 1;
     repeated string texts = 2;
     string spacy_model = 3;
     repeated string attributes = 4;
@@ -51,12 +51,16 @@ message DocBinResponse {
     bytes docbin = 1;
 }
 
-message VectorRequest {
-    arg_services.base.v1.Language language = 1;
+message VectorsRequest {
+    string language = 1;
     repeated string texts = 2;
     string spacy_model = 3;
     repeated EmbeddingLevel embedding_levels = 4;
     repeated EmbeddingModel embedding_models = 5;
+}
+
+message VectorsResponse {
+    repeated VectorResponse vectors = 1;
 }
 
 message VectorResponse {
