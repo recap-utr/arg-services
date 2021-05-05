@@ -43,8 +43,9 @@ message DocBinRequest {
     repeated string texts = 2;
     string spacy_model = 3;
     repeated string attributes = 4;
-    repeated EmbeddingLevel embedding_levels = 5;
-    repeated EmbeddingModel embedding_models = 6;
+    bool no_attributes = 5;
+    repeated EmbeddingLevel embedding_levels = 6;
+    repeated EmbeddingModel embedding_models = 7;
 }
 
 message DocBinResponse {
