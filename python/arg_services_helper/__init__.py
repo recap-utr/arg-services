@@ -23,7 +23,36 @@ def handle_except(ex: Exception, ctx: grpc.ServicerContext) -> None:
     ctx.abort(grpc.StatusCode.UNKNOWN, msg)
 
 
-def require(
+def require_any(
+    attrs: t.Collection[str],
+    obj: object,
+    ctx: grpc.ServicerContext,
+    parent: str = "request",
+) -> None:
+    """Verify that any of the required arguments are supplied by the client.
+
+    If arguments are missing, the context will be aborted
+
+    Args:
+        attrs: Names of the required parameters.
+        obj: Current request message (e.g., a subclass of google.protobuf.message.Message).
+        ctx: Current gRPC context.
+        parent: Name of the parent message. Only used to compose more helpful error.
+    """
+    func = attrgetter(*attrs)
+    attr_result = func(obj)
+
+    if len(attrs) == 1:
+        attr_result = [attr_result]
+
+    if not any(attr_result):
+        ctx.abort(
+            grpc.StatusCode.INVALID_ARGUMENT,
+            f"The message '{parent}' requires the following attributes: {attrs}.",
+        )
+
+
+def require_all(
     attrs: t.Collection[str],
     obj: object,
     ctx: grpc.ServicerContext,
@@ -52,7 +81,7 @@ def require(
         )
 
 
-def require_repeated(
+def require_all_repeated(
     key: str,
     attrs: t.Collection[str],
     obj: object,
@@ -63,15 +92,64 @@ def require_repeated(
     If arguments are missing, the context will be aborted
 
     Args:
+        key: Name of repeated attribute.
         attrs: Names of the required parameters.
         obj: Current request message (e.g., a subclass of google.protobuf.message.Message).
-        key: Name of repeated attribute.
         ctx: Current gRPC context.
     """
     func = attrgetter(key)
 
     for item in func(obj):
-        require(attrs, item, ctx, key)
+        require_all(attrs, item, ctx, key)
+
+
+def require_any_repeated(
+    key: str,
+    attrs: t.Collection[str],
+    obj: object,
+    ctx: grpc.ServicerContext,
+) -> None:
+    """Verify that any required arguments are supplied by the client.
+
+    If arguments are missing, the context will be aborted
+
+    Args:
+        key: Name of repeated attribute.
+        attrs: Names of the required parameters.
+        obj: Current request message (e.g., a subclass of google.protobuf.message.Message).
+        ctx: Current gRPC context.
+    """
+    func = attrgetter(key)
+
+    for item in func(obj):
+        require_any(attrs, item, ctx, key)
+
+
+def forbid_all(
+    attrs: t.Collection[str],
+    obj: object,
+    ctx: grpc.ServicerContext,
+    parent: str = "request",
+) -> None:
+    """Verify that no illegal combination of arguments is provided by the client.
+
+    Args:
+        attrs: Names of parameters which cannot occur at the same time.
+        obj: Current request message (e.g., a subclass of google.protobuf.message.Message).
+        ctx: Current gRPC context.
+        parent: Name of the parent message. Only used to compose more helpful error.
+    """
+    func = attrgetter(*attrs)
+    attr_result = func(obj)
+
+    if len(attrs) == 1:
+        attr_result = [attr_result]
+
+    if all(attr_result):
+        ctx.abort(
+            grpc.StatusCode.INVALID_ARGUMENT,
+            f"The message '{parent}' is not allowed to allowed to have the following parameter combination: {attrs}.",
+        )
 
 
 def _serve_single(
