@@ -156,7 +156,7 @@ def _serve_single(
     bind_address: str,
     add_services: t.Callable[[grpc.Server], None],
     threads: int,
-    reuse_port: bool,
+    reuse_port: bool = False,
     current_process: int = 1,
     total_processes: int = 1,
 ):
@@ -187,47 +187,76 @@ def _serve_single(
 
 def serve(
     host: str,
-    port: int,
+    ports: t.Collection[int],
     add_services: t.Callable[[grpc.Server], None],
-    processes: int = 1,
     threads: int = 1,
 ):
     """Serve one or multiple gRPC services, optionally using multiprocessing.
 
     Args:
         host: Hostname of the server (e.g., `127.0.0.1`)
-        port: Port of the server. Use `0` to let the server determine an open port.
+        ports: List of ports for the server.
+            Use `0` to let the server determine an open port.
+            Either give the same value multiple times (to use SO_REUSEPORT)
+            or give distinct values.
+            The number of ports corresponds to the number of processes used.
         add_services: Function to inject the gRPC services into the server instance.
-        processes: If `processes > 1`, multiprocessing with a reused port is applied.
         threads: Number of workers per process.
 
     Raises:
         ValueError: If `processes < 0` is given.
     """
 
-    if processes < 0:
-        raise ValueError("No negative number of processes allowed.")
+    unique_ports = set(ports)
+    processes = len(ports)
 
-    reuse_port = processes > 1
+    if len(unique_ports) == 1:
+        port = next(iter(unique_ports))
 
-    with _reserve_port(port, reuse_port) as actual_port:
-        bind_address = f"{host}:{actual_port}"
-        args = (bind_address, add_services, threads, reuse_port)
+        with _reserve_port(port) as actual_port:
+            bind_address = f"{host}:{actual_port}"
+            args = (bind_address, add_services, threads)
 
-        if processes == 1:
-            _serve_single(*args)
-        else:
-            workers = []
+            if processes == 1:
+                _serve_single(*args, False)
+            else:
+                workers = []
 
-            for i in range(processes):
-                worker = multiprocessing.Process(
-                    target=_serve_single, args=args + (i, processes)
-                )
-                worker.start()
-                workers.append(worker)
+                for i in range(processes):
+                    worker = multiprocessing.Process(
+                        target=_serve_single, args=args + (False, i + 1, processes)
+                    )
+                    worker.start()
+                    workers.append(worker)
 
-            for worker in workers:
-                worker.join()
+                for worker in workers:
+                    worker.join()
+
+    elif len(unique_ports) == len(ports):
+        socks = []
+        workers = []
+
+        for i, port in enumerate(ports):
+            sock = _open_port(port)
+            socks.append(socks)
+            actual_port = _port_number(sock)
+
+            bind_address = f"{host}:{actual_port}"
+            args = (bind_address, add_services, threads, False)
+
+            worker = multiprocessing.Process(
+                target=_serve_single, args=args + (i + 1, processes)
+            )
+            worker.start()
+            workers.append(worker)
+
+        for worker in workers:
+            worker.join()
+
+        for sock in socks:
+            _close_port(sock)
+
+    raise ValueError("All values have to be identical or completely different.")
 
 
 @contextlib.contextmanager
@@ -248,6 +277,23 @@ def _reserve_port(
         RuntimeError: If the port could not be reused
     """
 
+    sock = _open_port(port, reuse_port)
+
+    try:
+        yield _port_number(sock)
+    finally:
+        _close_port(sock)
+
+
+def _close_port(sock: socket.socket) -> None:
+    sock.close()
+
+
+def _port_number(sock: socket.socket) -> int:
+    return sock.getsockname()[1]
+
+
+def _open_port(port: int = 0, reuse_port: bool = False) -> socket.socket:
     sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
 
     if reuse_port:
@@ -258,7 +304,4 @@ def _reserve_port(
 
     sock.bind(("", port))
 
-    try:
-        yield sock.getsockname()[1]
-    finally:
-        sock.close()
+    return sock
