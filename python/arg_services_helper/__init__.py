@@ -1,15 +1,14 @@
 import contextlib
-import multiprocessing
 import socket
 import traceback
 import typing as t
 from concurrent import futures
 from operator import attrgetter
 
-import grpc
+import grpc.aio
 
 
-def handle_except(ex: Exception, ctx: grpc.ServicerContext) -> None:
+def handle_except(ex: Exception, ctx: grpc.aio.ServicerContext) -> None:
     """Handler that can be called when handling an exception.
 
     It will pass the traceback to the gRPC client and abort the context.
@@ -20,13 +19,13 @@ def handle_except(ex: Exception, ctx: grpc.ServicerContext) -> None:
     """
 
     msg = "".join(traceback.TracebackException.from_exception(ex).format())
-    ctx.abort(grpc.StatusCode.UNKNOWN, msg)
+    ctx.abort(grpc.aio.StatusCode.UNKNOWN, msg)
 
 
 def require_any(
     attrs: t.Collection[str],
     obj: object,
-    ctx: grpc.ServicerContext,
+    ctx: grpc.aio.ServicerContext,
     parent: str = "request",
 ) -> None:
     """Verify that any of the required arguments are supplied by the client.
@@ -47,7 +46,7 @@ def require_any(
 
     if not any(attr_result):
         ctx.abort(
-            grpc.StatusCode.INVALID_ARGUMENT,
+            grpc.aio.StatusCode.INVALID_ARGUMENT,
             f"The message '{parent}' requires the following attributes: {attrs}.",
         )
 
@@ -55,7 +54,7 @@ def require_any(
 def require_all(
     attrs: t.Collection[str],
     obj: object,
-    ctx: grpc.ServicerContext,
+    ctx: grpc.aio.ServicerContext,
     parent: str = "request",
 ) -> None:
     """Verify that all required arguments are supplied by the client.
@@ -76,7 +75,7 @@ def require_all(
 
     if not all(attr_result):
         ctx.abort(
-            grpc.StatusCode.INVALID_ARGUMENT,
+            grpc.aio.StatusCode.INVALID_ARGUMENT,
             f"The message '{parent}' requires the following attributes: {attrs}.",
         )
 
@@ -85,7 +84,7 @@ def require_all_repeated(
     key: str,
     attrs: t.Collection[str],
     obj: object,
-    ctx: grpc.ServicerContext,
+    ctx: grpc.aio.ServicerContext,
 ) -> None:
     """Verify that all required arguments are supplied by the client.
 
@@ -107,7 +106,7 @@ def require_any_repeated(
     key: str,
     attrs: t.Collection[str],
     obj: object,
-    ctx: grpc.ServicerContext,
+    ctx: grpc.aio.ServicerContext,
 ) -> None:
     """Verify that any required arguments are supplied by the client.
 
@@ -128,7 +127,7 @@ def require_any_repeated(
 def forbid_all(
     attrs: t.Collection[str],
     obj: object,
-    ctx: grpc.ServicerContext,
+    ctx: grpc.aio.ServicerContext,
     parent: str = "request",
 ) -> None:
     """Verify that no illegal combination of arguments is provided by the client.
@@ -147,161 +146,152 @@ def forbid_all(
 
     if all(attr_result):
         ctx.abort(
-            grpc.StatusCode.INVALID_ARGUMENT,
+            grpc.aio.StatusCode.INVALID_ARGUMENT,
             f"The message '{parent}' is not allowed to allowed to have the following parameter combination: {attrs}.",
         )
 
 
-def _serve_single(
-    bind_address: str,
-    add_services: t.Callable[[grpc.Server], None],
-    threads: int,
-    reuse_port: bool = False,
-    current_process: int = 1,
-    total_processes: int = 1,
-):
-    """Helper function to start a server for a single process.
+try:
+    import aiomultiprocess as mp
 
-    Args:
-        bind_address: Complete address consisting of hostname and port (e.g., `127.0.0.1:8000`)
-        add_services: Function to inject the gRPC services into the server instance.
-        threads: Number of workers per process.
-        reuse_port: If using multiple processes, the port has to be reused.
-        current_process: Number of current process.
-        total_processes: Total number of spawned processes.
-    """
+    async def _serve_single(
+        bind_address: str,
+        add_services: t.Callable[[grpc.aio.Server], None],
+        reuse_port: bool = False,
+        current_process: int = 1,
+        total_processes: int = 1,
+    ):
+        """Helper function to start a server for a single process.
 
-    server = grpc.server(
-        futures.ThreadPoolExecutor(max_workers=threads),
-        options=(("grpc.so_reuseport", 1 if reuse_port else 0),),
-    )
-    add_services(server)
+        Args:
+            bind_address: Complete address consisting of hostname and port (e.g., `127.0.0.1:8000`)
+            add_services: Function to inject the gRPC services into the server instance.
+            reuse_port: If using multiple processes, the port has to be reused.
+            current_process: Number of current process.
+            total_processes: Total number of spawned processes.
+        """
+        server = grpc.aio.server(
+            options=(("grpc.aio.so_reuseport", 1 if reuse_port else 0),),
+        )
+        add_services(server)
 
-    server.add_insecure_port(bind_address)
-    server.start()
+        server.add_insecure_port(bind_address)
+        await server.start()
 
-    print(f"Worker {current_process}/{total_processes} serving on '{bind_address}'.")
+        print(
+            f"Worker {current_process}/{total_processes} serving on '{bind_address}'."
+        )
 
-    server.wait_for_termination()
+        await server.wait_for_termination()
 
+    async def serve(
+        host: str,
+        port: int,
+        add_services: t.Callable[[grpc.aio.Server], None],
+        processes: int,
+        reuse_port: bool = False,
+    ):
+        """Serve one or multiple gRPC services, optionally using multiprocessing.
 
-def serve(
-    host: str,
-    ports: t.Collection[int],
-    add_services: t.Callable[[grpc.Server], None],
-    threads: int = 1,
-):
-    """Serve one or multiple gRPC services, optionally using multiprocessing.
+        Args:
+            host: Hostname of the server (e.g., `127.0.0.1`)
+            ports: Start port for the server.
+                Use `0` to let the server determine an open port.
+            add_services: Function to inject the gRPC services into the server instance.
+            processes: Number of workers.
+            reuse_port: On Linux systems, the OS can automatically perform load balancing.
+                If true, the option `SO_REUSEPORT` will be set.
 
-    Args:
-        host: Hostname of the server (e.g., `127.0.0.1`)
-        ports: List of ports for the server.
-            Use `0` to let the server determine an open port.
-            Either give the same value multiple times (to use SO_REUSEPORT)
-            or give distinct values.
-            The number of ports corresponds to the number of processes used.
-        add_services: Function to inject the gRPC services into the server instance.
-        threads: Number of workers per process.
+        Raises:
+            ValueError: If `processes < 0` is given.
+        """
 
-    Raises:
-        ValueError: If `processes < 0` is given.
-    """
+        reuse_port = reuse_port and (processes == 1)
 
-    unique_ports = set(ports)
-    processes = len(ports)
+        if processes == 1:
+            with _reserve_port(port) as actual_port:
+                bind_addr = f"{host}:{actual_port}"
+                print(f"Connect to 'ipv4:{bind_addr}'.")
 
-    if len(unique_ports) == 1:
-        port = next(iter(unique_ports))
+                await _serve_single(bind_addr, add_services)
+        else:
+            socks = []
+            workers = []
+            addresses = set()
 
-        with _reserve_port(port) as actual_port:
-            bind_address = f"{host}:{actual_port}"
-            args = (bind_address, add_services, threads)
+            for i, port in enumerate(range(port, port + processes)):
+                sock = _open_port(port)
+                socks.append(socks)
+                actual_port = _port_number(sock)
+                bind_addr = f"{host}:{actual_port}"
+                addresses.add(bind_addr)
 
-            if processes == 1:
-                _serve_single(*args, False)
-            else:
-                workers = []
+                worker = mp.Process(
+                    target=_serve_single,
+                    args=(
+                        bind_addr,
+                        add_services,
+                        reuse_port,
+                        i + 1,
+                        processes,
+                    ),
+                )
+                worker.start()
+                workers.append(worker)
 
-                for i in range(processes):
-                    worker = multiprocessing.Process(
-                        target=_serve_single, args=args + (False, i + 1, processes)
-                    )
-                    worker.start()
-                    workers.append(worker)
+            bind_addr = ",".join(addresses)
+            print(f"Connect to 'ipv4:{bind_addr}'.")
 
-                for worker in workers:
-                    worker.join()
+            for worker in workers:
+                await worker.join()
 
-    elif len(unique_ports) == len(ports):
-        socks = []
-        workers = []
+            for sock in socks:
+                _close_port(sock)
 
-        for i, port in enumerate(ports):
-            sock = _open_port(port)
-            socks.append(socks)
-            actual_port = _port_number(sock)
+    @contextlib.contextmanager
+    def _reserve_port(
+        port: int = 0, reuse_port: bool = False
+    ) -> t.Generator[int, None, None]:
+        """Find and reserve a port for all subprocesses to use.
 
-            bind_address = f"{host}:{actual_port}"
-            args = (bind_address, add_services, threads, False)
+        Args:
+            port: Desired port. If `0`, the method will automatically determine a free port.
+            reuse_port: If using multiple processes, set this to `True`.
+                Only affects multiprocessing, not multithreading.
 
-            worker = multiprocessing.Process(
-                target=_serve_single, args=args + (i + 1, processes)
-            )
-            worker.start()
-            workers.append(worker)
+        Yields:
+            Port that has been reserved
 
-        for worker in workers:
-            worker.join()
+        Raises:
+            RuntimeError: If the port could not be reused
+        """
 
-        for sock in socks:
+        sock = _open_port(port, reuse_port)
+
+        try:
+            yield _port_number(sock)
+        finally:
             _close_port(sock)
 
-    raise ValueError("All values have to be identical or completely different.")
+    def _close_port(sock: socket.socket) -> None:
+        sock.close()
+
+    def _port_number(sock: socket.socket) -> int:
+        return sock.getsockname()[1]
+
+    def _open_port(port: int = 0, reuse_port: bool = False) -> socket.socket:
+        sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+
+        if reuse_port:
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+
+            if sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT) == 0:
+                raise RuntimeError("Failed to set SO_REUSEPORT.")
+
+        sock.bind(("", port))
+
+        return sock
 
 
-@contextlib.contextmanager
-def _reserve_port(
-    port: int = 0, reuse_port: bool = False
-) -> t.Generator[int, None, None]:
-    """Find and reserve a port for all subprocesses to use.
-
-    Args:
-        port: Desired port. If `0`, the method will automatically determine a free port.
-        reuse_port: If using multiple processes, set this to `True`.
-            Only affects multiprocessing, not multithreading.
-
-    Yields:
-        Port that has been reserved
-
-    Raises:
-        RuntimeError: If the port could not be reused
-    """
-
-    sock = _open_port(port, reuse_port)
-
-    try:
-        yield _port_number(sock)
-    finally:
-        _close_port(sock)
-
-
-def _close_port(sock: socket.socket) -> None:
-    sock.close()
-
-
-def _port_number(sock: socket.socket) -> int:
-    return sock.getsockname()[1]
-
-
-def _open_port(port: int = 0, reuse_port: bool = False) -> socket.socket:
-    sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-
-    if reuse_port:
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-
-        if sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT) == 0:
-            raise RuntimeError("Failed to set SO_REUSEPORT.")
-
-    sock.bind(("", port))
-
-    return sock
+except ImportError:
+    pass

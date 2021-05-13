@@ -1,4 +1,12 @@
 [[package]]
+name = "aiomultiprocess"
+version = "0.9.0"
+description = "AsyncIO version of the standard multiprocessing module"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "grpcio"
 version = "1.37.0"
 description = "HTTP/2-based RPC framework"
@@ -97,9 +105,13 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "1024746aa0b1722d2061cb776a98b860f82a85670236ca8d9d494379c5bb9f3d"
+content-hash = "c9f299276b1322b32985ca29e12a8f47312328bc10277bf63bc24e6576c05891"
 
 [metadata.files]
+aiomultiprocess = [
+    {file = "aiomultiprocess-0.9.0-py3-none-any.whl", hash = "sha256:3036c4c881cfbc63674686e036097f22309017c6bf96b04722a542ac9cac7423"},
+    {file = "aiomultiprocess-0.9.0.tar.gz", hash = "sha256:07e7d5657697678d9d2825d4732dfd7655139762dee665167380797c02c68848"},
+]
 grpcio = [
     {file = "grpcio-1.37.0-cp27-cp27m-macosx_10_10_x86_64.whl", hash = "sha256:8a0517e7a6784439a3730e50597bd64debf776692adea3c18f869a36454952e1"},
     {file = "grpcio-1.37.0-cp27-cp27m-manylinux2010_i686.whl", hash = "sha256:96ca74522bcd979856d359fcca3128f760c69885d264dc22044fd1a468e0eb68"},
