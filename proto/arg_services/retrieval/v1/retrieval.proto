@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package arg_services.retrieval.v1;
+option java_package = "de.uni_trier.recap.arg_services.retrieval.v1";
+import "arg_services/base/v1/base.proto";
+import "arg_services/nlp/v1/nlp.proto";
+
+service RetrievalService {
+  rpc Retrieve (RetrieveRequest) returns (RetrieveResponse);
+}
+
+message RetrieveRequest {
+  map<string, arg_services.base.v1.ArgumentGraph> cases = 1;
+  oneof query {
+    arg_services.base.v1.ArgumentGraph query_graph = 2;
+    string query_text = 3;
+  }
+  arg_services.nlp.v1.NlpConfig nlp_config = 4;
+}
+
+message RetrieveResponse {
+  repeated RetrievedCase cases = 1;
+}
+
+message RetrievedCase {
+  string case_id = 1;
+  double similarity = 2;
+}

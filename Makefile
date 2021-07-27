@@ -2,21 +2,29 @@ VERSION = 0.1.7
 PY = poetry run python
 PY_DIR = python
 JAVA_DIR = java
+TS_DIR = typescript
 PROJECT = arg_services
 PROTOS = $(wildcard proto/${PROJECT}/*/v*/*.proto)
 
-.PHONY: python all java version publish-python
+.PHONY: python all java typescript version publish-python
 
-all: python java
+all: python java typescript
+
+publish: publish-python
 
 version:
 	cd python && poetry version ${VERSION}
 
 java:
-	cd ${JAVA_DIR} && gradle build
+	cd ${JAVA_DIR} && mvn package
+
+typescript:
+	cd ${TS_DIR} && protoc -I=../proto ${PROTOS:proto/%=%} \
+                      --js_out=import_style=commonjs,binary:. \
+                      --grpc-web_out=import_style=typescript,mode=grpcwebtext:.
 
 publish-python: python version
-	cd python && poetry publish --build
+	cd ${PY_DIR} && poetry publish --build
 
 python:
 	rm -rf ${PY_DIR}/${PROJECT}

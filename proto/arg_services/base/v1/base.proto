@@ -1,3 +1,81 @@
 syntax = "proto3";
 
 package arg_services.base.v1;
+option java_package = "de.uni_trier.recap.arg_services.base.v1";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+message Metadata {
+  google.protobuf.Timestamp created = 1;
+  google.protobuf.Timestamp updated = 2;
+}
+
+message ArgumentGraph {
+  // string id = 1;
+  map<string, AtomNode> atom_nodes = 2;
+  map<string, SchemeNode> scheme_nodes = 3;
+  map<string, Edge> edges = 4;
+  string major_claim = 5;
+  Analyst analyst = 6;
+  map<string, Resource> resources = 7;
+  google.protobuf.Struct userdata = 8;
+  Metadata metadata = 9;
+  string version = 10;
+}
+
+message Analyst {
+  string name = 1;
+  string email = 2;
+  google.protobuf.Struct userdata = 3;
+}
+
+message Resource {
+  // string id = 1;
+  string text = 2;
+  google.protobuf.Struct userdata = 3;
+  Metadata metadata = 4;
+  string title = 5;
+  string source = 6;
+  google.protobuf.Timestamp timestamp = 7;
+}
+
+message Edge {
+  // string id = 1;
+  string source = 2;
+  string target = 3;
+  google.protobuf.Struct userdata = 4;
+  Metadata metadata = 5;
+}
+
+message AtomNode {
+  // string id = 1;
+  string text = 2;
+  NodeResource resource = 3;
+  google.protobuf.Struct userdata = 4;
+  Metadata metadata = 5;
+}
+
+message SchemeNode {
+  // string id = 1;
+  SchemeType type = 2;
+  string argumentation_scheme = 3;
+  google.protobuf.Struct descriptors = 4;
+  google.protobuf.Struct userdata = 5;
+  Metadata metadata = 6;
+}
+
+enum SchemeType {
+  SCHEME_TYPE_UNSPECIFIED = 0;
+  SCHEME_TYPE_RA = 1;
+  SCHEME_TYPE_CA = 2;
+  SCHEME_TYPE_MA = 3;
+  SCHEME_TYPE_TA = 4;
+  SCHEME_TYPE_PA = 5;
+  SCHEME_TYPE_YA = 6;
+}
+
+message NodeResource {
+//  string id = 1;
+  int64 offset = 1;
+  int64 length = 2;
+}

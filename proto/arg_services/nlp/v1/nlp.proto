@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package arg_services.nlp.v1;
+option java_package = "de.uni_trier.recap.arg_services.nlp.v1";
 import "arg_services/base/v1/base.proto";
 
 service NlpService {
@@ -9,12 +10,16 @@ service NlpService {
     rpc Similarities (SimilaritiesRequest) returns (SimilaritiesResponse);
 }
 
+message NlpConfig {
+   string language = 1;
+   string spacy_model = 2;
+   repeated EmbeddingModel embedding_models = 3;
+   SimilarityMethod similarity_method = 4;
+}
+
 message SimilaritiesRequest {
-    string language = 1;
+    NlpConfig config = 1;
     repeated TextTuple text_tuples = 2;
-    string spacy_model = 3;
-    repeated EmbeddingModel embedding_models = 4;
-    SimilarityMethod similarity_method = 5;
 }
 
 message SimilaritiesResponse {
@@ -39,15 +44,13 @@ message TextTuple {
 }
 
 message DocBinRequest {
-    string language = 1;
+    NlpConfig config = 1;
     repeated string texts = 2;
-    string spacy_model = 3;
-    repeated string attributes = 4;
-    bool no_attributes = 5;
-    repeated string pipes = 6;
-    bool no_pipes = 7;
-    repeated EmbeddingLevel embedding_levels = 8;
-    repeated EmbeddingModel embedding_models = 9;
+    repeated string attributes = 3;
+    bool no_attributes = 4;
+    repeated string pipes = 5;
+    bool no_pipes = 6;
+    repeated EmbeddingLevel embedding_levels = 7;
 }
 
 message DocBinResponse {
@@ -55,11 +58,9 @@ message DocBinResponse {
 }
 
 message VectorsRequest {
-    string language = 1;
+    NlpConfig config = 1;
     repeated string texts = 2;
-    string spacy_model = 3;
-    repeated EmbeddingLevel embedding_levels = 4;
-    repeated EmbeddingModel embedding_models = 5;
+    repeated EmbeddingLevel embedding_levels = 3;
 }
 
 message VectorsResponse {
