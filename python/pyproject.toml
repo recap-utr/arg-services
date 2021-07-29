@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "arg-services"
-version = "0.1.8"
+version = "0.1.9"
 description = "GraphQL and gRPC schemas for Microservice-based Argumentation Machines."
 authors = ["Mirko Lenz <info@mirko-lenz.de>"]
 license = "Apache-2.0"
