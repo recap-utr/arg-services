@@ -79,5 +79,7 @@ message NodeResource {
   // string id = 1;
   string resource = 2;
   int64 offset = 3;
-  int64 length = 4;
+  string text = 4;
+  google.protobuf.Struct userdata = 5;
+  Metadata metadata = 6;
 }
