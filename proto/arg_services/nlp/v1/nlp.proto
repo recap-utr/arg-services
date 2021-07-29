@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package arg_services.nlp.v1;
 option java_package = "de.uni_trier.recap.arg_services.nlp.v1";
-import "arg_services/base/v1/base.proto";
 
 service NlpService {
     rpc DocBin (DocBinRequest) returns (DocBinResponse);

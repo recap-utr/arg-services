@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package arg_services.entailment.v1;
 option java_package = "de.uni_trier.recap.arg_services.entailment.v1";
-import "arg_services/base/v1/base.proto";
 
 service EntailmentService {
     rpc Entailment (EntailmentRequest) returns (EntailmentResponse);
