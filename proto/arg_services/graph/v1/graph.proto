@@ -12,15 +12,16 @@ message Metadata {
 
 message ArgumentGraph {
   // string id = 1;
-  map<string, AtomNode> atom_nodes = 2;
-  map<string, SchemeNode> scheme_nodes = 3;
-  map<string, Edge> edges = 4;
-  string major_claim = 5;
-  Analyst analyst = 6;
-  map<string, Resource> resources = 7;
-  google.protobuf.Struct userdata = 8;
-  Metadata metadata = 9;
-  string version = 10;
+//   map<string, AtomNode> atom_nodes = 2;
+//   map<string, SchemeNode> scheme_nodes = 3;
+  map<string, Node> nodes = 2;
+  map<string, Edge> edges = 3;
+  string major_claim = 4;
+  Analyst analyst = 5;
+  map<string, Resource> resources = 6;
+  google.protobuf.Struct userdata = 7;
+  Metadata metadata = 8;
+  string version = 9;
 }
 
 message Analyst {
@@ -48,22 +49,38 @@ message Edge {
   Metadata metadata = 5;
 }
 
-message AtomNode {
+message Node {
   // string id = 1;
-  string text = 2;
-  NodeResource resource = 3;
+  oneof node {
+    AtomNode atom = 2;
+    SchemeNode scheme = 3;
+  }
   google.protobuf.Struct userdata = 4;
   Metadata metadata = 5;
 }
 
+message AtomNode {
+  string text = 2;
+  NodeResource resource = 3;
+}
+
 message SchemeNode {
-  // string id = 1;
   SchemeType type = 2;
   string argumentation_scheme = 3;
   google.protobuf.Struct descriptors = 4;
-  google.protobuf.Struct userdata = 5;
-  Metadata metadata = 6;
 }
+
+// enum NodeType {
+//   NODE_TYPE_UNSPECIFIED = 0;
+//   NODE_TYPE_ATOM = 1;
+//   NODE_TYPE_SCHEME = 2;
+//   NODE_TYPE_SUPPORT = 2;
+//   NODE_TYPE_ATTACK = 3;
+//   NODE_TYPE_MA = 4;
+//   NODE_TYPE_TA = 5;
+//   NODE_TYPE_PA = 6;
+//   NODE_TYPE_YA = 7;
+// }
 
 enum SchemeType {
   SCHEME_TYPE_UNSPECIFIED = 0;
