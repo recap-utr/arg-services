@@ -22,6 +22,7 @@ message ArgumentGraph {
   google.protobuf.Struct userdata = 7;
   Metadata metadata = 8;
   string version = 9;
+  // string primary_resource = 10;
 }
 
 message Analyst {
@@ -35,10 +36,9 @@ message Resource {
   // string id = 1;
   string text = 2;
   google.protobuf.Struct userdata = 3;
-  Metadata metadata = 4;
-  string title = 5;
-  string source = 6;
-  google.protobuf.Timestamp timestamp = 7;
+  string title = 4;
+  string source = 5;
+  google.protobuf.Timestamp timestamp = 6;
 }
 
 message Edge {
@@ -84,12 +84,12 @@ message SchemeNode {
 
 enum SchemeType {
   SCHEME_TYPE_UNSPECIFIED = 0;
-  SCHEME_TYPE_RA = 1;
-  SCHEME_TYPE_CA = 2;
-  SCHEME_TYPE_MA = 3;
-  SCHEME_TYPE_TA = 4;
-  SCHEME_TYPE_PA = 5;
-  SCHEME_TYPE_YA = 6;
+  SCHEME_TYPE_SUPPORT = 1;
+  SCHEME_TYPE_ATTACK = 2;
+  SCHEME_TYPE_REPHRASE = 3;
+  SCHEME_TYPE_TRANSITION = 4;
+  SCHEME_TYPE_PREFERENCE = 5;
+  SCHEME_TYPE_ASSERTION = 6;
 }
 
 message NodeResource {
@@ -98,5 +98,4 @@ message NodeResource {
   int64 offset = 3;
   string text = 4;
   google.protobuf.Struct userdata = 5;
-  Metadata metadata = 6;
 }
