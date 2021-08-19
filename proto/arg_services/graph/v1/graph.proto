@@ -61,7 +61,7 @@ message Node {
 
 message AtomNode {
   string text = 2;
-  NodeResource resource = 3;
+  Anchor anchor = 3;
 }
 
 message SchemeNode {
@@ -92,7 +92,7 @@ enum SchemeType {
   SCHEME_TYPE_ASSERTION = 6;
 }
 
-message NodeResource {
+message Anchor {
   // string id = 1;
   string resource = 2;
   int64 offset = 3;

@@ -1,4 +1,4 @@
-VERSION = 0.1.11
+VERSION = 0.1.12
 PY = poetry run python
 PY_DIR = python
 JAVA_DIR = java
