@@ -10,7 +10,7 @@ message Metadata {
   google.protobuf.Timestamp updated = 2;
 }
 
-message ArgumentGraph {
+message Graph {
   // string id = 1;
 //   map<string, AtomNode> atom_nodes = 2;
 //   map<string, SchemeNode> scheme_nodes = 3;

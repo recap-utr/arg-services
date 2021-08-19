@@ -5,6 +5,7 @@ option java_package = "de.uni_trier.recap.arg_services.entailment.v1";
 
 service EntailmentService {
     rpc Entailment (EntailmentRequest) returns (EntailmentResponse);
+    rpc Entailments (EntailmentsRequest) returns (EntailmentsResponse);
 }
 
 message EntailmentRequest {
@@ -13,9 +14,17 @@ message EntailmentRequest {
     string claim = 3;
 }
 
+message EntailmentsRequest {
+    repeated EntailmentRequest queries = 1;
+}
+
 message EntailmentResponse {
     Prediction prediction = 1;
     repeated Detail details = 2;
+}
+
+message EntailmentsResponse {
+    repeated EntailmentResponse results = 1;
 }
 
 message Detail {
