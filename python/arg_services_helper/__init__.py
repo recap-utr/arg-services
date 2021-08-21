@@ -5,10 +5,12 @@ import typing as t
 from concurrent import futures
 from operator import attrgetter
 
+import grpc
 import grpc.aio
+from grpc_reflection.v1alpha import reflection
 
 
-def handle_except(ex: Exception, ctx: grpc.aio.ServicerContext) -> None:
+async def handle_except(ex: Exception, ctx: grpc.aio.ServicerContext) -> None:
     """Handler that can be called when handling an exception.
 
     It will pass the traceback to the gRPC client and abort the context.
@@ -19,10 +21,10 @@ def handle_except(ex: Exception, ctx: grpc.aio.ServicerContext) -> None:
     """
 
     msg = "".join(traceback.TracebackException.from_exception(ex).format())
-    ctx.abort(grpc.aio.StatusCode.UNKNOWN, msg)
+    await ctx.abort(grpc.StatusCode.UNKNOWN, msg)
 
 
-def require_any(
+async def require_any(
     attrs: t.Collection[str],
     obj: object,
     ctx: grpc.aio.ServicerContext,
@@ -45,13 +47,13 @@ def require_any(
         attr_result = [attr_result]
 
     if not any(attr_result):
-        ctx.abort(
-            grpc.aio.StatusCode.INVALID_ARGUMENT,
+        await ctx.abort(
+            grpc.StatusCode.INVALID_ARGUMENT,
             f"The message '{parent}' requires the following attributes: {attrs}.",
         )
 
 
-def require_all(
+async def require_all(
     attrs: t.Collection[str],
     obj: object,
     ctx: grpc.aio.ServicerContext,
@@ -74,13 +76,13 @@ def require_all(
         attr_result = [attr_result]
 
     if not all(attr_result):
-        ctx.abort(
-            grpc.aio.StatusCode.INVALID_ARGUMENT,
+        await ctx.abort(
+            grpc.StatusCode.INVALID_ARGUMENT,
             f"The message '{parent}' requires the following attributes: {attrs}.",
         )
 
 
-def require_all_repeated(
+async def require_all_repeated(
     key: str,
     attrs: t.Collection[str],
     obj: object,
@@ -99,10 +101,10 @@ def require_all_repeated(
     func = attrgetter(key)
 
     for item in func(obj):
-        require_all(attrs, item, ctx, key)
+        await require_all(attrs, item, ctx, key)
 
 
-def require_any_repeated(
+async def require_any_repeated(
     key: str,
     attrs: t.Collection[str],
     obj: object,
@@ -121,10 +123,10 @@ def require_any_repeated(
     func = attrgetter(key)
 
     for item in func(obj):
-        require_any(attrs, item, ctx, key)
+        await require_any(attrs, item, ctx, key)
 
 
-def forbid_all(
+async def forbid_all(
     attrs: t.Collection[str],
     obj: object,
     ctx: grpc.aio.ServicerContext,
@@ -145,10 +147,14 @@ def forbid_all(
         attr_result = [attr_result]
 
     if all(attr_result):
-        ctx.abort(
-            grpc.aio.StatusCode.INVALID_ARGUMENT,
+        await ctx.abort(
+            grpc.StatusCode.INVALID_ARGUMENT,
             f"The message '{parent}' is not allowed to allowed to have the following parameter combination: {attrs}.",
         )
+
+
+def full_service_name(pkg, service: str) -> str:
+    return pkg.DESCRIPTOR.services_by_name[service].full_name
 
 
 try:
@@ -157,6 +163,7 @@ try:
     async def _serve_single(
         bind_address: str,
         add_services: t.Callable[[grpc.aio.Server], None],
+        reflection_services: t.Iterable[str] = tuple(),
         reuse_port: bool = False,
         current_process: int = 1,
         total_processes: int = 1,
@@ -175,6 +182,11 @@ try:
         )
         add_services(server)
 
+        if reflection_services:
+            reflection.enable_server_reflection(
+                [*reflection_services, reflection.SERVICE_NAME], server
+            )
+
         server.add_insecure_port(bind_address)
         await server.start()
 
@@ -190,6 +202,7 @@ try:
         add_services: t.Callable[[grpc.aio.Server], None],
         processes: int,
         reuse_port: bool = False,
+        reflection_services: t.Iterable[str] = tuple(),
     ):
         """Serve one or multiple gRPC services, optionally using multiprocessing.
 
@@ -213,7 +226,7 @@ try:
                 bind_addr = f"{host}:{actual_port}"
                 print(f"Connect to 'ipv4:{bind_addr}'.")
 
-                await _serve_single(bind_addr, add_services)
+                await _serve_single(bind_addr, add_services, reflection_services)
         else:
             socks = []
             workers = []
@@ -231,6 +244,7 @@ try:
                     args=(
                         bind_addr,
                         add_services,
+                        reflection_services,
                         reuse_port,
                         i + 1,
                         processes,
