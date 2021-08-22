@@ -16,6 +16,7 @@ message RetrieveRequest {
     string query_text = 3;
   }
   arg_services.nlp.v1.NlpConfig nlp_config = 4;
+  int32 limit = 5;
 }
 
 message RetrieveResponse {
