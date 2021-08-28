@@ -5,50 +5,46 @@ option java_package = "de.uni_trier.recap.arg_services.graph.v1";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
 
-message Metadata {
-  google.protobuf.Timestamp created = 1;
-  google.protobuf.Timestamp updated = 2;
-}
-
 message Graph {
   // string id = 1;
-//   map<string, AtomNode> atom_nodes = 2;
-//   map<string, SchemeNode> scheme_nodes = 3;
   map<string, Node> nodes = 2;
   map<string, Edge> edges = 3;
-  string major_claim = 4;
-  repeated Analyst analysts = 5;
-  map<string, Resource> resources = 6;
-  google.protobuf.Struct userdata = 7;
-  Metadata metadata = 8;
-  string version = 9;
-  // string primary_resource = 10;
-}
-
-message Analyst {
-  // string id = 1;
-  string name = 2;
-  string email = 3;
-  google.protobuf.Struct userdata = 4;
-  Metadata metadata = 5;
+  map<string, Resource> resources = 4;
+  map<string, Participant> participants = 5;
+  string major_claim = 6;
+  repeated Participant analysts = 7;
+  string version = 8;
+  google.protobuf.Timestamp timestamp = 14;
+  google.protobuf.Struct metadata = 15;
 }
 
 message Resource {
   // string id = 1;
   string text = 2;
-  google.protobuf.Struct userdata = 3;
-  string title = 4;
-  string source = 5;
-  google.protobuf.Timestamp timestamp = 6;
-  Metadata metadata = 7;
+  string title = 3;
+  string source = 4;
+  google.protobuf.Timestamp timestamp = 14;
+  google.protobuf.Struct metadata = 15;
+}
+
+message Participant {
+  // string id = 1;
+  string name = 2;
+  string username = 3;
+  string email = 4;
+  string url = 5;
+  string location = 6;
+  string description = 7;
+  google.protobuf.Timestamp timestamp = 14;
+  google.protobuf.Struct metadata = 15;
 }
 
 message Edge {
   // string id = 1;
   string source = 2;
   string target = 3;
-  google.protobuf.Struct userdata = 4;
-  Metadata metadata = 5;
+  google.protobuf.Timestamp timestamp = 14;
+  google.protobuf.Struct metadata = 15;
 }
 
 message Node {
@@ -57,32 +53,125 @@ message Node {
     AtomNode atom = 2;
     SchemeNode scheme = 3;
   }
-  google.protobuf.Struct userdata = 4;
-  Metadata metadata = 5;
+  google.protobuf.Timestamp timestamp = 14;
+  google.protobuf.Struct metadata = 15;
 }
 
 message AtomNode {
   string text = 2;
-  Anchor anchor = 3;
+  Reference reference = 3;
+  string participant = 4;
 }
 
 message SchemeNode {
   SchemeType type = 2;
-  string argumentation_scheme = 3;
+  Scheme argumentation_scheme = 3;
   google.protobuf.Struct descriptors = 4;
 }
 
-// enum NodeType {
-//   NODE_TYPE_UNSPECIFIED = 0;
-//   NODE_TYPE_ATOM = 1;
-//   NODE_TYPE_SCHEME = 2;
-//   NODE_TYPE_SUPPORT = 2;
-//   NODE_TYPE_ATTACK = 3;
-//   NODE_TYPE_MA = 4;
-//   NODE_TYPE_TA = 5;
-//   NODE_TYPE_PA = 6;
-//   NODE_TYPE_YA = 7;
-// }
+message Reference {
+  // string id = 1;
+  string resource = 2;
+  int64 offset = 3;
+  string text = 4;
+  google.protobuf.Struct metadata = 15;
+}
+
+enum Scheme {
+  SCHEME_UNSPECIFIED = 0;
+  SCHEME_AD_HOMINEM = 1;
+  SCHEME_ALTERNATIVE_MEANS = 2;
+  SCHEME_ALTERNATIVES = 3;
+  SCHEME_ANALOGY = 4;
+  SCHEME_ARBITRARY_VERBAL_CLASSIFICATION = 5;
+  SCHEME_AUTHORITY = 6;
+  SCHEME_BIAS = 7;
+  SCHEME_BIASED_CLASSIFICATION = 8;
+  SCHEME_CALLING_OUT = 9;
+  SCHEME_CAUSAL_SLIPPERY_SLOPE = 10;
+  SCHEME_CAUSE_TO_EFFECT = 11;
+  SCHEME_CIRCUMSTANTIAL_AD_HOMINEM = 12;
+  SCHEME_COMMITMENT_EXCEPTION = 13;
+  SCHEME_COMMITMENT = 14;
+  SCHEME_COMPOSITION = 15;
+  SCHEME_CONFLICTING_GOALS = 16;
+  SCHEME_CONSEQUENCES = 17;
+  SCHEME_CORRELATION_TO_CAUSE = 18;
+  SCHEME_DANGER_APPEAL = 19;
+  SCHEME_DEFINITION_TO_VERBAL_CLASSIFICATION = 20;
+  SCHEME_DIFFERENCES_UNDERMINE_SIMILARITY = 21;
+  SCHEME_DILEMMA = 22;
+  SCHEME_DIRECT_AD_HOMINEM = 23;
+  SCHEME_DIVISION = 24;
+  SCHEME_ESTABLISHED_RULE = 25;
+  SCHEME_ETHOTIC = 26;
+  SCHEME_EVIDENCE_TO_HYPOTHESIS = 27;
+  SCHEME_EXAMPLE = 28;
+  SCHEME_EXCEPTION_SIMILARITY_CASE = 29;
+  SCHEME_EXCEPTIONAL_CASE = 30;
+  SCHEME_EXPERT_OPINION = 31;
+  SCHEME_EXPERTISE_INCONSISTENCY = 32;
+  SCHEME_FAIRNESS = 33;
+  SCHEME_FALSIFICATION_OF_HYPOTHESIS = 34;
+  SCHEME_FEAR_APPEAL = 35;
+  SCHEME_FULL_SLIPPERY_SLOPE = 36;
+  SCHEME_GENERAL_ACCEPTANCE_DOUBT = 37;
+  SCHEME_GENERIC_AD_HOMINEM = 38;
+  SCHEME_GOODWILL = 39;
+  SCHEME_GRADUALISM = 40;
+  SCHEME_IGNORANCE = 41;
+  SCHEME_INCONSISTENT_COMMITMENT = 42;
+  SCHEME_INFORMANT_REPORT = 43;
+  SCHEME_INTERACTION_OF_ACT_AND_PERSON = 44;
+  SCHEME_IRRATIONAL_FEAR_APPEAL = 45;
+  SCHEME_LACK_OF_COMPLETE_KNOWLEDGE = 46;
+  SCHEME_LACK_OF_EXPERT_RELIABILITY = 47;
+  SCHEME_LOGICAL = 48;
+  SCHEME_MISPLACED_PRIORITIES = 49;
+  SCHEME_MODUS_PONENS = 50;
+  SCHEME_MORAL_VIRTUE = 51;
+  SCHEME_NEED_FOR_HELP = 52;
+  SCHEME_NEGATIVE_CONSEQUENCES = 53;
+  SCHEME_OPPOSED_COMMITMENT = 54;
+  SCHEME_OPPOSITIONS = 55;
+  SCHEME_CAUSAL_FACTORS_INVOLVED = 56;
+  SCHEME_PARAPHRASE = 57;
+  SCHEME_PERCEPTION = 58;
+  SCHEME_POPULAR_OPINION = 59;
+  SCHEME_POPULAR_PRACTICE = 60;
+  SCHEME_POSITION_TO_KNOW = 61;
+  SCHEME_POSITIVE_CONSEQUENCES = 62;
+  SCHEME_PRACTICAL_REASONING_FROM_ANALOGY = 63;
+  SCHEME_PRACTICAL_REASONING = 64;
+  SCHEME_PRACTICAL_WISDOM = 65;
+  SCHEME_PRAGMATIC_ALTERNATIVES = 66;
+  SCHEME_PRAGMATIC_INCONSISTENCY = 67;
+  SCHEME_PRECEDENT_SLIPPERY_SLOPE = 68;
+  SCHEME_PROPERTY_NOT_EXISTANT = 69;
+  SCHEME_REFRAMING = 70;
+  SCHEME_REQUIRED_STEPS = 71;
+  SCHEME_RESOLVING_INCONSISTENCY = 72;
+  SCHEME_RULE = 73;
+  SCHEME_RULES = 74;
+  SCHEME_SIGN_FROM_OTHER_EVENTS = 75;
+  SCHEME_SIGN = 76;
+  SCHEME_TWO_PERSON_PRACTICAL_REASONING = 77;
+  SCHEME_UNFAIRNESS = 78;
+  SCHEME_VAGUE_VERBAL_CLASSIFICATION = 79;
+  SCHEME_VAGUENESS_OF_VERBAL_CLASSIFICATION = 80;
+  SCHEME_VALUE_BASED_PRACTICAL_REASONING = 81;
+  SCHEME_VALUES = 82;
+  SCHEME_VERBAL_CLASSIFICATION = 83;
+  SCHEME_VERBAL_SLIPPERY_SLOPE = 84;
+  SCHEME_VESTED_INTEREST = 85;
+  SCHEME_VIRTUE_GOODWILL = 86;
+  SCHEME_WASTE = 87;
+  SCHEME_WEAKEST_LINK = 88;
+  SCHEME_WISDOM_GOODWILL = 89;
+  SCHEME_WISDOM_VIRTUE = 90;
+  SCHEME_WISDOM_VIRTUE_GOODWILL = 91;
+  SCHEME_WITNESS_TESTIMONY = 92;
+}
 
 enum SchemeType {
   SCHEME_TYPE_UNSPECIFIED = 0;
@@ -92,13 +181,4 @@ enum SchemeType {
   SCHEME_TYPE_TRANSITION = 4;
   SCHEME_TYPE_PREFERENCE = 5;
   SCHEME_TYPE_ASSERTION = 6;
-}
-
-message Anchor {
-  // string id = 1;
-  string resource = 2;
-  int64 offset = 3;
-  string text = 4;
-  google.protobuf.Struct userdata = 5;
-  Metadata metadata = 6;
 }
