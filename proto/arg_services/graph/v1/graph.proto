@@ -16,7 +16,7 @@ message Graph {
   string version = 8;
   google.protobuf.Timestamp created = 13;
   google.protobuf.Timestamp updated = 14;
-  google.protobuf.Struct userdata = 15;
+  google.protobuf.Struct metadata = 15;
 }
 
 message Resource {
@@ -26,7 +26,7 @@ message Resource {
   string source = 4;
   google.protobuf.Timestamp created = 13;
   google.protobuf.Timestamp updated = 14;
-  google.protobuf.Struct userdata = 15;
+  google.protobuf.Struct metadata = 15;
 }
 
 message Participant {
@@ -39,7 +39,7 @@ message Participant {
   string description = 7;
   google.protobuf.Timestamp created = 13;
   google.protobuf.Timestamp updated = 14;
-  google.protobuf.Struct userdata = 15;
+  google.protobuf.Struct metadata = 15;
 }
 
 message Edge {
@@ -48,7 +48,7 @@ message Edge {
   string target = 3;
   google.protobuf.Timestamp created = 13;
   google.protobuf.Timestamp updated = 14;
-  google.protobuf.Struct userdata = 15;
+  google.protobuf.Struct metadata = 15;
 }
 
 message Node {
@@ -59,7 +59,7 @@ message Node {
   }
   google.protobuf.Timestamp created = 13;
   google.protobuf.Timestamp updated = 14;
-  google.protobuf.Struct userdata = 15;
+  google.protobuf.Struct metadata = 15;
 }
 
 message AtomNode {
@@ -79,7 +79,7 @@ message Reference {
   string resource = 2;
   int64 offset = 3;
   string text = 4;
-  google.protobuf.Struct userdata = 15;
+  google.protobuf.Struct metadata = 15;
 }
 
 enum Scheme {
