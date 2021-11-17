@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package arg_services.topic_modeling.v1;
+option java_package = "de.uni_trier.recap.arg_services.topic_modeling.v1";
+import "arg_services/nlp/v1/nlp.proto";
+
+service TopicModelingService {
+    rpc Topics (TopicsRequest) returns (TopicsResponse);
+}
+
+message TopicsRequest {
+    repeated string documents = 1;
+    arg_services.nlp.v1.NlpConfig config = 2;
+}
+
+message TopicsResponse {
+    Topic outliers = 1;
+    repeated Topic topics = 2;
+}
+
+message Topic {
+    int64 count = 1;
+    repeated Term terms = 2;
+}
+
+message Term {
+    string text = 1;
+    float score = 2;
+}
