@@ -1,4 +1,4 @@
-VERSION = 0.1.19
+VERSION = 0.1.20
 PY = poetry run python
 PY_DIR = python
 JAVA_DIR = java
@@ -10,7 +10,7 @@ PROTOS = $(wildcard proto/${PROJECT}/*/v*/*.proto)
 
 all: python java typescript
 
-publish: publish-python
+publish: version publish-python
 
 version:
 	cd python && poetry version ${VERSION}
@@ -23,7 +23,7 @@ typescript:
                       --js_out=import_style=commonjs,binary:. \
                       --grpc-web_out=import_style=typescript,mode=grpcwebtext:.
 
-publish-python: python version
+publish-python: python
 	cd ${PY_DIR} && poetry publish --build
 
 python:
