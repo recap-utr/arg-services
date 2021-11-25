@@ -202,7 +202,8 @@ def serve(
         ports: Start port for the server.
             Use `0` to let the server determine an open port.
         add_services: Function to inject the gRPC services into the server instance.
-        processes: Number of workers.
+        threads: Number of workers in the gRPC thread pool.
+        processes: Number of individual servers (each with their own port).
 
     Raises:
         ValueError: If `processes < 1` is given.
