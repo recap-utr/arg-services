@@ -1,13 +1,14 @@
+import multiprocessing as mp
 import traceback
 import typing as t
+from concurrent import futures
 from operator import attrgetter
 
 import grpc
-import grpc.aio
 from grpc_reflection.v1alpha import reflection
 
 
-async def handle_except(ex: Exception, ctx: grpc.aio.ServicerContext) -> None:
+def handle_except(ex: Exception, ctx: grpc.ServicerContext) -> None:
     """Handler that can be called when handling an exception.
 
     It will pass the traceback to the gRPC client and abort the context.
@@ -18,13 +19,13 @@ async def handle_except(ex: Exception, ctx: grpc.aio.ServicerContext) -> None:
     """
 
     msg = "".join(traceback.TracebackException.from_exception(ex).format())
-    await ctx.abort(grpc.StatusCode.UNKNOWN, msg)
+    ctx.abort(grpc.StatusCode.UNKNOWN, msg)
 
 
-async def require_any(
+def require_any(
     attrs: t.Collection[str],
     obj: object,
-    ctx: grpc.aio.ServicerContext,
+    ctx: grpc.ServicerContext,
     parent: str = "request",
 ) -> None:
     """Verify that any of the required arguments are supplied by the client.
@@ -44,16 +45,16 @@ async def require_any(
         attr_result = [attr_result]
 
     if not any(attr_result):
-        await ctx.abort(
+        ctx.abort(
             grpc.StatusCode.INVALID_ARGUMENT,
             f"The message '{parent}' requires the following attributes: {attrs}.",
         )
 
 
-async def require_all(
+def require_all(
     attrs: t.Collection[str],
     obj: object,
-    ctx: grpc.aio.ServicerContext,
+    ctx: grpc.ServicerContext,
     parent: str = "request",
 ) -> None:
     """Verify that all required arguments are supplied by the client.
@@ -73,17 +74,17 @@ async def require_all(
         attr_result = [attr_result]
 
     if not all(attr_result):
-        await ctx.abort(
+        ctx.abort(
             grpc.StatusCode.INVALID_ARGUMENT,
             f"The message '{parent}' requires the following attributes: {attrs}.",
         )
 
 
-async def require_all_repeated(
+def require_all_repeated(
     key: str,
     attrs: t.Collection[str],
     obj: object,
-    ctx: grpc.aio.ServicerContext,
+    ctx: grpc.ServicerContext,
 ) -> None:
     """Verify that all required arguments are supplied by the client.
 
@@ -98,14 +99,14 @@ async def require_all_repeated(
     func = attrgetter(key)
 
     for item in func(obj):
-        await require_all(attrs, item, ctx, key)
+        require_all(attrs, item, ctx, key)
 
 
-async def require_any_repeated(
+def require_any_repeated(
     key: str,
     attrs: t.Collection[str],
     obj: object,
-    ctx: grpc.aio.ServicerContext,
+    ctx: grpc.ServicerContext,
 ) -> None:
     """Verify that any required arguments are supplied by the client.
 
@@ -120,13 +121,13 @@ async def require_any_repeated(
     func = attrgetter(key)
 
     for item in func(obj):
-        await require_any(attrs, item, ctx, key)
+        require_any(attrs, item, ctx, key)
 
 
-async def forbid_all(
+def forbid_all(
     attrs: t.Collection[str],
     obj: object,
-    ctx: grpc.aio.ServicerContext,
+    ctx: grpc.ServicerContext,
     parent: str = "request",
 ) -> None:
     """Verify that no illegal combination of arguments is provided by the client.
@@ -144,7 +145,7 @@ async def forbid_all(
         attr_result = [attr_result]
 
     if all(attr_result):
-        await ctx.abort(
+        ctx.abort(
             grpc.StatusCode.INVALID_ARGUMENT,
             f"The message '{parent}' is not allowed to allowed to have the following parameter combination: {attrs}.",
         )
@@ -154,95 +155,89 @@ def full_service_name(pkg, service: str) -> str:
     return pkg.DESCRIPTOR.services_by_name[service].full_name
 
 
-try:
-    import aiomultiprocess as mp
+def _serve_single(
+    bind_address: str,
+    add_services: t.Callable[[grpc.Server], None],
+    threads: int,
+    reflection_services: t.Iterable[str] = tuple(),
+    current_process: int = 1,
+    total_processes: int = 1,
+):
+    """Helper function to start a server for a single process.
 
-    async def _serve_single(
-        bind_address: str,
-        add_services: t.Callable[[grpc.aio.Server], None],
-        reflection_services: t.Iterable[str] = tuple(),
-        current_process: int = 1,
-        total_processes: int = 1,
-    ):
-        """Helper function to start a server for a single process.
+    Args:
+        bind_address: Complete address consisting of hostname and port (e.g., `127.0.0.1:8000`)
+        add_services: Function to inject the gRPC services into the server instance.
+        current_process: Number of current process.
+        total_processes: Total number of spawned processes.
+    """
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=threads))
+    add_services(server)
 
-        Args:
-            bind_address: Complete address consisting of hostname and port (e.g., `127.0.0.1:8000`)
-            add_services: Function to inject the gRPC services into the server instance.
-            current_process: Number of current process.
-            total_processes: Total number of spawned processes.
-        """
-        server = grpc.aio.server()
-        add_services(server)
-
-        if reflection_services:
-            reflection.enable_server_reflection(
-                [*reflection_services, reflection.SERVICE_NAME], server
-            )
-
-        server.add_insecure_port(bind_address)
-        await server.start()
-
-        print(
-            f"Worker {current_process}/{total_processes} serving on '{bind_address}'."
+    if reflection_services:
+        reflection.enable_server_reflection(
+            [*reflection_services, reflection.SERVICE_NAME], server
         )
 
-        await server.wait_for_termination()
+    server.add_insecure_port(bind_address)
+    server.start()
 
-    async def serve(
-        host: str,
-        port: int,
-        add_services: t.Callable[[grpc.aio.Server], None],
-        processes: int = 1,
-        reflection_services: t.Iterable[str] = tuple(),
-    ):
-        """Serve one or multiple gRPC services, optionally using multiprocessing.
+    print(f"Worker {current_process}/{total_processes} serving on '{bind_address}'.")
 
-        Args:
-            host: Hostname of the server (e.g., `127.0.0.1`)
-            ports: Start port for the server.
-                Use `0` to let the server determine an open port.
-            add_services: Function to inject the gRPC services into the server instance.
-            processes: Number of workers.
+    server.wait_for_termination()
 
-        Raises:
-            ValueError: If `processes < 1` is given.
-        """
 
-        if processes < 1:
-            raise ValueError("At least one process is required.")
-        elif processes == 1:
+def serve(
+    host: str,
+    port: int,
+    add_services: t.Callable[[grpc.Server], None],
+    threads: int = 1,
+    processes: int = 1,
+    reflection_services: t.Iterable[str] = tuple(),
+):
+    """Serve one or multiple gRPC services, optionally using multiprocessing.
+
+    Args:
+        host: Hostname of the server (e.g., `127.0.0.1`)
+        ports: Start port for the server.
+            Use `0` to let the server determine an open port.
+        add_services: Function to inject the gRPC services into the server instance.
+        processes: Number of workers.
+
+    Raises:
+        ValueError: If `processes < 1` is given.
+    """
+
+    if processes < 1:
+        raise ValueError("At least one process is required.")
+    elif processes == 1:
+        bind_addr = f"{host}:{port}"
+        print(f"Connect to 'ipv4:{bind_addr}'.")
+
+        _serve_single(bind_addr, add_services, threads, reflection_services)
+    else:
+        workers = []
+        addresses = []
+
+        for i, port in enumerate(range(port, port + processes)):
             bind_addr = f"{host}:{port}"
-            print(f"Connect to 'ipv4:{bind_addr}'.")
+            addresses.append(bind_addr)
 
-            await _serve_single(bind_addr, add_services, reflection_services)
-        else:
-            workers = []
-            addresses = []
+            worker = mp.Process(
+                target=_serve_single,
+                args=(
+                    bind_addr,
+                    add_services,
+                    reflection_services,
+                    i + 1,
+                    processes,
+                ),
+            )
+            worker.start()
+            workers.append(worker)
 
-            for i, port in enumerate(range(port, port + processes)):
-                bind_addr = f"{host}:{port}"
-                addresses.append(bind_addr)
+        bind_addr = ",".join(addresses)
+        print(f"Connect to 'ipv4:{bind_addr}'.")
 
-                worker = mp.Process(
-                    target=_serve_single,
-                    args=(
-                        bind_addr,
-                        add_services,
-                        reflection_services,
-                        i + 1,
-                        processes,
-                    ),
-                )
-                worker.start()
-                workers.append(worker)
-
-            bind_addr = ",".join(addresses)
-            print(f"Connect to 'ipv4:{bind_addr}'.")
-
-            for worker in workers:
-                await worker.join()
-
-
-except ImportError:
-    pass
+        for worker in workers:
+            worker.join()
