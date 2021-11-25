@@ -206,10 +206,12 @@ try:
             processes: Number of workers.
 
         Raises:
-            ValueError: If `processes < 0` is given.
+            ValueError: If `processes < 1` is given.
         """
 
-        if processes == 1:
+        if processes < 1:
+            raise ValueError("At least one process is required.")
+        elif processes == 1:
             bind_addr = f"{host}:{port}"
             print(f"Connect to 'ipv4:{bind_addr}'.")
 
