@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package arg_services.adu.v1;
+option java_package = "de.uni_trier.recap.arg_services.adu.v1";
+
+service AduService {
+    rpc Segmentation (SegmentationRequest) returns (SegmentationResponse);
+    rpc Classification (ClassificationRequest) returns (ClassificationResponse);
+    // rpc TwoWay (TwoWayRequest) returns (TwoWayResponse);
+    // rpc ThreeWay (ThreeWayRequest) returns (ThreeWayResponse);
+    // rpc Sequential (SequentialRequest) returns (SequentialResponse);
+}
+
+message SegmentationRequest {
+    string text = 1;
+    Granularity granularity = 2;
+}
+
+enum Granularity {
+    GRANULARITY_UNSPECIFIED = 0;
+    GRANULARITY_SENTENCE = 1;
+    GRANULARITY_SUBSENTENCE = 2;
+    GRANULARITY_PARAGRAPH = 3;
+}
+
+message SegmentationResponse {
+    repeated string segments = 1;
+}
+
+message ClassificationRequest {
+    repeated string segments = 1;
+    Classifier classifier = 2;
+}
+
+enum Classifier {
+    CLASSIFIER_UNSPECIFIED = 0;
+    CLASSIFIER_TWO_WAY = 1;
+    CLASSIFIER_THREE_WAY = 2;
+    CLASSIFIER_SEQUENTIAL = 3;
+}
+
+message CLassificationResponse {
+    repeated ClassifiedSegment segments = 1;
+}
+
+message ClassifiedSegment {
+    string text = 1;
+    bool adu = 2;
+    bool claim = 3;
+    bool premise = 4;
+}
+
+// message TwoWayRequest {
+//     repeated string segments = 1;
+// }
+
+// message ThreeWayRequest {
+//     repeated string segments = 1;
+// }
+
+// message SequentialRequest {
+//     repeated string segments = 1;
+// }
+
+// message TwoWayResponse {
+//     repeated TwoWayType type = 1;
+// }
+
+// message ThreeWayResponse {
+//     repeated ThreeWayType type = 1;
+// }
+
+// message SequentialResponse {
+//     repeated ThreeWayType type = 1;
+// }
+
+// enum TwoWayType {
+//     TWO_WAY_TYPE_UNSPECIFIED = 0;
+//     TWO_WAY_TYPE_ADU = 1;
+//     TWO_WAY_TYPE_NONE = 2;
+// }
+
+// enum ThreeWayType {
+//     THREE_WAY_TYPE_UNSPECIFIED = 0;
+//     THREE_WAY_TYPE_CLAIM = 1;
+//     THREE_WAY_TYPE_PREMISE = 2;
+//     THREE_WAY_TYPE_NONE = 3;
+// }
