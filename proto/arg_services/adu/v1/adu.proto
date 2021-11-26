@@ -39,7 +39,7 @@ enum Classifier {
     CLASSIFIER_SEQUENTIAL = 3;
 }
 
-message CLassificationResponse {
+message ClassificationResponse {
     repeated ClassifiedSegment segments = 1;
 }
 

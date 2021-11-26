@@ -20,7 +20,7 @@ java:
 
 typescript:
 	cd ${TS_DIR} && protoc -I=../proto ${PROTOS:proto/%=%} \
-                      --js_out=import_style=commonjs,binary:. \
+                      --js_out=import_style=commonjs:. \
                       --grpc-web_out=import_style=typescript,mode=grpcwebtext:.
 
 publish-python: python
