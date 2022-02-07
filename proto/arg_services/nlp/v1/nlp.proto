@@ -7,7 +7,21 @@ service NlpService {
     rpc DocBin (DocBinRequest) returns (DocBinResponse);
     rpc Vectors (VectorsRequest) returns (VectorsResponse);
     rpc Similarities (SimilaritiesRequest) returns (SimilaritiesResponse);
+    // rpc ResetCache (ResetCacheRequest) returns (ResetCacheResponse);
 }
+
+// message ResetCacheRequest {
+//     repeated CacheType cache_types = 1;
+// }
+// message ResetCacheResponse {}
+
+// enum CacheType {
+//     CACHE_TYPE_UNSPECIFIED = 0;
+//     CACHE_TYPE_SPACY = 1;
+//     CACHE_TYPE_EMBEDDINGS = 2;
+//     CACHE_TYPE_VECTORS = 3;
+//     CACHE_TYPE_SIMILARITIES = 4;
+// }
 
 message NlpConfig {
    string language = 1;
@@ -35,6 +49,7 @@ enum SimilarityMethod {
     SIMILARITY_METHOD_WMD = 6;
     SIMILARITY_METHOD_EDIT = 7;
     SIMILARITY_METHOD_JACCARD = 8;
+    SIMILARITY_METHOD_ANGULAR = 9;
 }
 
 message TextTuple {
@@ -97,6 +112,9 @@ enum Pooling {
     POOLING_SUM = 4;
     POOLING_FIRST = 5;
     POOLING_LAST = 6;
+    POOLING_MEDIAN = 7;
+    POOLING_GMEAN = 8;
+    POOLING_HMEAN = 9;
 }
 
 enum EmbeddingType {
