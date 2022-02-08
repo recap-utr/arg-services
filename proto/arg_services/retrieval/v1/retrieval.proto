@@ -17,6 +17,22 @@ message RetrieveRequest {
   }
   arg_services.nlp.v1.NlpConfig nlp_config = 4;
   int32 limit = 5;
+  RetrievalMethod retrieval_method = 6;
+  MappingAlgorithm mapping_algorithm = 7;
+  bool use_scheme_ontology = 8;
+  bool enforce_scheme_types = 9;
+}
+
+enum RetrievalMethod {
+  RETRIEVAL_METHOD_UNSPECIFIED = 0;
+  RETRIEVAL_METHOD_MAC = 1;
+  RETRIEVAL_METHOD_FAC = 2;
+  RETRIEVAL_METHOD_MAC_FAC = 3;
+}
+
+enum MappingAlgorithm {
+  MAPPING_ALGORITHM_UNSPECIFIED = 0;
+  MAPPING_ALGORITHM_ASTAR = 1;
 }
 
 message RetrieveResponse {
@@ -26,4 +42,6 @@ message RetrieveResponse {
 message RetrievedCase {
   string case_id = 1;
   double similarity = 2;
+  double mac_similarity = 3;
+  double fac_similarity = 4;
 }
