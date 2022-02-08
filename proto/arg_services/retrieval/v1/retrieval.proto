@@ -22,7 +22,6 @@ message RetrieveRequest {
   MappingAlgorithm mapping_algorithm = 8;
   bool use_scheme_ontology = 9;
   bool enforce_scheme_types = 10;
-  bool return_all_similarities = 15;
 }
 
 enum MappingAlgorithm {
@@ -31,8 +30,12 @@ enum MappingAlgorithm {
 }
 
 message RetrieveResponse {
-  repeated string ranking = 1;
-  map<string, double> similarities = 2;
-  map<string, double> mac_similarities = 3;
-  map<string, double> fac_similarities = 4;
+  repeated RetrievedCase results = 1;
+  repeated RetrievedCase mac_results = 2;
+  repeated RetrievedCase fac_results = 3;
+}
+
+message RetrievedCase {
+  string id = 1;
+  double similarity = 2;
 }
