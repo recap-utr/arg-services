@@ -27,15 +27,28 @@ message RetrieveRequest {
 enum MappingAlgorithm {
   MAPPING_ALGORITHM_UNSPECIFIED = 0;
   MAPPING_ALGORITHM_ASTAR = 1;
+  MAPPING_ALGORITHM_ISOMORPHISM = 2;
 }
 
 message RetrieveResponse {
-  repeated RetrievedCase results = 1;
-  repeated RetrievedCase mac_results = 2;
-  repeated RetrievedCase fac_results = 3;
+  repeated RetrievedCase ranking = 1;
+  repeated RetrievedCase mac_ranking = 2;
+  repeated MappedCase fac_ranking = 3;
 }
 
 message RetrievedCase {
   string id = 1;
   double similarity = 2;
+}
+
+message MappedCase {
+  string id = 1;
+  double similarity = 2;
+  repeated Mapping node_mappings = 10;
+}
+
+message Mapping {
+  string query_id = 1;
+  string case_id = 2;
+  double similarity = 3;
 }
