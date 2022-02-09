@@ -33,7 +33,7 @@ enum MappingAlgorithm {
 message RetrieveResponse {
   repeated RetrievedCase ranking = 1;
   repeated RetrievedCase mac_ranking = 2;
-  repeated MappedCase fac_ranking = 3;
+  repeated RetrievedMapping fac_ranking = 3;
 }
 
 message RetrievedCase {
@@ -41,10 +41,9 @@ message RetrievedCase {
   double similarity = 2;
 }
 
-message MappedCase {
-  string id = 1;
-  double similarity = 2;
-  repeated Mapping node_mappings = 10;
+message RetrievedMapping {
+  RetrievedCase case = 1;
+  repeated Mapping node_mappings = 2;
 }
 
 message Mapping {
