@@ -156,20 +156,19 @@ def full_service_name(pkg, service: str) -> str:
 
 
 def _serve_single(
-    bind_address: str,
+    address: str,
     add_services: t.Callable[[grpc.Server], None],
     threads: int,
     reflection_services: t.Iterable[str] = tuple(),
-    current_process: int = 1,
-    total_processes: int = 1,
+    worker_id: int = 1,
 ):
     """Helper function to start a server for a single process.
 
     Args:
-        bind_address: Complete address consisting of hostname and port (e.g., `127.0.0.1:8000`)
+        address: Complete address consisting of hostname and port (e.g., `127.0.0.1:8000`)
         add_services: Function to inject the gRPC services into the server instance.
-        current_process: Number of current process.
-        total_processes: Total number of spawned processes.
+        threads: Number of workers for the ThreadPoolExecutor.
+        reflection_services: Name of all services this server offers.
     """
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=threads))
     add_services(server)
@@ -179,28 +178,26 @@ def _serve_single(
             [*reflection_services, reflection.SERVICE_NAME], server
         )
 
-    server.add_insecure_port(bind_address)
+    server.add_insecure_port(address)
     server.start()
 
-    print(f"Worker {current_process}/{total_processes} serving on '{bind_address}'.")
+    print(f"Worker {worker_id} serving on '{address}'.")
 
     server.wait_for_termination()
 
 
 def serve(
-    host: str,
-    port: int,
+    address: str,
     add_services: t.Callable[[grpc.Server], None],
+    reflection_services: t.Iterable[str],
     threads: int = 1,
-    processes: int = 1,
-    reflection_services: t.Iterable[str] = tuple(),
 ):
     """Serve one or multiple gRPC services, optionally using multiprocessing.
 
     Args:
-        host: Hostname of the server (e.g., `127.0.0.1`)
-        ports: Start port for the server.
-            Use `0` to let the server determine an open port.
+        address: Connection string the server should listen on.
+            Should be given in the form `host:port`, example: `127.0.0.1:6789`.
+            If multiple processes should be started, use the notation `host:port1,host:port2,...`
         add_services: Function to inject the gRPC services into the server instance.
         threads: Number of workers in the gRPC thread pool.
         processes: Number of individual servers (each with their own port).
@@ -209,36 +206,26 @@ def serve(
         ValueError: If `processes < 1` is given.
     """
 
-    if processes < 1:
-        raise ValueError("At least one process is required.")
-    elif processes == 1:
-        bind_addr = f"{host}:{port}"
-        print(f"Connect to 'ipv4:{bind_addr}'.")
+    urls = [url.strip() for url in address.split(",")]
 
-        _serve_single(bind_addr, add_services, threads, reflection_services)
+    if len(urls) == 1:
+        _serve_single(urls[0], add_services, threads, reflection_services)
     else:
         workers = []
-        addresses = []
 
-        for i, port in enumerate(range(port, port + processes)):
-            bind_addr = f"{host}:{port}"
-            addresses.append(bind_addr)
-
+        for url in urls:
             worker = mp.Process(
                 target=_serve_single,
                 args=(
-                    bind_addr,
+                    url,
                     add_services,
                     reflection_services,
-                    i + 1,
-                    processes,
                 ),
             )
             worker.start()
             workers.append(worker)
 
-        bind_addr = ",".join(addresses)
-        print(f"Connect to 'ipv4:{bind_addr}'.")
+        print("All workers have started, please connect to your provided address.")
 
         for worker in workers:
             worker.join()
