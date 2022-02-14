@@ -11,15 +11,15 @@ include = ["arg_services/**/*.py", "arg_services/**/*.pyi"]
 packages = [{ include = "arg_services" }, { include = "arg_services_helper" }]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-grpcio = "^1.32"
+python = "^3.7"
+grpcio = "^1.32.0"
 protobuf = "^3.15.8"
-grpcio-reflection = "^1.39.0"
+grpcio-reflection = "^1.32.0"
 
 [tool.poetry.dev-dependencies]
-grpcio-tools = "^1.32"
-mypy-protobuf = "^2.4"
-mypy = "^0.812"
+grpcio-tools = "^1.32.0"
+mypy-protobuf = "^3.2.0"
+mypy = "^0.931"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
