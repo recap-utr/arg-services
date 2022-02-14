@@ -199,8 +199,9 @@ def serve(
             Should be given in the form `host:port`, example: `127.0.0.1:6789`.
             If multiple processes should be started, use the notation `host:port1,host:port2,...`
         add_services: Function to inject the gRPC services into the server instance.
+        reflection_services: List of services this server supports.
+            Use the provided function `arg_services_helper.full_service_name` to get the correct names.
         threads: Number of workers in the gRPC thread pool.
-        processes: Number of individual servers (each with their own port).
 
     Raises:
         ValueError: If `processes < 1` is given.
