@@ -165,6 +165,7 @@ message EmbeddingModel {
         // This method allows you to alter the computation of the mean representation.
         // Special cases include arithmetic mean (p = 1), geometric mean (p = 0), harmonic mean (p = -1), minimum (p = -∞), maximum (p = ∞).
         // [Wikipedia](https://en.wikipedia.org/wiki/Generalized_mean).
+        // [Paper](https://arxiv.org/abs/1803.01400).
         double pmean = 4;
     }
 }
