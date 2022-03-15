@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package arg_services.entailment.v1;
-option java_package = "de.uni_trier.recap.arg_services.entailment.v1";
+package arg_services.mining.v1;
+
 
 service EntailmentService {
     rpc Entailment (EntailmentRequest) returns (EntailmentResponse);

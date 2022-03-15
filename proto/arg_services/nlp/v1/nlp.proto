@@ -1,10 +1,8 @@
 syntax = "proto3";
 
-package arg_services.nlp.v1;
-option java_package = "de.uni_trier.recap.arg_services.nlp.v1";
-import "google/protobuf/field_mask.proto";
-
 // Service for offloading computationally complex NLP tasks.
+package arg_services.nlp.v1;
+
 service NlpService {
     // Compute embeddings (i.e., vectors) for strings.
     rpc Vectors (VectorsRequest) returns (VectorsResponse);

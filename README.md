@@ -1,3 +1,3 @@
 # Argumentation Microservices
 
-[Documentation can be found here.](./doc/README.md)
+Documentation is hosted at the [Buf Schema Registry](https://buf.build/recap/arg-services/docs).

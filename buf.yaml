@@ -1,4 +1,5 @@
 version: v1beta1
+name: buf.build/recap/arg-services
 build:
   roots:
     - proto

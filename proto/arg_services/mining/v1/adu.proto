@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package arg_services.adu.v1;
-option java_package = "de.uni_trier.recap.arg_services.adu.v1";
+package arg_services.mining.v1;
+
 
 service AduService {
     rpc Segmentation (SegmentationRequest) returns (SegmentationResponse);

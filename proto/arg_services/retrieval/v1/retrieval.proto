@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package arg_services.retrieval.v1;
-option java_package = "de.uni_trier.recap.arg_services.retrieval.v1";
+
 import "arg_services/graph/v1/graph.proto";
 import "arg_services/nlp/v1/nlp.proto";
 

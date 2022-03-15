@@ -1,4 +1,0 @@
-syntax = "proto3";
-
-package arg_services.base.v1;
-option java_package = "de.uni_trier.recap.arg_services.base.v1";

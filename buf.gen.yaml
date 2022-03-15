@@ -1,0 +1,37 @@
+version: v1
+managed:
+  enabled: true
+  java_package_prefix: de.uni_trier.recap
+plugins:
+  # Python
+  # - name: python_betterproto
+  #   out: gen/python
+  - remote: buf.build/protocolbuffers/plugins/python
+    out: gen/python
+  - remote: buf.build/grpc/plugins/python
+    out: gen/python
+  - name: mypy
+    out: gen/python
+  - name: mypy_grpc
+    out: gen/python
+
+  # Typescript
+  - name: ts
+    out: gen/typescript
+    opt:
+      - add_pb_suffix
+      - generate_dependencies
+  # - remote: buf.build/protocolbuffers/plugins/js
+  #   out: gen/typescript
+  #   opt: import_style=commonjs
+  # - remote: buf.build/grpc/plugins/web
+  #   out: gen/typescript
+  #   opt:
+  #     - import_style=typescript
+  #     - mode=grpcwebtext
+
+  # Java
+  - remote: buf.build/protocolbuffers/plugins/java
+    out: gen/java
+  - remote: buf.build/grpc/plugins/java
+    out: gen/java
