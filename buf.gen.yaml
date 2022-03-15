@@ -10,16 +10,17 @@ plugins:
     out: gen/python
   - remote: buf.build/grpc/plugins/python
     out: gen/python
-  - name: mypy
+  - remote: buf.build/jeffsawatzky/plugins/mypy-protobuf
     out: gen/python
-  - name: mypy_grpc
+  - remote: buf.build/jeffsawatzky/plugins/mypy-grpc-protobuf
     out: gen/python
 
   # Typescript
-  - name: ts
+  - remote: buf.build/timostamm/plugins/protobuf-ts
     out: gen/typescript
     opt:
       - add_pb_suffix
+      - ts_nocheck
       - generate_dependencies
   # - remote: buf.build/protocolbuffers/plugins/js
   #   out: gen/typescript
