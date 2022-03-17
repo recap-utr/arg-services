@@ -1,4 +1,4 @@
-VERSION = 0.2.4
+VERSION = 0.2.5
 TARGET = gen
 SOURCE = src
 PY = python
