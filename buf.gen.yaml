@@ -22,6 +22,7 @@ plugins:
       - add_pb_suffix
       - ts_nocheck
       - generate_dependencies
+      - output_javascript
   # - remote: buf.build/protocolbuffers/plugins/js
   #   out: gen/typescript
   #   opt: import_style=commonjs

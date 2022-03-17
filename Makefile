@@ -22,7 +22,7 @@ generate: version
 	cp -r ${SOURCE}/${PY}/{poetry.lock,pyproject.toml} ${TARGET}/${PY}
 
 	# Typescript
-	cp ${SOURCE}/${TS}/{package-lock.json,package.json,tsconfig.json} gen/${TS}
+	cp ${SOURCE}/${TS}/{package-lock.json,package.json} gen/${TS}
 
 .PHONY: version
 version:

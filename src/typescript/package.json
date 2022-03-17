@@ -2,10 +2,6 @@
   "name": "@recap-utr/arg-services",
   "version": "0.2.4",
   "description": "Protobuf and gRPC definitions for microservice-based argumentation machines",
-  "main": "index.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ReCAP-UTR/Schema.git"
@@ -19,10 +15,6 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.5.8",
     "@protobuf-ts/runtime": "^2.2.2"
-  },
-  "devDependencies": {
-    "tslint": "^6.1.3",
-    "typescript": "^4.6.2"
   },
   "keywords": [
     "microservices",
