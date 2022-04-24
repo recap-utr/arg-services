@@ -21,7 +21,8 @@ plugins:
     opt:
       - add_pb_suffix
       - ts_nocheck
-      - generate_dependencies
+      - eslint_disable
+      # - generate_dependencies # Not needed anymore: https://github.com/timostamm/protobuf-ts/releases/tag/v2.5.0
       - output_javascript
   # - remote: buf.build/protocolbuffers/plugins/js
   #   out: gen/typescript
