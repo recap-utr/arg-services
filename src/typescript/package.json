@@ -4,14 +4,14 @@
   "description": "Protobuf and gRPC definitions for microservice-based argumentation machines",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ReCAP-UTR/Schema.git"
+    "url": "git+https://github.com/recap-utr/arg-services.git"
   },
   "author": "Mirko Lenz <info@mirko-lenz.de>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/ReCAP-UTR/Schema/issues"
+    "url": "https://github.com/recap-utr/arg-services/issues"
   },
-  "homepage": "https://github.com/ReCAP-UTR/Schema#readme",
+  "homepage": "https://github.com/recap-utr/arg-services#readme",
   "dependencies": {
     "@grpc/grpc-js": "^1.5.8",
     "@protobuf-ts/runtime": "^2.2.2"
