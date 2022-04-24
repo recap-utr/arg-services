@@ -1,5 +1,5 @@
 {
-  "name": "@recap-utr/arg-services",
+  "name": "arg-services",
   "version": "0.2.5",
   "description": "Protobuf and gRPC definitions for microservice-based argumentation machines",
   "repository": {
