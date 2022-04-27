@@ -4,5 +4,8 @@ build:
   roots:
     - proto
 lint:
+  ignore_only:
+    ENUM_ZERO_VALUE_SUFFIX:
+      - arg_services/graph/v1/graph.proto
   use:
     - DEFAULT

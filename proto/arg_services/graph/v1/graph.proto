@@ -6,153 +6,169 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
 message Graph {
-  map<string, Node> nodes = 2;
-  map<string, Edge> edges = 3;
-  map<string, Resource> resources = 4;
-  map<string, Participant> participants = 5;
-  map<string, Analyst> analysts = 6;
-  optional string major_claim = 7;
-  string version = 8;
-  google.protobuf.Timestamp created = 13;
-  google.protobuf.Timestamp updated = 14;
-  google.protobuf.Struct metadata = 15;
+  map<string, Node> nodes = 1;
+  map<string, Edge> edges = 2;
+  map<string, Resource> resources = 3;
+  map<string, Participant> participants = 4;
+  map<string, Analyst> analysts = 5;
+  string major_claim = 6;
+  string version = 7;
+  Meta meta = 14;
+  google.protobuf.Struct data = 15;
+}
+
+message Meta {
+  google.protobuf.Timestamp created = 1;
+  google.protobuf.Timestamp updated = 2;
+  string analyst = 3;
 }
 
 message Resource {
-  string text = 2;
-  optional string title = 3;
-  optional string source = 4;
-  google.protobuf.Timestamp created = 13;
-  google.protobuf.Timestamp updated = 14;
-  google.protobuf.Struct metadata = 15;
+  string text = 1;
+  string title = 2;
+  string source = 3;
+  google.protobuf.Timestamp timestamp = 4;
+  Meta meta = 14;
+  google.protobuf.Struct data = 15;
 }
 
 message Participant {
-  optional string name = 2;
-  optional string username = 3;
-  optional string email = 4;
-  optional string url = 5;
-  optional string location = 6;
-  optional string description = 7;
-  google.protobuf.Timestamp created = 13;
-  google.protobuf.Timestamp updated = 14;
-  google.protobuf.Struct metadata = 15;
+  string name = 1;
+  string username = 2;
+  string email = 3;
+  string url = 4;
+  string location = 5;
+  string description = 6;
+  Meta meta = 14;
+  google.protobuf.Struct data = 15;
 }
 
 message Analyst {
-  optional string name = 2;
-  optional string email = 3;
-  google.protobuf.Struct metadata = 15;
+  string name = 1;
+  string email = 2;
+  Meta meta = 14;
+  google.protobuf.Struct data = 15;
 }
 
 message Edge {
-  string source = 2;
-  string target = 3;
-  google.protobuf.Timestamp created = 13;
-  google.protobuf.Timestamp updated = 14;
-  google.protobuf.Struct metadata = 15;
+  string source = 1;
+  string target = 2;
+  Meta meta = 14;
+  google.protobuf.Struct data = 15;
 }
 
 message Node {
-  oneof node {
-    AtomNode atom = 2;
-    SchemeNode scheme = 3;
+  oneof type {
+    Atom atom = 1;
+    Scheme scheme = 2;
   }
-  google.protobuf.Timestamp created = 13;
-  google.protobuf.Timestamp updated = 14;
-  google.protobuf.Struct metadata = 15;
+  Meta meta = 14;
+  google.protobuf.Struct data = 15;
 }
 
-message AtomNode {
-  string text = 2;
-  optional Reference reference = 3;
-  optional string participant = 4;
-}
-
-message SchemeNode {
-  optional SchemeType type = 2;
-  optional ArgumentFrom argument_from = 3;
-  google.protobuf.Struct descriptors = 4;
+message Atom {
+  string text = 1;
+  Reference reference = 2;
+  string participant = 3;
 }
 
 message Reference {
-  optional string resource = 2;
-  optional int64 offset = 3;
-  string text = 4;
-  google.protobuf.Struct metadata = 15;
+  string resource = 1;
+  uint64 offset = 2;
+  string text = 3;
 }
 
-enum SchemeType {
-  SCHEME_TYPE_UNSPECIFIED = 0;
-  SCHEME_TYPE_SUPPORT = 1;
-  SCHEME_TYPE_ATTACK = 2;
-  SCHEME_TYPE_REPHRASE = 3;
-  SCHEME_TYPE_TRANSITION = 4;
-  SCHEME_TYPE_PREFERENCE = 5;
-  SCHEME_TYPE_ASSERTION = 6;
+message Scheme {
+  oneof type {
+    Support support = 1;
+    Attack attack = 2;
+    Preference preference = 3;
+    Rephrase rephrase = 4;
+  }
+  // List of atom id's to assign the connected premises to their role in the argumentation scheme.
+  // Should be sorted according to the order found i
+  repeated string premise_descriptors = 15;
 }
 
+// Argumentation schemes for type support.
 // Walton, Douglas, Christopher Reed, and Fabrizio Macagno. 2008. Argumentation Schemes. Cambridge University Press. https://play.google.com/store/books/details?id=qc3LCgAAQBAJ.
-enum ArgumentFrom {
-  ARGUMENT_FROM_UNSPECIFIED = 0;
-  ARGUMENT_FROM_POSITION_TO_KNOW = 1;
-  ARGUMENT_FROM_EXPERT_OPINION = 2;
-  ARGUMENT_FROM_WITNESS_TESTIMONY = 3;
-  ARGUMENT_FROM_POPULAR_OPINION = 4;
-  ARGUMENT_FROM_POPULAR_PRACTICE = 5;
-  ARGUMENT_FROM_EXAMPLE = 6;
-  ARGUMENT_FROM_ANALOGY = 7;
-  // ARGUMENT_FROM_PRACTICAL_REASONING_FROM_ANALOGY = 8;
-  ARGUMENT_FROM_COMPOSITION = 9;
-  ARGUMENT_FROM_DIVISION = 10;
-  ARGUMENT_FROM_OPPOSITIONS = 11;
-  ARGUMENT_FROM_RHETORICAL_OPPOSITIONS = 12;
-  ARGUMENT_FROM_ALTERNATIVES = 13;
-  ARGUMENT_FROM_VERBAL_CLASSIFICATION = 14;
-  // ARGUMENT_FROM_VERBAL_CLASSIFICATION_DEFINITION = 15;
-  // ARGUMENT_FROM_VERBAL_CLASSIFICATION_VAGUENESS = 16;
-  // ARGUMENT_FROM_VERBAL_CLASSIFICATION_ARBITRARINESS = 17;
-  ARGUMENT_FROM_INTERACTION_OF_ACT_AND_PERSON = 18;
-  ARGUMENT_FROM_VALUES = 19;
-  ARGUMENT_FROM_SACRIFICE = 20;
-  ARGUMENT_FROM_THE_GROUP_AND_ITS_MEMBERS = 21;
-  ARGUMENT_FROM_PRACTICAL_REASONING = 22;
-  // ARGUMENT_FROM_TWO_PERSON_PRACTICAL_REASONING = 23;
-  ARGUMENT_FROM_WASTE = 24;
-  ARGUMENT_FROM_SUNK_COSTS = 25;
-  ARGUMENT_FROM_IGNORANCE = 26;
-  ARGUMENT_FROM_EPISTEMIC_IGNORANCE = 27;
-  ARGUMENT_FROM_CAUSE_TO_EFFECT = 28;
-  ARGUMENT_FROM_CORRELATION_TO_CAUSE = 29;
-  ARGUMENT_FROM_SIGN = 30;
-  ARGUMENT_FROM_ABDUCTIVE = 31;
-  ARGUMENT_FROM_EVIDENCE_TO_A_HYPOTHESIS = 32;
-  ARGUMENT_FROM_CONSEQUENCES = 33;
-  ARGUMENT_FROM_PRAGMATIC_ALTERNATIVES = 34;
-  ARGUMENT_FROM_THREAT = 35;
-  ARGUMENT_FROM_FEAR_APPEAL = 36;
-  ARGUMENT_FROM_DANGER_APPEAL = 37;
-  ARGUMENT_FROM_NEED_FOR_HELP = 38;
-  ARGUMENT_FROM_DISTRESS = 39;
-  ARGUMENT_FROM_COMMITMENT = 40;
-  ARGUMENT_FROM_ETHOTIC = 41;
-  ARGUMENT_FROM_GENERIC_AD_HOMINEM = 42;
-  ARGUMENT_FROM_PRAGMATIC_INCONSISTENCY = 43;
-  ARGUMENT_FROM_INCONSISTENT_COMMITMENT = 44;
-  // ARGUMENT_FROM_CIRCUMSTANTIAL_AD_HOMINEM = 45;
-  ARGUMENT_FROM_BIAS = 46;
-  // ARGUMENT_FROM_BIAS_AD_HOMINEM = 47;
-  ARGUMENT_FROM_GRADUALISM = 48;
-  ARGUMENT_FROM_SLIPPERY_SLOPE = 49;
-  // ARGUMENT_FROM_PRECEDENT_SLIPPERY_SLOPE = 50;
-  // ARGUMENT_FROM_SORITES_SLIPPERY_SLOPE = 51;
-  // ARGUMENT_FROM_VERBAL_SLIPPERY_SLOPE = 52;
-  // ARGUMENT_FROM_FULL_SLIPPERY_SLOPE = 53;
-  // ARGUMENT_FROM_CONSTITUTIVE_RULE_CLAIMS = 54;
-  ARGUMENT_FROM_RULES = 55;
-  ARGUMENT_FROM_EXCEPTIONAL_CASE = 56;
-  ARGUMENT_FROM_PRECEDENT = 57;
-  ARGUMENT_FROM_PLEA_FOR_EXCUSE = 58;
-  ARGUMENT_FROM_PERCEPTION = 59;
-  ARGUMENT_FROM_MEMORY = 60;
+enum Support {
+  SUPPORT_DEFAULT = 0;
+  SUPPORT_POSITION_TO_KNOW = 1;
+  SUPPORT_EXPERT_OPINION = 2;
+  SUPPORT_WITNESS_TESTIMONY = 3;
+  SUPPORT_POPULAR_OPINION = 4;
+  SUPPORT_POPULAR_PRACTICE = 5;
+  SUPPORT_EXAMPLE = 6;
+  SUPPORT_ANALOGY = 7;
+  // SUPPORT_PRACTICAL_REASONING_FROM_ANALOGY = 8;
+  SUPPORT_COMPOSITION = 9;
+  SUPPORT_DIVISION = 10;
+  SUPPORT_OPPOSITIONS = 11;
+  SUPPORT_RHETORICAL_OPPOSITIONS = 12;
+  SUPPORT_ALTERNATIVES = 13;
+  SUPPORT_VERBAL_CLASSIFICATION = 14;
+  // SUPPORT_VERBAL_CLASSIFICATION_DEFINITION = 15;
+  // SUPPORT_VERBAL_CLASSIFICATION_VAGUENESS = 16;
+  // SUPPORT_VERBAL_CLASSIFICATION_ARBITRARINESS = 17;
+  SUPPORT_INTERACTION_OF_ACT_AND_PERSON = 18;
+  SUPPORT_VALUES = 19;
+  SUPPORT_SACRIFICE = 20;
+  SUPPORT_THE_GROUP_AND_ITS_MEMBERS = 21;
+  SUPPORT_PRACTICAL_REASONING = 22;
+  // SUPPORT_TWO_PERSON_PRACTICAL_REASONING = 23;
+  SUPPORT_WASTE = 24;
+  SUPPORT_SUNK_COSTS = 25;
+  SUPPORT_IGNORANCE = 26;
+  SUPPORT_EPISTEMIC_IGNORANCE = 27;
+  SUPPORT_CAUSE_TO_EFFECT = 28;
+  SUPPORT_CORRELATION_TO_CAUSE = 29;
+  SUPPORT_SIGN = 30;
+  SUPPORT_ABDUCTIVE = 31;
+  SUPPORT_EVIDENCE_TO_A_HYPOTHESIS = 32;
+  SUPPORT_CONSEQUENCES = 33;
+  SUPPORT_PRAGMATIC_ALTERNATIVES = 34;
+  SUPPORT_THREAT = 35;
+  SUPPORT_FEAR_APPEAL = 36;
+  SUPPORT_DANGER_APPEAL = 37;
+  SUPPORT_NEED_FOR_HELP = 38;
+  SUPPORT_DISTRESS = 39;
+  SUPPORT_COMMITMENT = 40;
+  SUPPORT_ETHOTIC = 41;
+  SUPPORT_GENERIC_AD_HOMINEM = 42;
+  SUPPORT_PRAGMATIC_INCONSISTENCY = 43;
+  SUPPORT_INCONSISTENT_COMMITMENT = 44;
+  // SUPPORT_CIRCUMSTANTIAL_AD_HOMINEM = 45;
+  SUPPORT_BIAS = 46;
+  // SUPPORT_BIAS_AD_HOMINEM = 47;
+  SUPPORT_GRADUALISM = 48;
+  SUPPORT_SLIPPERY_SLOPE = 49;
+  // SUPPORT_PRECEDENT_SLIPPERY_SLOPE = 50;
+  // SUPPORT_SORITES_SLIPPERY_SLOPE = 51;
+  // SUPPORT_VERBAL_SLIPPERY_SLOPE = 52;
+  // SUPPORT_FULL_SLIPPERY_SLOPE = 53;
+  // SUPPORT_CONSTITUTIVE_RULE_CLAIMS = 54;
+  SUPPORT_RULES = 55;
+  SUPPORT_EXCEPTIONAL_CASE = 56;
+  SUPPORT_PRECEDENT = 57;
+  SUPPORT_PLEA_FOR_EXCUSE = 58;
+  SUPPORT_PERCEPTION = 59;
+  SUPPORT_MEMORY = 60;
+}
+
+// Argumentation schemes for type attack.
+enum Attack {
+  ATTACK_DEFAULT = 0;
+}
+
+// Argumentation schemes for type preference.
+enum Preference {
+  PREFERENCE_DEFAULT = 0;
+}
+
+// Argumentation schemes for type rephrase.
+enum Rephrase {
+  REPHRASE_DEFAULT = 0;
+  REPHRASE_GENERALIZATION = 1;
+  REPHRASE_SPECIALIZATION = 2;
 }
