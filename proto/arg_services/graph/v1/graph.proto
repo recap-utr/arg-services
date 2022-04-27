@@ -13,11 +13,11 @@ message Graph {
   map<string, Analyst> analysts = 5;
   string major_claim = 6;
   string version = 7;
-  Meta meta = 14;
-  google.protobuf.Struct data = 15;
+  Metadata metadata = 14;
+  google.protobuf.Struct userdata = 15;
 }
 
-message Meta {
+message Metadata {
   google.protobuf.Timestamp created = 1;
   google.protobuf.Timestamp updated = 2;
   string analyst = 3;
@@ -28,8 +28,8 @@ message Resource {
   string title = 2;
   string source = 3;
   google.protobuf.Timestamp timestamp = 4;
-  Meta meta = 14;
-  google.protobuf.Struct data = 15;
+  Metadata metadata = 14;
+  google.protobuf.Struct userdata = 15;
 }
 
 message Participant {
@@ -39,22 +39,22 @@ message Participant {
   string url = 4;
   string location = 5;
   string description = 6;
-  Meta meta = 14;
-  google.protobuf.Struct data = 15;
+  Metadata metadata = 14;
+  google.protobuf.Struct userdata = 15;
 }
 
 message Analyst {
   string name = 1;
   string email = 2;
-  Meta meta = 14;
-  google.protobuf.Struct data = 15;
+  Metadata metadata = 14;
+  google.protobuf.Struct userdata = 15;
 }
 
 message Edge {
   string source = 1;
   string target = 2;
-  Meta meta = 14;
-  google.protobuf.Struct data = 15;
+  Metadata metadata = 14;
+  google.protobuf.Struct userdata = 15;
 }
 
 message Node {
@@ -62,8 +62,8 @@ message Node {
     Atom atom = 1;
     Scheme scheme = 2;
   }
-  Meta meta = 14;
-  google.protobuf.Struct data = 15;
+  Metadata metadata = 14;
+  google.protobuf.Struct userdata = 15;
 }
 
 message Atom {
