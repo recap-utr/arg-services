@@ -17,8 +17,7 @@ generate: version
 
 	# Python
 	find ${TARGET}/${PY}/${PROJECT} -type d -exec touch {}/__init__.py \;
-	mkdir ${TARGET}/${PY}/${PROJECT}_helper
-	cp -f ${SOURCE}/${PY}/${PROJECT}_helper/__init__.py ${TARGET}/${PY}/${PROJECT}_helper
+	cp -f ${SOURCE}/${PY}/${PROJECT}/__init__.py ${TARGET}/${PY}/${PROJECT}
 	cp -r ${SOURCE}/${PY}/{poetry.lock,pyproject.toml} ${TARGET}/${PY}
 
 	# Typescript
