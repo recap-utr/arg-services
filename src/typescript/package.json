@@ -1,6 +1,6 @@
 {
   "name": "arg-services",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Protobuf and gRPC definitions for microservice-based argumentation machines",
   "repository": {
     "type": "git",
