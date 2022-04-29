@@ -1,4 +1,4 @@
-VERSION = 0.3.1
+VERSION = 0.3.3
 TARGET = gen
 SOURCE = src
 PY = python
@@ -35,3 +35,6 @@ publish: generate
 
 	# Typescript
 	cd ${TARGET}/${TS} && npm publish --access public
+
+	# Buf Registry
+	buf push
