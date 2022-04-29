@@ -58,7 +58,7 @@ message Edge {
 }
 
 message Node {
-  oneof type {
+  oneof node {
     Atom atom = 1;
     Scheme scheme = 2;
   }
@@ -79,7 +79,7 @@ message Reference {
 }
 
 message Scheme {
-  oneof type {
+  oneof scheme {
     Support support = 1;
     Attack attack = 2;
     Preference preference = 3;
