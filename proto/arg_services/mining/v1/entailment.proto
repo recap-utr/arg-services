@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package arg_services.mining.v1;
 
+import "google/protobuf/struct.proto";
+
 
 service EntailmentService {
     rpc Entailment (EntailmentRequest) returns (EntailmentResponse);
@@ -12,19 +14,27 @@ message EntailmentRequest {
     string language = 1;
     string premise = 2;
     string claim = 3;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 message EntailmentsRequest {
     repeated EntailmentRequest queries = 1;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 message EntailmentResponse {
     Prediction prediction = 1;
     repeated Detail details = 2;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 message EntailmentsResponse {
     repeated EntailmentResponse results = 1;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 message Detail {

@@ -4,6 +4,7 @@ package arg_services.retrieval.v1;
 
 import "arg_services/graph/v1/graph.proto";
 import "arg_services/nlp/v1/nlp.proto";
+import "google/protobuf/struct.proto";
 
 service RetrievalService {
   rpc Retrieve (RetrieveRequest) returns (RetrieveResponse);
@@ -22,6 +23,8 @@ message RetrieveRequest {
   MappingAlgorithm mapping_algorithm = 8;
   bool use_scheme_ontology = 9;
   bool enforce_scheme_types = 10;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
 }
 
 enum MappingAlgorithm {
@@ -34,6 +37,8 @@ message RetrieveResponse {
   repeated RetrievedCase ranking = 1;
   repeated RetrievedCase mac_ranking = 2;
   repeated RetrievedMapping fac_ranking = 3;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
 }
 
 message RetrievedCase {

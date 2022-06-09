@@ -3,6 +3,8 @@ syntax = "proto3";
 // Service for offloading computationally complex NLP tasks.
 package arg_services.nlp.v1;
 
+import "google/protobuf/struct.proto";
+
 service NlpService {
     // Compute embeddings (i.e., vectors) for strings.
     rpc Vectors (VectorsRequest) returns (VectorsResponse);
@@ -36,11 +38,15 @@ message SimilaritiesRequest {
     NlpConfig config = 1;
     // List of string pairs to compare.
     repeated TextTuple text_tuples = 2;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 message SimilaritiesResponse {
     // List of similarities ordered just like the original `text_tuples`.
     repeated double similarities = 1;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 // Possible methods to compute the similarity between two vectors.
@@ -99,11 +105,15 @@ message DocBinRequest {
     // List of vectors that shall be saved in the `DocBin` object.
     // The computation is time-consuming, so you should only specify the embeddings you actually use!
     repeated EmbeddingLevel embedding_levels = 6;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 message DocBinResponse {
     // Serialized [`DocBin`](https://spacy.io/api/docbin) object
     bytes docbin = 1;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 message VectorsRequest {
@@ -114,11 +124,15 @@ message VectorsRequest {
     // List of vectors that shall be returned.
     // The computation is time-consuming, so you should only specify the embeddings you actually use!
     repeated EmbeddingLevel embedding_levels = 3;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 message VectorsResponse {
     // List of vectors whose order corresponds to the one of `texts`.
     repeated VectorResponse vectors = 1;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 // Container object that includes vectors for all levels specified in `embedding_levels`.
@@ -129,6 +143,8 @@ message VectorResponse {
     repeated Vector tokens = 2;
     // Vectors for all sentences found in the string.
     repeated Vector sentences = 3;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 // Container for storing a vector as a list of floats.

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package arg_services.mining.v1;
 
+import "google/protobuf/struct.proto";
+
 
 service AduService {
     rpc Segmentation (SegmentationRequest) returns (SegmentationResponse);
@@ -14,6 +16,8 @@ service AduService {
 message SegmentationRequest {
     string text = 1;
     Granularity granularity = 2;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 enum Granularity {
@@ -25,11 +29,15 @@ enum Granularity {
 
 message SegmentationResponse {
     repeated string segments = 1;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 message ClassificationRequest {
     repeated string segments = 1;
     Classifier classifier = 2;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 enum Classifier {
@@ -41,6 +49,8 @@ enum Classifier {
 
 message ClassificationResponse {
     repeated ClassifiedSegment segments = 1;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
 }
 
 message ClassifiedSegment {
