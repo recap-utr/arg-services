@@ -20,8 +20,8 @@ message EntailmentRequest {
 }
 
 message EntailmentResponse {
-    EntailmentPrediction prediction = 1;
-    repeated EntailmentDetail details = 2;
+    EntailmentType entailment_type = 1;
+    repeated EntailmentPrediction predictions = 2;
     // Implementation-specific information can be encoded here
     google.protobuf.Struct extras = 15;
 }
@@ -40,7 +40,7 @@ message EntailmentsResponse {
 }
 message EntailmentResult {
     Entailment entailment = 1;
-    repeated EntailmentPrediction predictions = 4;
+    repeated EntailmentPrediction predictions = 2;
 }
 
 message Entailment {

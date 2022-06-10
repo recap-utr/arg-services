@@ -30,16 +30,16 @@ message Entailment {
 }
 
 message EntailmentResult {
-    SurrogateClassification surrogates = 1;
     map<string, double> similarities = 1;
-    repeated bool keywords_premise = 3;
-    repeated bool keywords_claim = 4;
+    repeated bool keywords_premise = 2;
+    repeated bool keywords_claim = 3;
+    // SurrogateClassification surrogates = 4;
 }
 
-enum SurrogateClassification {
-    SURROGATE_CLASSIFICATION_UNSPECIFIED = 0;
-    SURROGATE_CLASSIFICATION_FACTUAL_CONSISTENCY = 1;
-    SURROGATE_CLASSIFICATION_SENTIMENT_COHERENCE = 2;
-    SURROGATE_CLASSIFICATION_CAUSAL_RELATION = 3;
-    SURROGATE_CLASSIFICATION_NORMATIVE_RELATION = 4;
-}
+// enum SurrogateClassification {
+//     SURROGATE_CLASSIFICATION_UNSPECIFIED = 0;
+//     SURROGATE_CLASSIFICATION_FACTUAL_CONSISTENCY = 1;
+//     SURROGATE_CLASSIFICATION_SENTIMENT_COHERENCE = 2;
+//     SURROGATE_CLASSIFICATION_CAUSAL_RELATION = 3;
+//     SURROGATE_CLASSIFICATION_NORMATIVE_RELATION = 4;
+// }

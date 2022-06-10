@@ -48,4 +48,5 @@ message Adu {
 message Token {
     string text = 1;
     bool argumentative = 2;
+    bool keyword = 3;
 }
