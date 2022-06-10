@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package arg_services.mining.v1;
+
+import "google/protobuf/struct.proto";
+import "arg_services/mining/v1/adu.proto";
+
+
+service MajorClaimService {
+    rpc MajorClaim (MajorClaimRequest) returns (MajorClaimResponse);
+}
+
+message MajorClaimRequest {
+    string language = 1;
+    map<string, Segment> segments = 2;
+    uint64 limit = 4;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
+}
+
+message MajorClaimResponse {
+    repeated MajorClaimResult ranking = 1;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
+}
+
+message MajorClaimResult {
+    string id = 1;
+    double probability = 2;
+}

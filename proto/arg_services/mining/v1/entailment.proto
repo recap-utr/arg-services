@@ -3,6 +3,7 @@ syntax = "proto3";
 package arg_services.mining.v1;
 
 import "google/protobuf/struct.proto";
+import "arg_services/mining/v1/adu.proto";
 
 
 service EntailmentService {
@@ -18,33 +19,44 @@ message EntailmentRequest {
     google.protobuf.Struct extras = 15;
 }
 
-message EntailmentsRequest {
-    repeated EntailmentRequest queries = 1;
+message EntailmentResponse {
+    EntailmentPrediction prediction = 1;
+    repeated EntailmentDetail details = 2;
     // Implementation-specific information can be encoded here
     google.protobuf.Struct extras = 15;
 }
 
-message EntailmentResponse {
-    Prediction prediction = 1;
-    repeated Detail details = 2;
+message EntailmentsRequest {
+    string language = 1;
+    map<string, Segment> segments = 2;
     // Implementation-specific information can be encoded here
     google.protobuf.Struct extras = 15;
 }
 
 message EntailmentsResponse {
-    repeated EntailmentResponse results = 1;
+    repeated EntailmentResult results = 1;
     // Implementation-specific information can be encoded here
     google.protobuf.Struct extras = 15;
 }
-
-message Detail {
-    double probability = 1;
-    Prediction prediction = 2;
+message EntailmentResult {
+    Entailment entailment = 1;
+    repeated EntailmentPrediction predictions = 4;
 }
 
-enum Prediction {
-    PREDICTION_UNSPECIFIED = 0;
-    PREDICTION_ENTAILMENT = 1;
-    PREDICTION_CONTRADICTION = 2;
-    PREDICTION_NEUTRAL = 3;
+message Entailment {
+    string premise_id = 1;
+    string claim_id = 2;
+    EntailmentType type = 3;
+}
+
+message EntailmentPrediction {
+    double probability = 1;
+    EntailmentType type = 2;
+}
+
+enum EntailmentType {
+    ENTAILMENT_TYPE_UNSPECIFIED = 0;
+    ENTAILMENT_TYPE_ENTAILMENT = 1;
+    ENTAILMENT_TYPE_CONTRADICTION = 2;
+    ENTAILMENT_TYPE_NEUTRAL = 3;
 }

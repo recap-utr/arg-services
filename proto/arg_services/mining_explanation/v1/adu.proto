@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package arg_services.mining_explanation.v1;
+
+import "google/protobuf/struct.proto";
+
+
+service AduExplanationService {
+    rpc Classification (ClassificationRequest) returns (ClassificationResponse);
+}
+
+message ClassificationRequest {
+    string language = 1;
+    repeated string segments = 2;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
+}
+
+message ClassificationResponse {
+    repeated Segment segments = 1;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
+}
+
+message Segment {
+    repeated bool keyword_markers = 1;
+    repeated string clauses = 2;
+}

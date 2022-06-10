@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package arg_services.mining_explanation.v1;
+
+import "google/protobuf/struct.proto";
+import "arg_services/mining/v1/entailment.proto";
+
+
+service EntailmentExplanationService {
+    rpc Entailments (EntailmentsRequest) returns (EntailmentsResponse);
+}
+
+message EntailmentsRequest {
+    string language = 1;
+    repeated Entailment entailments = 2;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
+}
+
+message EntailmentsResponse {
+    repeated EntailmentResult results = 1;
+    // Implementation-specific information can be encoded here
+    google.protobuf.Struct extras = 15;
+}
+
+message Entailment {
+    string premise = 1;
+    string claim = 2;
+    arg_services.mining.v1.EntailmentType type = 3;
+}
+
+message EntailmentResult {
+    SurrogateClassification surrogates = 1;
+    map<string, double> similarities = 1;
+    repeated bool keywords_premise = 3;
+    repeated bool keywords_claim = 4;
+}
+
+enum SurrogateClassification {
+    SURROGATE_CLASSIFICATION_UNSPECIFIED = 0;
+    SURROGATE_CLASSIFICATION_FACTUAL_CONSISTENCY = 1;
+    SURROGATE_CLASSIFICATION_SENTIMENT_COHERENCE = 2;
+    SURROGATE_CLASSIFICATION_CAUSAL_RELATION = 3;
+    SURROGATE_CLASSIFICATION_NORMATIVE_RELATION = 4;
+}

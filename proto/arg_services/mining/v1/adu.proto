@@ -8,91 +8,44 @@ import "google/protobuf/struct.proto";
 service AduService {
     rpc Segmentation (SegmentationRequest) returns (SegmentationResponse);
     rpc Classification (ClassificationRequest) returns (ClassificationResponse);
-    // rpc TwoWay (TwoWayRequest) returns (TwoWayResponse);
-    // rpc ThreeWay (ThreeWayRequest) returns (ThreeWayResponse);
-    // rpc Sequential (SequentialRequest) returns (SequentialResponse);
 }
 
 message SegmentationRequest {
     string text = 1;
-    Granularity granularity = 2;
     // Implementation-specific information can be encoded here
     google.protobuf.Struct extras = 15;
-}
-
-enum Granularity {
-    GRANULARITY_UNSPECIFIED = 0;
-    GRANULARITY_SENTENCE = 1;
-    GRANULARITY_SUBSENTENCE = 2;
-    GRANULARITY_PARAGRAPH = 3;
 }
 
 message SegmentationResponse {
-    repeated string segments = 1;
+    repeated Segment segments = 1;
     // Implementation-specific information can be encoded here
     google.protobuf.Struct extras = 15;
+}
+
+message Segment {
+    string text = 1;
+    uint64 start = 2;
+    uint64 end = 3;
 }
 
 message ClassificationRequest {
-    repeated string segments = 1;
-    Classifier classifier = 2;
+    map<string, string> segments = 1;
     // Implementation-specific information can be encoded here
     google.protobuf.Struct extras = 15;
-}
-
-enum Classifier {
-    CLASSIFIER_UNSPECIFIED = 0;
-    CLASSIFIER_TWO_WAY = 1;
-    CLASSIFIER_THREE_WAY = 2;
-    CLASSIFIER_SEQUENTIAL = 3;
 }
 
 message ClassificationResponse {
-    repeated ClassifiedSegment segments = 1;
+    repeated Adu adus = 1;
     // Implementation-specific information can be encoded here
     google.protobuf.Struct extras = 15;
 }
 
-message ClassifiedSegment {
-    string text = 1;
-    bool adu = 2;
-    bool claim = 3;
-    bool premise = 4;
+message Adu {
+    string segment_id = 1;
+    repeated Token tokens = 2;
 }
 
-// message TwoWayRequest {
-//     repeated string segments = 1;
-// }
-
-// message ThreeWayRequest {
-//     repeated string segments = 1;
-// }
-
-// message SequentialRequest {
-//     repeated string segments = 1;
-// }
-
-// message TwoWayResponse {
-//     repeated TwoWayType type = 1;
-// }
-
-// message ThreeWayResponse {
-//     repeated ThreeWayType type = 1;
-// }
-
-// message SequentialResponse {
-//     repeated ThreeWayType type = 1;
-// }
-
-// enum TwoWayType {
-//     TWO_WAY_TYPE_UNSPECIFIED = 0;
-//     TWO_WAY_TYPE_ADU = 1;
-//     TWO_WAY_TYPE_NONE = 2;
-// }
-
-// enum ThreeWayType {
-//     THREE_WAY_TYPE_UNSPECIFIED = 0;
-//     THREE_WAY_TYPE_CLAIM = 1;
-//     THREE_WAY_TYPE_PREMISE = 2;
-//     THREE_WAY_TYPE_NONE = 3;
-// }
+message Token {
+    string text = 1;
+    bool argumentative = 2;
+}
