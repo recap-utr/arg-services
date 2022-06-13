@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "arg-services"
-version = "0.3.7"
+version = "0.3.8"
 description = "gRPC definitions for microservice-based argumentation machines"
 authors = ["Mirko Lenz <info@mirko-lenz.de>"]
 license = "MIT"
