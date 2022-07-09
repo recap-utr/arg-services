@@ -4,37 +4,26 @@ managed:
   java_package_prefix: de.uni_trier.recap
 plugins:
   # Python
-  # - name: python_betterproto
-  #   out: gen/python
-  - remote: buf.build/protocolbuffers/plugins/python
+  - remote: buf.build/protocolbuffers/plugins/python:v21.2.0-1
     out: gen/python
-  - remote: buf.build/grpc/plugins/python
+  - remote: buf.build/grpc/plugins/python:v1.47.0-1
     out: gen/python
-  - remote: buf.build/jeffsawatzky/plugins/mypy-protobuf
+  - remote: buf.build/jeffsawatzky/plugins/mypy-protobuf:v3.2.0-1
     out: gen/python
-  - remote: buf.build/jeffsawatzky/plugins/mypy-grpc-protobuf
+  - remote: buf.build/jeffsawatzky/plugins/mypy-grpc-protobuf:v3.2.0-1
     out: gen/python
 
   # Typescript
-  - remote: buf.build/timostamm/plugins/protobuf-ts
+  - remote: buf.build/timostamm/plugins/protobuf-ts:v2.7.0-1
     out: gen/typescript
     opt:
       - add_pb_suffix
       - ts_nocheck
       - eslint_disable
-      # - generate_dependencies # Not needed anymore: https://github.com/timostamm/protobuf-ts/releases/tag/v2.5.0
       - output_javascript
-  # - remote: buf.build/protocolbuffers/plugins/js
-  #   out: gen/typescript
-  #   opt: import_style=commonjs
-  # - remote: buf.build/grpc/plugins/web
-  #   out: gen/typescript
-  #   opt:
-  #     - import_style=typescript
-  #     - mode=grpcwebtext
 
   # Java
-  - remote: buf.build/protocolbuffers/plugins/java
+  - remote: buf.build/protocolbuffers/plugins/java:v21.2.0-1
     out: gen/java
-  - remote: buf.build/grpc/plugins/java
+  - remote: buf.build/grpc/plugins/java:v1.47.0-1
     out: gen/java
