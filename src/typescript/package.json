@@ -13,8 +13,8 @@
   },
   "homepage": "https://github.com/recap-utr/arg-services#readme",
   "dependencies": {
-    "@grpc/grpc-js": "^1.6.7",
-    "@protobuf-ts/runtime": "^2.6.0"
+    "@grpc/grpc-js": "^1.6.8",
+    "@protobuf-ts/runtime": "^2.7.0"
   },
   "keywords": [
     "microservices",
