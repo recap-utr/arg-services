@@ -21,6 +21,7 @@ plugins:
       - ts_nocheck
       - eslint_disable
       - output_javascript
+      - long_type_number
 
   # Java
   - remote: buf.build/protocolbuffers/plugins/java:v21.2.0-1
