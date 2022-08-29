@@ -1,97 +1,173 @@
 syntax = "proto3";
 
+// Definition of the `Arguebuf` format for storing structured argument graphs.
 package arg_services.graph.v1;
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
+// Main message to store the argument graph.
+// Each attribute having of type `map<string, X>` is a dictionary where a unique ID points to a message.
+// The ID does not follow a specific format, but we reccomend to use UUIDv1 everywhere.
+// An alternative could be to use a counter for each attribute, but this is error prone and not recommended.
+// The ID should be treated the same way as a primary key in a database and may be referenced in other places of the argument.
+// For instance, edges only store the IDs of connected nodes.
 message Graph {
+  // Dictionary of atom/scheme nodes.
   map<string, Node> nodes = 1;
+  // Dictionary of edges connecting nodes.
   map<string, Edge> edges = 2;
+  // Dictionary of resources (i.e., source texts) of the argument such as newspaper articles.
   map<string, Resource> resources = 3;
+  // Dictionary of participants (i.e., persons, users) that created the original argument.
   map<string, Participant> participants = 4;
+  // Dictionary of analysts/annotators that created the graph-based representation of the original argument.
   map<string, Analyst> analysts = 5;
+  // ID of the atom node being the major claim of the graph.
   string major_claim = 6;
+  // Version of the protobuf schema. Should be always `1`.
   uint32 schema_version = 7;
+  // Library used for serializing the graph.
+  // Should be unique accross programming languages (e.g., `arguebuf-python:1.2.0`).
   string library_version = 8;
+  // Store programmatic data like creation times.
   Metadata metadata = 14;
+  // Store arbitrary data as needed by a user.
+  // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
 }
 
+// Store metadata like created/update timestamps.
+// It is used as an attribute type by most other messages.
+// These attribute should NOT be modified by users directly!
 message Metadata {
+  // Creation time of the element.
   google.protobuf.Timestamp created = 1;
+  // Update time of the element
   google.protobuf.Timestamp updated = 2;
-  // string analyst = 3;
 }
 
+// A resource is the original source of an argument.
+// Examples include newspaper articles, protocols, and essays.
+// These may be linked to atom nodes via their `reference` attribute.
 message Resource {
+  // Plain-text content of the original argument.
   string text = 1;
+  // Title (if available) of the source.
   string title = 2;
+  // URL or other unique attribute to find/identify the resource
   string source = 3;
+  // Creation time of the resource.
   google.protobuf.Timestamp timestamp = 4;
+  // Store programmatic data like creation times.
   Metadata metadata = 14;
+  // Store arbitrary data as needed by a user.
+  // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
 }
 
+// A participant is a person/user that contributed to the original argument (e.g., an expert providing a statement).
 message Participant {
+  // Full name.
   string name = 1;
+  // Optional: username.
   string username = 2;
+  // Optional: email address.
   string email = 3;
+  // Optional: link to relevant website.
   string url = 4;
+  // Optional: relevant place.
   string location = 5;
+  // Optional: description (e.g., role of a person).
   string description = 6;
+  // Store programmatic data like creation times.
   Metadata metadata = 14;
+  // Store arbitrary data as needed by a user.
+  // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
 }
+}
 
+// Analysts are the persons that transform the textual argument to an argument graph.
+// They are also known as annotators.
 message Analyst {
+  // Full name.
   string name = 1;
+  // Optional: email address.
   string email = 2;
+  // Store arbitrary data as needed by a user.
+  // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
 }
+}
 
+// An edge serves as a connection between two nodes.
 message Edge {
+  // ID of the source node.
   string source = 1;
+  // ID of the target node.
   string target = 2;
+  // Store programmatic data like creation times.
   Metadata metadata = 14;
+  // Store arbitrary data as needed by a user.
+  // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
 }
+}
 
+// A node contains the semantic information of the argument.
 message Node {
+  // Nodes may either be atoms or schemes.
+  // A description of each type may be found in the respective messages.
   oneof type {
     Atom atom = 1;
     Scheme scheme = 2;
   }
+  // Store programmatic data like creation times.
   Metadata metadata = 14;
+  // Store arbitrary data as needed by a user.
+  // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
 }
+}
 
+// Atom nodes contain textual information and as such parts of the original resource.
+// Atoms are also known as `ADUs` or claims/premises in the argumentation domain.
 message Atom {
+  // Textual content of the argumentative discourse unit (ADU).
   string text = 1;
+  // Optional: Reference to the related resource.
   Reference reference = 2;
+  // Optional: ID of the related participant.
   string participant = 3;
 }
 
+// References are used to store links between atom nodes and resources.
 message Reference {
+  // ID of the related resouce.
   string resource = 1;
+  // Starting point of the atom's text within the resource's text.
   uint32 offset = 2;
+  // Original text of the related resource used for the atom.
   string text = 3;
 }
 
+// Scheme nodes encode the relations between other nodes.
 message Scheme {
+  // A scheme has to be of a specific type. If not set, the inference between atoms is unknown.
   oneof type {
     Support support = 1;
     Attack attack = 2;
     Preference preference = 3;
     Rephrase rephrase = 4;
   }
-  // List of atom id's to assign the connected premises to their role in the argumentation scheme.
-  // Should be sorted according to the order found i
+  // List of atom ID's to assign the connected premises to their role in the argumentation scheme.
+  // Please note: The order of the ID's is important here and should correspond the one found in the underlying literature used for a specific project.
   repeated string premise_descriptors = 15;
 }
 
 // Argumentation schemes for type support.
-// Walton, Douglas, Christopher Reed, and Fabrizio Macagno. 2008. Argumentation Schemes. Cambridge University Press. https://play.google.com/store/books/details?id=qc3LCgAAQBAJ.
+// Source: Walton, Douglas, Christopher Reed, and Fabrizio Macagno. 2008. Argumentation Schemes. Cambridge University Press.
 enum Support {
   SUPPORT_DEFAULT = 0;
   SUPPORT_POSITION_TO_KNOW = 1;
@@ -158,10 +234,6 @@ enum Support {
   SUPPORT_PLEA_FOR_EXCUSE = 58;
   SUPPORT_PERCEPTION = 59;
   SUPPORT_MEMORY = 60;
-  // SUPPORT_AUTHORITY = 65;
-  // SUPPORT_DILEMMA = 66;
-  // SUPPORT_MODUS_PONENS = 67;
-  // SUPPORT_DEFINITION = 68;
 }
 
 // Argumentation schemes for type attack.
@@ -177,6 +249,4 @@ enum Preference {
 // Argumentation schemes for type rephrase.
 enum Rephrase {
   REPHRASE_DEFAULT = 0;
-//   REPHRASE_GENERALIZATION = 1;
-//   REPHRASE_SPECIALIZATION = 2;
 }
