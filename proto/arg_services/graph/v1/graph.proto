@@ -86,7 +86,6 @@ message Participant {
   // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
 }
-}
 
 // Analysts are the persons that transform the textual argument to an argument graph.
 // They are also known as annotators.
@@ -98,7 +97,6 @@ message Analyst {
   // Store arbitrary data as needed by a user.
   // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
-}
 }
 
 // An edge serves as a connection between two nodes.
@@ -112,7 +110,6 @@ message Edge {
   // Store arbitrary data as needed by a user.
   // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
-}
 }
 
 // A node contains the semantic information of the argument.
@@ -128,7 +125,6 @@ message Node {
   // Store arbitrary data as needed by a user.
   // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
-}
 }
 
 // Atom nodes contain textual information and as such parts of the original resource.
