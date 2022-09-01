@@ -5,9 +5,15 @@ package arg_services.retrieval.v1;
 import "arg_services/graph/v1/graph.proto";
 import "arg_services/nlp/v1/nlp.proto";
 import "google/protobuf/struct.proto";
+import "google/api/annotations.proto";
 
 service RetrievalService {
-  rpc Retrieve (RetrieveRequest) returns (RetrieveResponse);
+  rpc Retrieve (RetrieveRequest) returns (RetrieveResponse) {
+        option (google.api.http) = {
+            post: "/retrieval/v1/retrieve"
+            body: "*"
+        };
+    }
 }
 
 message RetrieveRequest {

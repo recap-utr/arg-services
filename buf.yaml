@@ -1,5 +1,7 @@
 version: v1beta1
 name: buf.build/recap/arg-services
+deps:
+  - buf.build/googleapis/googleapis
 build:
   roots:
     - proto

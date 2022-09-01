@@ -4,16 +4,32 @@ syntax = "proto3";
 package arg_services.nlp.v1;
 
 import "google/protobuf/struct.proto";
+import "google/api/annotations.proto";
 
 service NlpService {
     // Compute embeddings (i.e., vectors) for strings.
-    rpc Vectors (VectorsRequest) returns (VectorsResponse);
+    rpc Vectors (VectorsRequest) returns (VectorsResponse) {
+        option (google.api.http) = {
+            post: "/nlp/v1/vectors"
+            body: "*"
+        };
+    }
     // Compute the similarity score between two strings.
-    rpc Similarities (SimilaritiesRequest) returns (SimilaritiesResponse);
+    rpc Similarities (SimilaritiesRequest) returns (SimilaritiesResponse) {
+        option (google.api.http) = {
+            post: "/nlp/v1/similarities"
+            body: "*"
+        };
+    }
     // Process strings by spacy and return them as [binary data](https://spacy.io/api/docbin).
     // Locally, spacy can restore this data **without** loading the underlying NLP models into the main memory.
     // Allows one to retrieve all computed attributes (e.g., POS tags, sentences), but can only be used by Python programs.
-    rpc DocBin (DocBinRequest) returns (DocBinResponse);
+    rpc DocBin (DocBinRequest) returns (DocBinResponse) {
+        option (google.api.http) = {
+            post: "/nlp/v1/docbin"
+            body: "*"
+        };
+    }
 }
 
 // Common message for configuring spacy.
