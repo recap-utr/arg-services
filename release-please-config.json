@@ -18,7 +18,7 @@
       "release-type": "maven",
       "package-name": "arg-services-java"
     },
-    "src/proto": {
+    "proto": {
       "release-type": "simple",
       "package-name": "arg-services-proto"
     }
@@ -27,7 +27,7 @@
     "sentence-case",
     {
       "type": "linked-versions",
-      "groupName": "arg-services-group",
+      "groupName": "repository",
       "components": [
         "arg-services",
         "arg-services-python",
