@@ -20,5 +20,18 @@
       "release-type": "simple",
       "package-name": "arg-services-proto"
     }
-  }
+  },
+  "plugins": [
+    "sentence-case",
+    {
+      "type": "linked-versions",
+      "group-name": "arg-services-group",
+      "components": [
+        "arg-services-python",
+        "arg-services-typescript",
+        "arg-services-java",
+        "arg-services-proto"
+      ]
+    }
+  ]
 }
