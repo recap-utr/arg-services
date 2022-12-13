@@ -1,5 +1,4 @@
 {
-  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/manifest.json",
   ".": "0.3.10",
   "src/python": "0.3.10",
   "src/typescript": "0.3.10",
