@@ -6,7 +6,7 @@ plugins:
   # Python
   - name: python
     out: gen/python
-  - plugin: buf.build/grpc/python
+  - plugin: buf.build/grpc/python:v1.51.1
     out: gen/python
   - name: mypy
     out: gen/python
@@ -24,7 +24,7 @@ plugins:
       - long_type_number
 
   # Java
-  - plugin: buf.build/protocolbuffers/java
+  - plugin: buf.build/protocolbuffers/java:v21.11
     out: gen/java
-  - plugin: buf.build/grpc/java
+  - plugin: buf.build/grpc/java:v1.51.0
     out: gen/java

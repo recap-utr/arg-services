@@ -31,9 +31,11 @@ jobs:
           python-version: "${{ env.PYTHON_VERSION }}"
       - uses: bufbuild/buf-setup-action@v1
       - uses: arduino/setup-protoc@v1
+        with:
+          version: "3.x"
       - run: |
-          npm install -g @protobuf-ts/plugin
-          pip install mypy-protobuf
+          npm install -g @protobuf-ts/plugin@2.8.2
+          pip install mypy-protobuf==3.4.0
       # Release
       - name: Generate
         run: |
