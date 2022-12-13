@@ -1,7 +1,7 @@
 {
-  ".": "0.3.10",
-  "src/python": "0.3.10",
-  "src/typescript": "0.3.10",
-  "src/java": "0.3.10",
-  "proto": "0.3.10"
+  ".": "0.3.11",
+  "src/python": "0.3.11",
+  "src/typescript": "0.3.11",
+  "src/java": "0.3.11",
+  "proto": "0.3.11"
 }
