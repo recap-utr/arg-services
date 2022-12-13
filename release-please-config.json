@@ -13,7 +13,7 @@
       "package-name": "arg-services-typescript"
     },
     "src/java": {
-      "release-type": "java",
+      "release-type": "maven",
       "package-name": "arg-services-java"
     },
     "src/proto": {
