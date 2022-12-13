@@ -30,6 +30,8 @@ jobs:
         with:
           python-version: "${{ env.PYTHON_VERSION }}"
       - uses: bufbuild/buf-setup-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: arduino/setup-protoc@v1
         with:
           version: "3.x"
