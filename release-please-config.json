@@ -27,6 +27,7 @@
       "type": "linked-versions",
       "group-name": "arg-services-group",
       "components": [
+        "arg-services",
         "arg-services-python",
         "arg-services-typescript",
         "arg-services-java",
