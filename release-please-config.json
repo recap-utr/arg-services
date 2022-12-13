@@ -1,23 +1,24 @@
 {
   "packages": {
     ".": {
-      "release-type": "simple"
+      "release-type": "simple",
+      "package-name": "arg-services"
     },
     "src/python": {
       "release-type": "python",
-      "package-name": "arg-services"
+      "package-name": "arg-services-python"
     },
     "src/typescript": {
       "release-type": "node",
-      "package-name": "arg-services"
+      "package-name": "arg-services-typescript"
     },
     "src/java": {
       "release-type": "java",
-      "package-name": "arg-services"
+      "package-name": "arg-services-java"
     },
     "src/proto": {
       "release-type": "simple",
-      "package-name": "proto"
+      "package-name": "arg-services-proto"
     }
   }
 }
