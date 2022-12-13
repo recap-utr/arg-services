@@ -11,6 +11,10 @@
       "release-type": "node",
       "package-name": "arg-services"
     },
+    "src/java": {
+      "release-type": "java",
+      "package-name": "arg-services"
+    },
     "src/proto": {
       "release-type": "simple",
       "package-name": "proto"

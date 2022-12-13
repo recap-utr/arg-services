@@ -2,5 +2,6 @@
   ".": "0.3.10",
   "src/python": "0.3.10",
   "src/typescript": "0.3.10",
+  "src/java": "0.3.10",
   "src/proto": "0.3.10"
 }
