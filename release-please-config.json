@@ -14,7 +14,7 @@
       "package-name": "arg-services-typescript"
     },
     "src/java": {
-      "skip-snapshot": false,
+      "skip-snapshot": true,
       "release-type": "maven",
       "package-name": "arg-services-java"
     },
