@@ -26,7 +26,7 @@ generate: version
 .PHONY: version
 version:
 	cd ${SOURCE}/${PY} && poetry version ${VERSION}
-	cd ${SOURCE}/${TS} && npm version --allow-same-version true --git-tage-version false ${VERSION}
+	cd ${SOURCE}/${TS} && npm version --allow-same-version true --git-tag-version false ${VERSION}
 	cp README.md buf.md
 
 .PHONY: publish
