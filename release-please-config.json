@@ -1,0 +1,15 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "simple"
+    },
+    "src/python": {
+      "release-type": "python",
+      "package-name": "arg-services"
+    },
+    "src/typescript": {
+      "release-type": "node",
+      "package-name": "arg-services"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+env:
+  PYTHON_VERSION: "3.9"
+  POETRY_VERSION: "1.3.1"
+  NODE_VERSION: "lts/hydrogen"
+on:
+  push:
+    branches:
+      - main
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.run.outputs.release_created }}
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: run
+        # with:
+        #   command: manifest
+  publish:
+    runs-on: ubuntu-latest
+    needs: release
+    if: ${{ needs.release.outputs.release_created }}
+    steps:
+      # Setup environment
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "${{ env.NODE_VERSION }}"
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+      - uses: bufbuild/buf-setup-action@v1
+      - uses: arduino/setup-protoc@v1
+      - run: |
+          npm install -g @protobuf-ts/plugin
+          pip install mypy-protobuf
+      # Release
+      - name: Generate
+        run: |
+          buf generate
+          cp README.md buf.md
+          find ./gen/python ./gen/typescript-type d -maxdepth 0 -exec cp README.md {} \;
+      - uses: bufbuild/buf-push-action@v1
+        with:
+          buf_token: ${{ secrets.BUF_TOKEN }}
+      - name: Python
+        run: |
+          pip install poetry==${{ env.POETRY_VERSION }}
+          find ./gen/python/arg_services -type d -exec touch {}/__init__.py \;
+          cp -f ./src/arg_services/__init__.py ./gen/python/arg_services
+          cp -r ./src/{poetry.lock,pyproject.toml} ./gen/python
+          poetry publish --directory ./gen/python --build --username __token__ --password ${{ secrets.PYPI_TOKEN }} --no-interaction -vv
+      - name: TypeScript
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cp ./src/typescript/{package-lock.json,package.json} ./gen/typescript
+          npm --prefix ./gen/typescript ci
+          npm --prefix ./gen/typescript publish --access public
