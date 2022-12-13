@@ -10,6 +10,10 @@
     "src/typescript": {
       "release-type": "node",
       "package-name": "arg-services"
+    },
+    "src/proto": {
+      "release-type": "simple",
+      "package-name": "proto"
     }
   }
 }
