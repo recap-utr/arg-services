@@ -14,6 +14,7 @@
       "package-name": "arg-services-typescript"
     },
     "src/java": {
+      "skip-snapshot": false,
       "release-type": "maven",
       "package-name": "arg-services-java"
     },
@@ -26,7 +27,7 @@
     "sentence-case",
     {
       "type": "linked-versions",
-      "group-name": "arg-services-group",
+      "groupName": "arg-services-group",
       "components": [
         "arg-services",
         "arg-services-python",
