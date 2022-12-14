@@ -52,9 +52,10 @@ jobs:
         run: |
           pip install poetry==${{ env.POETRY_VERSION }}
           find ./gen/python/arg_services -type d -exec touch {}/__init__.py \;
-          cp -f ./src/arg_services/__init__.py ./gen/python/arg_services
-          cp -r ./src/{poetry.lock,pyproject.toml} ./gen/python
-          poetry publish --directory ./gen/python --build --username __token__ --password ${{ secrets.PYPI_TOKEN }} --no-interaction -vv
+          cp -f ./src/python/arg_services/__init__.py ./gen/python/arg_services
+          cp -r ./src/python/{poetry.lock,pyproject.toml} ./gen/python
+          poetry publish --directory ./gen/python --build --username __token__ --password ${{ secrets.PYPI_TOKEN }} --no-interaction --skip-existing -vv
+      # TODO: Check if version is already published using `npm view arg-services version`
       - name: TypeScript
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
