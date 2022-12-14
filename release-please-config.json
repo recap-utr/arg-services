@@ -1,26 +1,27 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "packages": {
-    ".": {
-      "release-type": "simple",
-      "package-name": "arg-services"
-    },
     "src/python": {
       "release-type": "python",
-      "package-name": "arg-services-python"
+      "package-name": "py"
     },
     "src/typescript": {
       "release-type": "node",
-      "package-name": "arg-services-typescript"
+      "package-name": "ts"
     },
     "src/java": {
       "skip-snapshot": true,
       "release-type": "maven",
-      "package-name": "arg-services-java"
+      "package-name": "java"
     },
     "proto": {
       "release-type": "simple",
-      "package-name": "arg-services-proto"
+      "package-name": "pb"
+    },
+    ".": {
+      "release-type": "simple",
+      "package-name": "arg-services",
+      "include-component-in-tag": false
     }
   },
   "plugins": [
@@ -28,13 +29,7 @@
     {
       "type": "linked-versions",
       "groupName": "repository",
-      "components": [
-        "arg-services",
-        "arg-services-python",
-        "arg-services-typescript",
-        "arg-services-java",
-        "arg-services-proto"
-      ]
+      "components": ["arg-services", "py", "ts", "java", "pb"]
     }
   ]
 }
