@@ -3,6 +3,7 @@ env:
   POETRY_VERSION: "1.3.1"
   NODE_VERSION: "lts/hydrogen"
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -19,7 +20,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: release
-    if: ${{ needs.release.outputs.release_created }}
+    if: ${{ needs.release.outputs.release_created || github.event_name == "workflow_dispatch" }}
     steps:
       # Setup environment
       - uses: actions/checkout@v3
@@ -43,7 +44,7 @@ jobs:
         run: |
           buf generate
           cp README.md buf.md
-          find ./gen/python ./gen/typescript-type d -maxdepth 0 -exec cp README.md {} \;
+          find ./gen/python ./gen/typescript -type d -maxdepth 0 -exec cp README.md {} \;
       - uses: bufbuild/buf-push-action@v1
         with:
           buf_token: ${{ secrets.BUF_TOKEN }}
