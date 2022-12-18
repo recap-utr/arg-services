@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/recap-utr/arg-services/compare/v0.3.13...v0.4.0) (2022-12-18)
+
+
+### Features
+
+* **graph:** make some fields optional ([7e14038](https://github.com/recap-utr/arg-services/commit/7e14038abcce4c0e9b8f56c16671e49fb6d94b04))
+
 ## [0.3.13](https://github.com/recap-utr/arg-services/compare/v0.3.12...v0.3.13) (2022-12-14)
 
 
