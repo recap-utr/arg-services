@@ -33,7 +33,7 @@ const config = {
           // Buf
           "buf generate",
           "cp README.md buf.md",
-          "find ./src/python ./src/typescript ./src/java -type d -maxdepth 0 -exec cp README.md {} ;",
+          "find ./src/python ./src/typescript ./src/java -type d -maxdepth 0 -exec cp README.md {} \\;",
           // Python
           "cd src/python",
           "poetry version ${nextRelease.version}",
