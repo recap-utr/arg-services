@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/recap-utr/arg-services/compare/v0.4.0...v0.4.1) (2022-12-18)
+
+
+### Bug Fixes
+
+* bump version ([38461de](https://github.com/recap-utr/arg-services/commit/38461de60e2d61d79dde1c37e30f89af792247ed))
+
 ## [0.4.0](https://github.com/recap-utr/arg-services/compare/v0.3.13...v0.4.0) (2022-12-18)
 
 
