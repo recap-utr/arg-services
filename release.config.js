@@ -63,7 +63,7 @@ const config = {
         assets: [
           { path: "src/python/dist/*.tar.gz", label: "python-sdist" },
           { path: "src/python/dist/*.whl", label: "python-wheel" },
-          { path: "src/python/dist/*.tgz", label: "npm" },
+          { path: "src/typescript/dist/*.tgz", label: "npm" },
         ],
       },
     ],
