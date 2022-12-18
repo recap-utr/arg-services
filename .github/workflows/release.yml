@@ -3,24 +3,12 @@ env:
   POETRY_VERSION: "1.3.1"
   NODE_VERSION: "lts/hydrogen"
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
 jobs:
   release:
     runs-on: ubuntu-latest
-    outputs:
-      release_created: ${{ steps.run.outputs.release_created }}
-    steps:
-      - uses: google-github-actions/release-please-action@v3
-        id: run
-        with:
-          command: manifest
-  publish:
-    runs-on: ubuntu-latest
-    needs: release
-    if: ${{ needs.release.outputs.release_created || github.event_name == 'workflow_dispatch' }}
     steps:
       # Setup environment
       - uses: actions/checkout@v3
@@ -38,31 +26,20 @@ jobs:
         with:
           version: "3.x"
       - run: |
-          npm install -g @protobuf-ts/plugin@2.8.2
-          pip install mypy-protobuf==3.4.0
+          npm install -g @protobuf-ts/plugin@^2.8.2
+          pip install poetry==${{ env.POETRY_VERSION }} mypy-protobuf==3.4.0
       # Release
-      - name: Generate
-        run: |
-          buf generate
-          cp README.md buf.md
-          find ./gen/python ./gen/typescript -type d -maxdepth 0 -exec cp README.md {} \;
-      - uses: bufbuild/buf-push-action@v1
-        with:
-          buf_token: ${{ secrets.BUF_TOKEN }}
-      - name: Python
-        run: |
-          pip install poetry==${{ env.POETRY_VERSION }}
-          find ./gen/python/arg_services -type d -exec touch {}/__init__.py \;
-          cp -f ./src/python/arg_services/__init__.py ./gen/python/arg_services
-          cp -r ./src/python/{poetry.lock,pyproject.toml} ./gen/python
-          cd gen/python
-          poetry publish --build --username __token__ --password ${{ secrets.PYPI_TOKEN }} --no-interaction --skip-existing -vv
-      # TODO: Check if version is already published using `npm view arg-services version`
-      - name: TypeScript
+      - name: Run semantic-release
+        id: semantic-release
+        uses: cycjimmy/semantic-release-action@v3
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          cp ./src/typescript/{package-lock.json,package.json} ./gen/typescript
-          cd gen/typescript
-          npm ci
-          npm publish --access public
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          BUF_TOKEN: ${{ secrets.BUF_TOKEN }}
+        with:
+          semantic_version: ^19.0.0
+          extra_plugins: |
+            @semantic-release/git@^10.0.0
+            @semantic-release/changelog@^6.0.0
+            @semantic-release/exec@^6.0.0
+            conventional-changelog-conventionalcommits@^5.0.0
