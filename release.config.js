@@ -27,27 +27,24 @@ const config = {
       },
     ],
     [
+      // Buf
       "@semantic-release/exec",
       {
         prepareCmd: [
-          // Buf
           "buf generate",
           "cp README.md buf.md",
           "find ./src/python ./src/typescript ./src/java -type d -maxdepth 0 -exec cp README.md {} \\;",
-          // Python
-          "cd src/python",
-          "poetry version ${nextRelease.version}",
+        ].join(" && "),
+        publishCmd: "buf push --tag ${nextRelease.version}",
+      },
+    ],
+    [
+      // Python
+      "@semantic-release/exec",
+      {
+        execCwd: "src/python",
+        prepareCmd:
           "find ./arg_services -type d -exec touch {}/__init__.py \\;",
-          "cd -",
-        ].join(" && "),
-        publishCmd: [
-          // Buf
-          "buf push --tag ${nextRelease.version}",
-          // Python
-          "cd src/python",
-          "poetry publish --build --username __token__ --password $PYPI_TOKEN --no-interaction -vvv",
-          "cd -",
-        ].join(" && "),
       },
     ],
     [
@@ -55,6 +52,12 @@ const config = {
       {
         pkgRoot: "src/typescript",
         tarballDir: "dist",
+      },
+    ],
+    [
+      "@cihelper/semanticrelease-plugin-poetry",
+      {
+        pkgRoot: "src/python",
       },
     ],
     [
