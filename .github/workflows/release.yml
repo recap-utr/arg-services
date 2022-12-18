@@ -36,6 +36,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           BUF_TOKEN: ${{ secrets.BUF_TOKEN }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         with:
           semantic_version: ^19.0.0
           extra_plugins: |
