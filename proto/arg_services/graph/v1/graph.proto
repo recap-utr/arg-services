@@ -24,7 +24,7 @@ message Graph {
   // Dictionary of analysts/annotators that created the graph-based representation of the original argument.
   map<string, Analyst> analysts = 5;
   // ID of the atom node being the major claim of the graph.
-  string major_claim = 6;
+  optional string major_claim = 6;
   // Version of the protobuf schema. Should be always `1`.
   uint32 schema_version = 7;
   // Library used for serializing the graph.
@@ -54,9 +54,9 @@ message Resource {
   // Plain-text content of the original argument.
   string text = 1;
   // Title (if available) of the source.
-  string title = 2;
+  optional string title = 2;
   // URL or other unique attribute to find/identify the resource
-  string source = 3;
+  optional string source = 3;
   // Creation time of the resource.
   google.protobuf.Timestamp timestamp = 4;
   // Store programmatic data like creation times.
@@ -71,15 +71,15 @@ message Participant {
   // Full name.
   string name = 1;
   // Optional: username.
-  string username = 2;
+  optional string username = 2;
   // Optional: email address.
-  string email = 3;
+  optional string email = 3;
   // Optional: link to relevant website.
-  string url = 4;
+  optional string url = 4;
   // Optional: relevant place.
-  string location = 5;
+  optional string location = 5;
   // Optional: description (e.g., role of a person).
-  string description = 6;
+  optional string description = 6;
   // Store programmatic data like creation times.
   Metadata metadata = 14;
   // Store arbitrary data as needed by a user.
@@ -93,7 +93,7 @@ message Analyst {
   // Full name.
   string name = 1;
   // Optional: email address.
-  string email = 2;
+  optional string email = 2;
   // Store arbitrary data as needed by a user.
   // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
@@ -135,15 +135,15 @@ message Atom {
   // Optional: Reference to the related resource.
   Reference reference = 2;
   // Optional: ID of the related participant.
-  string participant = 3;
+  optional string participant = 3;
 }
 
 // References are used to store links between atom nodes and resources.
 message Reference {
-  // ID of the related resouce.
-  string resource = 1;
-  // Starting point of the atom's text within the resource's text.
-  uint32 offset = 2;
+  // Optional: ID of the related resouce.
+  optional string resource = 1;
+  // Optional: Starting point of the atom's text within the resource's text.
+  optional uint32 offset = 2;
   // Original text of the related resource used for the atom.
   string text = 3;
 }
