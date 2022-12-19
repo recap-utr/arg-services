@@ -51,7 +51,7 @@ const config = {
       "@semantic-release/npm",
       {
         pkgRoot: "src/typescript",
-        tarballDir: "dist",
+        tarballDir: "src/typescript/dist",
       },
     ],
     [
