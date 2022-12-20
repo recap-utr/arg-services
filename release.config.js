@@ -31,7 +31,7 @@ const config = {
       "@semantic-release/exec",
       {
         prepareCmd: [
-          "buf generate",
+          "buf generate --include-imports",
           "cp README.md buf.md",
           "find ./src/python ./src/typescript ./src/java -type d -maxdepth 0 -exec cp README.md {} \\;",
         ].join(" && "),
