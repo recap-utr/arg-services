@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/recap-utr/arg-services/compare/v1.0.0...v1.0.1) (2022-12-20)
+
+
+### Bug Fixes
+
+* include dependencies during generation ([163ec18](https://github.com/recap-utr/arg-services/commit/163ec1803fa984398019e6d42bb1a73338321d02))
+* update deps ([4f4dbac](https://github.com/recap-utr/arg-services/commit/4f4dbacf0d6dd20a3dd8d8021dbe371aa79cdfc2))
+
 ## [1.0.0](https://github.com/recap-utr/arg-services/compare/v0.4.1...v1.0.0) (2022-12-19)
 
 
