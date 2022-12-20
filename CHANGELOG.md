@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/recap-utr/arg-services/compare/v1.0.1...v1.0.2) (2022-12-20)
+
+
+### Bug Fixes
+
+* add google package to python ([45a9fab](https://github.com/recap-utr/arg-services/commit/45a9fab52c7e19c993ea5702c5cafbf4af00dbf7))
+
 ## [1.0.1](https://github.com/recap-utr/arg-services/compare/v1.0.0...v1.0.1) (2022-12-20)
 
 
