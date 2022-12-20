@@ -16,6 +16,7 @@ plugins:
   # Typescript
   - name: ts
     out: src/typescript
+    strategy: all
     opt:
       - add_pb_suffix
       - ts_nocheck
