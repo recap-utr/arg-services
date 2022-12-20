@@ -68,6 +68,7 @@ const config = {
           { path: "src/python/dist/*.whl", label: "python-wheel" },
           { path: "src/typescript/dist/*.tgz", label: "npm" },
         ],
+        addReleases: "bottom",
       },
     ],
     [
