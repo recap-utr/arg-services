@@ -31,8 +31,9 @@ const config = {
       "@semantic-release/exec",
       {
         prepareCmd: [
-          "buf lint",
-          "buf breaking --against 'https://github.com/recap-utr/arg-services.git#branch=main,ref=HEAD~1'",
+          // These are added to the release workflow in an attempt to mitigate rate limits by GitHub
+          // "buf lint",
+          // "buf breaking --against 'https://github.com/recap-utr/arg-services.git#branch=main,ref=HEAD~1'",
           "cp README.md buf.md",
         ].join(" && "),
         publishCmd: "buf push --tag v${nextRelease.version}",
