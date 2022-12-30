@@ -31,57 +31,18 @@ const config = {
       "@semantic-release/exec",
       {
         prepareCmd: [
-          "buf generate --include-imports",
+          "buf lint",
+          "buf breaking --against 'https://github.com/recap-utr/arg-services.git#branch=main,ref=HEAD~1'",
           "cp README.md buf.md",
-          "find ./src/python ./src/typescript ./src/java -type d -maxdepth 0 -exec cp README.md {} \\;",
         ].join(" && "),
-        publishCmd: "buf push --tag ${nextRelease.version}",
+        publishCmd: "buf push --tag v${nextRelease.version}",
       },
     ],
-    [
-      // Python
-      "@semantic-release/exec",
-      {
-        execCwd: "src/python",
-        prepareCmd:
-          "find ./arg_services -type d -exec touch {}/__init__.py \\;",
-      },
-    ],
-    [
-      "@semantic-release/npm",
-      {
-        pkgRoot: "src/typescript",
-        tarballDir: "src/typescript/dist",
-      },
-    ],
-    [
-      "@cihelper/semanticrelease-plugin-poetry",
-      {
-        pkgRoot: "src/python",
-      },
-    ],
-    [
-      "@semantic-release/github",
-      {
-        assets: [
-          { path: "src/python/dist/*.tar.gz", label: "python-sdist" },
-          { path: "src/python/dist/*.whl", label: "python-wheel" },
-          { path: "src/typescript/dist/*.tgz", label: "npm" },
-        ],
-        addReleases: "bottom",
-      },
-    ],
+    "@semantic-release/github",
     [
       "@semantic-release/git",
       {
-        assets: [
-          "CHANGELOG.md",
-          // Python
-          "src/python/pyproject.toml",
-          // TypeScript
-          "src/typescript/package.json",
-          "src/typescript/package-lock.json",
-        ],
+        assets: ["CHANGELOG.md"],
       },
     ],
   ],

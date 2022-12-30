@@ -1,10 +1,7 @@
-version: v1beta1
+version: v1
 name: buf.build/recap/arg-services
 deps:
   - buf.build/googleapis/googleapis
-build:
-  roots:
-    - proto
 lint:
   ignore_only:
     ENUM_ZERO_VALUE_SUFFIX:
