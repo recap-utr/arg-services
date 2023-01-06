@@ -17,32 +17,24 @@ service RetrievalService {
 }
 
 message RetrieveRequest {
-  map<string, arg_services.graph.v1.Graph> cases = 1;
+  map<string, arg_services.graph.v1.Graph> case_graphs = 1;
+  repeated string casebase_names = 2;
   oneof query {
-    arg_services.graph.v1.Graph query_graph = 2;
-    string query_text = 3;
+    arg_services.graph.v1.Graph query_graph = 3;
+    string query_text = 4;
   }
-  arg_services.nlp.v1.NlpConfig nlp_config = 4;
-  int32 limit = 5;
-  bool mac_phase = 6;
-  bool fac_phase = 7;
-  MappingAlgorithm mapping_algorithm = 8;
-  bool use_scheme_ontology = 9;
-  bool enforce_scheme_types = 10;
+  arg_services.nlp.v1.NlpConfig nlp_config = 5;
+  int32 limit = 6;
+  bool semantic_retrieval = 7;
+  bool structural_retrieval = 8;
   // Implementation-specific information can be encoded here
   google.protobuf.Struct extras = 15;
 }
 
-enum MappingAlgorithm {
-  MAPPING_ALGORITHM_UNSPECIFIED = 0;
-  MAPPING_ALGORITHM_ASTAR = 1;
-  MAPPING_ALGORITHM_ISOMORPHISM = 2;
-}
-
 message RetrieveResponse {
-  repeated RetrievedCase ranking = 1;
-  repeated RetrievedCase mac_ranking = 2;
-  repeated RetrievedMapping fac_ranking = 3;
+  repeated RetrievedCase semantic_ranking = 1;
+  repeated RetrievedCase structural_ranking = 2;
+  repeated RetrievedMapping structural_mapping = 3;
   // Implementation-specific information can be encoded here
   google.protobuf.Struct extras = 15;
 }
