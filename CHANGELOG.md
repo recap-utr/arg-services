@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/recap-utr/arg-services/compare/v1.0.3...v1.0.4) (2023-01-06)
+
+
+### Bug Fixes
+
+* **retrieval:** make definition more generic ([5c6c8d0](https://github.com/recap-utr/arg-services/commit/5c6c8d0ab79254a90e3040d683e97553981277c9))
+
 ## [1.0.3](https://github.com/recap-utr/arg-services/compare/v1.0.2...v1.0.3) (2022-12-30)
 
 
