@@ -11,9 +11,10 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: bufbuild/buf-lint-action@v1
-      - uses: bufbuild/buf-breaking-action@v1
-        with:
-          against: "https://github.com/recap-utr/arg-services.git#branch=main,ref=HEAD~1"
+      # TODO: Should be included once all defintions are stable
+      # - uses: bufbuild/buf-breaking-action@v1
+      #   with:
+      #     against: "https://github.com/recap-utr/arg-services.git#branch=main,ref=HEAD~1"
       - uses: cycjimmy/semantic-release-action@v3
         id: semantic-release
         env:
