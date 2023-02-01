@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package arg_services.cbr.v1beta;
+
+import "arg_services/cbr/v1beta/model.proto";
+import "google/protobuf/struct.proto";
+import "google/api/annotations.proto";
+
+service CasebaseService {
+  rpc Casebase (CasebaseRequest) returns (CasebaseResponse) {
+        option (google.api.http) = {
+            post: "/cbr/v1beta/casebase"
+            body: "*"
+        };
+    }
+}
+
+message CasebaseRequest {
+  CasebaseFilter include = 1;
+  CasebaseFilter exclude = 2;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message CasebaseResponse {
+  map<string, AnnotatedGraph> cases = 1;
+}

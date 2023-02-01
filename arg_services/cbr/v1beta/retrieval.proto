@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package arg_services.retrieval.v1;
+package arg_services.cbr.v1beta;
 
-import "arg_services/graph/v1/graph.proto";
+import "arg_services/cbr/v1beta/model.proto";
 import "arg_services/nlp/v1/nlp.proto";
 import "google/protobuf/struct.proto";
 import "google/api/annotations.proto";
@@ -10,28 +10,32 @@ import "google/api/annotations.proto";
 service RetrievalService {
   rpc Retrieve (RetrieveRequest) returns (RetrieveResponse) {
         option (google.api.http) = {
-            post: "/retrieval/v1/retrieve"
+            post: "/crb/v1/retrieve"
             body: "*"
         };
     }
 }
 
 message RetrieveRequest {
-  map<string, arg_services.graph.v1.Graph> case_graphs = 1;
-  repeated string casebase_names = 2;
-  oneof query {
-    arg_services.graph.v1.Graph query_graph = 3;
-    string query_text = 4;
-  }
+  CasebaseFilter casebase_filter = 1;
+  map<string, AnnotatedGraph> cases = 2;
+  repeated AnnotatedGraph queries = 3;
   arg_services.nlp.v1.NlpConfig nlp_config = 5;
   int32 limit = 6;
   bool semantic_retrieval = 7;
   bool structural_retrieval = 8;
+  MappingAlgorithm mapping_algorithm = 9;
+  int32 mapping_algorithm_variant = 10;
+  SchemeHandling scheme_handling = 11;
   // Implementation-specific information can be encoded here
   google.protobuf.Struct extras = 15;
 }
 
 message RetrieveResponse {
+  repeated QueryResponse query_responses = 1;
+}
+
+message QueryResponse {
   repeated RetrievedCase semantic_ranking = 1;
   repeated RetrievedCase structural_ranking = 2;
   repeated RetrievedMapping structural_mapping = 3;
@@ -39,17 +43,31 @@ message RetrieveResponse {
   google.protobuf.Struct extras = 15;
 }
 
+enum MappingAlgorithm {
+  MAPPING_ALGORITHM_UNSPECIFIED = 0;
+  MAPPING_ALGORITHM_ASTAR = 1;
+  MAPPING_ALGORITHM_GREEDY = 2;
+  MAPPING_ALGORITHM_ISOMORPHISM = 3;
+}
+
+enum SchemeHandling {
+  SCHEME_HANDLING_UNSPECIFIED = 0;
+  SCHEME_HANDLING_BINARY = 1;
+  SCHEME_HANDLING_TAXONOMY = 2;
+}
+
 message RetrievedCase {
   string id = 1;
   double similarity = 2;
+  AnnotatedGraph graph = 3;
 }
 
 message RetrievedMapping {
   RetrievedCase case = 1;
-  repeated Mapping node_mappings = 2;
+  repeated MappedElement node_mappings = 2;
 }
 
-message Mapping {
+message MappedElement {
   string query_id = 1;
   string case_id = 2;
   double similarity = 3;

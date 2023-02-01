@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package arg_services.cbr.v1beta;
+
+import "arg_services/cbr/v1beta/model.proto";
+import "arg_services/nlp/v1/nlp.proto";
+import "google/protobuf/struct.proto";
+import "google/api/annotations.proto";
+
+service AdaptationService {
+  rpc Adapt (AdaptRequest) returns (AdaptResponse) {
+        option (google.api.http) = {
+            post: "/cbr/v1beta/adapt"
+            body: "*"
+        };
+    }
+}
+
+message AdaptRequest {
+  AnnotatedGraph case = 2;
+  AnnotatedGraph query = 3;
+  arg_services.nlp.v1.NlpConfig nlp_config = 5;
+  Direction direction = 6;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message AdaptResponse {
+  AnnotatedGraph adapted_case = 1;
+  repeated Rule adaptation_rules = 2;
+  google.protobuf.Struct extras = 15;
+}
+
+enum Direction {
+  DIRECTION_UNSPECIFIED = 0;
+  DIRECTION_GENERALIZATION = 1;
+  DIRECTION_SPECIALIZATION = 2;
+  DIRECTION_COMBINED = 3;
+}
+
+message Rule {
+  Concept source = 1;
+  Concept target = 2;
+}
+
+message Concept {
+  string lemma = 1;
+  Pos pos = 2;
+}
+
+enum Pos {
+  POS_UNSPECIFIED = 0;
+  POS_NOUN = 1;
+  POS_VERB = 2;
+  POS_ADJECTIVE = 3;
+  POS_ADVERB = 4;
+}
