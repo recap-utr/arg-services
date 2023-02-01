@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/recap-utr/arg-services/compare/v1.0.4...v1.1.0) (2023-02-01)
+
+
+### Features
+
+* add beta retrieval interface ([451e530](https://github.com/recap-utr/arg-services/commit/451e5307cae402ca36347481008fe49b4fac622b))
+
 ## [1.0.4](https://github.com/recap-utr/arg-services/compare/v1.0.3...v1.0.4) (2023-01-06)
 
 
