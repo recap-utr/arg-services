@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package arg_services.mining_explanation.v1;
+package arg_services.mining_explanation.v1beta;
 
 import "google/protobuf/struct.proto";
 import "google/api/annotations.proto";
@@ -9,7 +9,7 @@ import "google/api/annotations.proto";
 service AduExplanationService {
     rpc Classification (ClassificationRequest) returns (ClassificationResponse) {
         option (google.api.http) = {
-            post: "/mining_explanation/v1/adu/classification"
+            post: "/mining_explanation/v1beta/adu/classification"
             body: "*"
         };
     }

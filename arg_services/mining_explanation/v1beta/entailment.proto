@@ -1,16 +1,16 @@
 syntax = "proto3";
 
-package arg_services.mining_explanation.v1;
+package arg_services.mining_explanation.v1beta;
 
 import "google/protobuf/struct.proto";
-import "arg_services/mining/v1/entailment.proto";
+import "arg_services/mining/v1beta/entailment.proto";
 import "google/api/annotations.proto";
 
 
 service EntailmentExplanationService {
     rpc Entailments (EntailmentsRequest) returns (EntailmentsResponse) {
         option (google.api.http) = {
-            post: "/mining_explanation/v1/entailments"
+            post: "/mining_explanation/v1beta/entailments"
             body: "*"
         };
     }
@@ -32,7 +32,7 @@ message EntailmentsResponse {
 message Entailment {
     string premise = 1;
     string claim = 2;
-    arg_services.mining.v1.EntailmentType type = 3;
+    arg_services.mining.v1beta.EntailmentType type = 3;
 }
 
 message EntailmentResult {

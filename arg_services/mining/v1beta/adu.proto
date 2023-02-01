@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package arg_services.mining.v1;
+package arg_services.mining.v1beta;
 
 import "google/protobuf/struct.proto";
 import "google/api/annotations.proto";
@@ -9,13 +9,13 @@ import "google/api/annotations.proto";
 service AduService {
     rpc Segmentation (SegmentationRequest) returns (SegmentationResponse) {
         option (google.api.http) = {
-            post: "/mining/v1/adu/segmentation"
+            post: "/mining/v1beta/adu/segmentation"
             body: "*"
         };
     }
     rpc Classification (ClassificationRequest) returns (ClassificationResponse) {
         option (google.api.http) = {
-            post: "/mining/v1/adu/classification"
+            post: "/mining/v1beta/adu/classification"
             body: "*"
         };
     }
