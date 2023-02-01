@@ -8,3 +8,5 @@ lint:
       - arg_services/graph/v1/graph.proto
   use:
     - DEFAULT
+breaking:
+  ignore_unstable_packages: true
