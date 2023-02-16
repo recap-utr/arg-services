@@ -3,6 +3,7 @@ syntax = "proto3";
 package arg_services.cbr.v1beta;
 
 import "arg_services/cbr/v1beta/model.proto";
+import "arg_services/cbr/v1beta/retrieval.proto";
 import "arg_services/nlp/v1/nlp.proto";
 import "google/protobuf/struct.proto";
 import "google/api/annotations.proto";
@@ -17,7 +18,7 @@ service AdaptationService {
 }
 
 message AdaptRequest {
-  AnnotatedGraph case = 2;
+  map<string, AdaptedCaseRequest> cases = 2;
   AnnotatedGraph query = 3;
   arg_services.nlp.v1.NlpConfig nlp_config = 5;
   Direction direction = 6;
@@ -26,9 +27,26 @@ message AdaptRequest {
 }
 
 message AdaptResponse {
-  AnnotatedGraph adapted_case = 1;
-  repeated Rule adaptation_rules = 2;
+  repeated AdaptedCaseResponse cases = 1;
   google.protobuf.Struct extras = 15;
+}
+
+message AdaptedCaseRequest {
+  AnnotatedGraph case = 1;
+  repeated Rule rules = 2;
+  optional RetrievedMapping mapping = 3;
+}
+
+message AdaptedCaseResponse {
+  AnnotatedGraph case = 1;
+  // These are optional and used for further evaluation only
+  repeated Concept extracted_concepts = 2;
+  repeated Concept discarded_concepts = 3;
+  repeated Rule applied_rules = 4;
+  repeated Rule discarded_rules = 5;
+  repeated RuleCandidates rule_candidates = 6;
+  // repeated Path extracted_paths = 6;
+  // repeated Path adapted_paths = 7;
 }
 
 enum Direction {
@@ -46,6 +64,7 @@ message Rule {
 message Concept {
   string lemma = 1;
   Pos pos = 2;
+  double score = 3;
 }
 
 enum Pos {
@@ -54,4 +73,9 @@ enum Pos {
   POS_VERB = 2;
   POS_ADJECTIVE = 3;
   POS_ADVERB = 4;
+}
+
+message RuleCandidates {
+  Concept source = 1;
+  repeated Concept target = 2;
 }
