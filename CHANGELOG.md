@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/recap-utr/arg-services/compare/v1.1.0...v1.2.0) (2023-02-16)
+
+
+### Features
+
+* add end-to-end mining service ([98c79da](https://github.com/recap-utr/arg-services/commit/98c79da98cc212487a75abbb6a8d10f0f4078013))
+
+
+### Bug Fixes
+
+* improve adaptation service ([d2c711b](https://github.com/recap-utr/arg-services/commit/d2c711bec2232b27744163394aa3620c7e269126))
+* remove unneeded imports ([48de2ce](https://github.com/recap-utr/arg-services/commit/48de2ce807fb820d36c80cbdb869814532df8fa0))
+
 ## [1.1.0](https://github.com/recap-utr/arg-services/compare/v1.0.4...v1.1.0) (2023-02-01)
 
 
