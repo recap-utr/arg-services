@@ -8,3 +8,9 @@ Along with the Protobuf files, the project also contains code for generating lib
 - [TypeScript](https://www.npmjs.com/package/arg-services)
 
 Documentation can be found at the [Buf Schema Registry](https://buf.build/recap/arg-services).
+
+## Recommended Service Ports
+
+- NLP: 50100
+- Retrieval: 50200
+- Adaptation: 50300
