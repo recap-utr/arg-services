@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/recap-utr/arg-services/compare/v1.2.0...v1.2.1) (2023-03-03)
+
+
+### Bug Fixes
+
+* require case mapping in adaptation response ([fa1d5aa](https://github.com/recap-utr/arg-services/commit/fa1d5aac69e1fc97e592584a8395c5576cc6b8bc))
+
 ## [1.2.0](https://github.com/recap-utr/arg-services/compare/v1.1.0...v1.2.0) (2023-02-16)
 
 
