@@ -27,7 +27,7 @@ message AdaptRequest {
 }
 
 message AdaptResponse {
-  repeated AdaptedCaseResponse cases = 1;
+  map<string, AdaptedCaseResponse> cases = 1;
   google.protobuf.Struct extras = 15;
 }
 
