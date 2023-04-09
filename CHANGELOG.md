@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/recap-utr/arg-services/compare/v1.2.1...v1.3.0) (2023-04-09)
+
+
+### Features
+
+* add cbr similarity rpc ([1f1756f](https://github.com/recap-utr/arg-services/commit/1f1756f696ec3d6dad91f99df1fb9a37bb0164be))
+
+
+### Bug Fixes
+
+* add openai embedding type ([80930d0](https://github.com/recap-utr/arg-services/commit/80930d08fb35cfa1e70499bf89ccd78e838fb77e))
+
 ## [1.2.1](https://github.com/recap-utr/arg-services/compare/v1.2.0...v1.2.1) (2023-03-03)
 
 
