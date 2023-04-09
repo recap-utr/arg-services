@@ -14,6 +14,12 @@ service RetrievalService {
             body: "*"
         };
     }
+  rpc Similarities (SimilaritiesRequest) returns (SimilaritiesResponse) {
+        option (google.api.http) = {
+            post: "/crb/v1/similarities"
+            body: "*"
+        };
+    }
 }
 
 message RetrieveRequest {
@@ -33,14 +39,13 @@ message RetrieveRequest {
 
 message RetrieveResponse {
   repeated QueryResponse query_responses = 1;
+  google.protobuf.Struct extras = 15;
 }
 
 message QueryResponse {
   repeated RetrievedCase semantic_ranking = 1;
   repeated RetrievedCase structural_ranking = 2;
   repeated RetrievedMapping structural_mapping = 3;
-  // Implementation-specific information can be encoded here
-  google.protobuf.Struct extras = 15;
 }
 
 enum MappingAlgorithm {
@@ -71,4 +76,26 @@ message MappedElement {
   string query_id = 1;
   string case_id = 2;
   double similarity = 3;
+}
+
+message SimilaritiesRequest {
+  repeated AnnotatedGraph cases = 2;
+  AnnotatedGraph query = 3;
+  arg_services.nlp.v1.NlpConfig nlp_config = 5;
+  bool structural = 7;
+  MappingAlgorithm mapping_algorithm = 9;
+  int32 mapping_algorithm_variant = 10;
+  SchemeHandling scheme_handling = 11;
+  google.protobuf.Struct extras = 15;
+}
+
+message SimilaritiesResponse {
+  repeated SimilarityResponse similarities = 1;
+  google.protobuf.Struct extras = 15;
+}
+
+message SimilarityResponse {
+  double semantic_similarity = 1;
+  double structural_similarity = 2;
+  repeated RetrievedMapping structural_mapping = 3;
 }
