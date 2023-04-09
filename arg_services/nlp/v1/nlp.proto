@@ -234,4 +234,6 @@ enum EmbeddingType {
     EMBEDDING_TYPE_SENTENCE_TRANSFORMERS = 3;
     // Tensorflow Hub. Example: [Universal Sentence Encoder](https://tfhub.dev/google/universal-sentence-encoder/4).
     EMBEDDING_TYPE_TENSORFLOW_HUB = 4;
+    // [OpenAI](https://platform.openai.com/docs/guides/embeddings/use-cases).
+    EMBEDDING_TYPE_OPENAI = 5;
 }
