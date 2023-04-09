@@ -40,13 +40,22 @@ const config = {
         publishCmd: "buf push --tag v${nextRelease.version}",
       },
     ],
-    "@semantic-release/github",
+    [
+      "@semantic-release/github",
+      {
+        failComment: false,
+        successComment: false,
+        addReleases: "bottom",
+      },
+    ],
     [
       "@semantic-release/git",
       {
-        assets: ["CHANGELOG.md", "buf.lock"],
+        message: "chore(release): ${nextRelease.version}",
+        assets: ["CHANGELOG.md"],
       },
     ],
+    ,
   ],
 };
 
