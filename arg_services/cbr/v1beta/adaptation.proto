@@ -44,6 +44,7 @@ message AdaptedCaseResponse {
   repeated Concept discarded_concepts = 3;
   repeated Rule applied_rules = 4;
   repeated Rule discarded_rules = 5;
+  repeated Rule generated_rules = 7;
   repeated RuleCandidates rule_candidates = 6;
   // repeated Path extracted_paths = 6;
   // repeated Path adapted_paths = 7;
