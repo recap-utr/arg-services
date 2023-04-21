@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/recap-utr/arg-services/compare/v1.3.0...v1.3.1) (2023-04-21)
+
+
+### Bug Fixes
+
+* **cbr:** add generated rules to adaptation ([0502ea5](https://github.com/recap-utr/arg-services/commit/0502ea517155ebf628e783fe7a53b4d97d224199))
+
 ## [1.3.0](https://github.com/recap-utr/arg-services/compare/v1.2.1...v1.3.0) (2023-04-09)
 
 
