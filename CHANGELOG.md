@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/recap-utr/arg-services/compare/v1.3.1...v1.4.0) (2023-06-20)
+
+
+### Features
+
+* update mining entailment service ([007a119](https://github.com/recap-utr/arg-services/commit/007a119dc237cf4260981d45c7baec6b20963065))
+
 ## [1.3.1](https://github.com/recap-utr/arg-services/compare/v1.3.0...v1.3.1) (2023-04-21)
 
 
