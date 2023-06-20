@@ -6,14 +6,7 @@ import "google/protobuf/struct.proto";
 import "arg_services/mining/v1beta/adu.proto";
 import "google/api/annotations.proto";
 
-
 service EntailmentService {
-    rpc Entailment (EntailmentRequest) returns (EntailmentResponse) {
-        option (google.api.http) = {
-            post: "/mining/v1beta/entailment"
-            body: "*"
-        };
-    }
     rpc Entailments (EntailmentsRequest) returns (EntailmentsResponse) {
         option (google.api.http) = {
             post: "/mining/v1beta/entailments"
@@ -22,42 +15,30 @@ service EntailmentService {
     }
 }
 
-message EntailmentRequest {
-    string language = 1;
-    string premise = 2;
-    string claim = 3;
-    // Implementation-specific information can be encoded here
-    google.protobuf.Struct extras = 15;
-}
-
-message EntailmentResponse {
-    EntailmentType entailment_type = 1;
-    repeated EntailmentPrediction predictions = 2;
-    // Implementation-specific information can be encoded here
-    google.protobuf.Struct extras = 15;
-}
-
 message EntailmentsRequest {
     string language = 1;
-    map<string, Segment> segments = 2;
+    map<string, Segment> adus = 2;
+    repeated EntailmentQuery query = 3;
     // Implementation-specific information can be encoded here
     google.protobuf.Struct extras = 15;
 }
 
 message EntailmentsResponse {
-    repeated EntailmentResult results = 1;
+    repeated Entailment entailments = 1;
     // Implementation-specific information can be encoded here
     google.protobuf.Struct extras = 15;
 }
-message EntailmentResult {
-    Entailment entailment = 1;
-    repeated EntailmentPrediction predictions = 2;
+
+message EntailmentQuery {
+    string premise_id = 1;
+    string claim_id = 2;
 }
 
 message Entailment {
-    string premise_id = 1;
-    string claim_id = 2;
-    EntailmentType type = 3;
+    EntailmentType type = 1;
+    repeated EntailmentPrediction predictions = 2;
+    string premise_id = 3;
+    string claim_id = 4;
 }
 
 message EntailmentPrediction {
