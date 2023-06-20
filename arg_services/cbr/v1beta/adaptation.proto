@@ -5,16 +5,16 @@ package arg_services.cbr.v1beta;
 import "arg_services/cbr/v1beta/model.proto";
 import "arg_services/cbr/v1beta/retrieval.proto";
 import "arg_services/nlp/v1/nlp.proto";
-import "google/protobuf/struct.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
 
 service AdaptationService {
-  rpc Adapt (AdaptRequest) returns (AdaptResponse) {
-        option (google.api.http) = {
-            post: "/cbr/v1beta/adapt"
-            body: "*"
-        };
-    }
+  rpc Adapt(AdaptRequest) returns (AdaptResponse) {
+    option (google.api.http) = {
+      post: "/cbr/v1beta/adapt"
+      body: "*"
+    };
+  }
 }
 
 message AdaptRequest {

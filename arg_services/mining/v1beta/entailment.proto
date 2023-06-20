@@ -2,53 +2,53 @@ syntax = "proto3";
 
 package arg_services.mining.v1beta;
 
-import "google/protobuf/struct.proto";
 import "arg_services/mining/v1beta/adu.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
 
 service EntailmentService {
-    rpc Entailments (EntailmentsRequest) returns (EntailmentsResponse) {
-        option (google.api.http) = {
-            post: "/mining/v1beta/entailments"
-            body: "*"
-        };
-    }
+  rpc Entailments(EntailmentsRequest) returns (EntailmentsResponse) {
+    option (google.api.http) = {
+      post: "/mining/v1beta/entailments"
+      body: "*"
+    };
+  }
 }
 
 message EntailmentsRequest {
-    string language = 1;
-    map<string, Segment> adus = 2;
-    repeated EntailmentQuery query = 3;
-    // Implementation-specific information can be encoded here
-    google.protobuf.Struct extras = 15;
+  string language = 1;
+  map<string, Segment> adus = 2;
+  repeated EntailmentQuery query = 3;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
 }
 
 message EntailmentsResponse {
-    repeated Entailment entailments = 1;
-    // Implementation-specific information can be encoded here
-    google.protobuf.Struct extras = 15;
+  repeated Entailment entailments = 1;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
 }
 
 message EntailmentQuery {
-    string premise_id = 1;
-    string claim_id = 2;
+  string premise_id = 1;
+  string claim_id = 2;
 }
 
 message Entailment {
-    EntailmentType type = 1;
-    repeated EntailmentPrediction predictions = 2;
-    string premise_id = 3;
-    string claim_id = 4;
+  EntailmentType type = 1;
+  repeated EntailmentPrediction predictions = 2;
+  string premise_id = 3;
+  string claim_id = 4;
 }
 
 message EntailmentPrediction {
-    double probability = 1;
-    EntailmentType type = 2;
+  double probability = 1;
+  EntailmentType type = 2;
 }
 
 enum EntailmentType {
-    ENTAILMENT_TYPE_UNSPECIFIED = 0;
-    ENTAILMENT_TYPE_ENTAILMENT = 1;
-    ENTAILMENT_TYPE_CONTRADICTION = 2;
-    ENTAILMENT_TYPE_NEUTRAL = 3;
+  ENTAILMENT_TYPE_UNSPECIFIED = 0;
+  ENTAILMENT_TYPE_ENTAILMENT = 1;
+  ENTAILMENT_TYPE_CONTRADICTION = 2;
+  ENTAILMENT_TYPE_NEUTRAL = 3;
 }

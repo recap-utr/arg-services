@@ -4,22 +4,22 @@ package arg_services.cbr.v1beta;
 
 import "arg_services/cbr/v1beta/model.proto";
 import "arg_services/nlp/v1/nlp.proto";
-import "google/protobuf/struct.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
 
 service RetrievalService {
-  rpc Retrieve (RetrieveRequest) returns (RetrieveResponse) {
-        option (google.api.http) = {
-            post: "/crb/v1/retrieve"
-            body: "*"
-        };
-    }
-  rpc Similarities (SimilaritiesRequest) returns (SimilaritiesResponse) {
-        option (google.api.http) = {
-            post: "/crb/v1/similarities"
-            body: "*"
-        };
-    }
+  rpc Retrieve(RetrieveRequest) returns (RetrieveResponse) {
+    option (google.api.http) = {
+      post: "/crb/v1/retrieve"
+      body: "*"
+    };
+  }
+  rpc Similarities(SimilaritiesRequest) returns (SimilaritiesResponse) {
+    option (google.api.http) = {
+      post: "/crb/v1/similarities"
+      body: "*"
+    };
+  }
 }
 
 message RetrieveRequest {

@@ -2,34 +2,33 @@ syntax = "proto3";
 
 package arg_services.mining_explanation.v1beta;
 
-import "google/protobuf/struct.proto";
 // import "arg_services/mining/v1beta/adu.proto";
 import "google/api/annotations.proto";
-
+import "google/protobuf/struct.proto";
 
 service MajorClaimExplanationService {
-    rpc MajorClaim (MajorClaimRequest) returns (MajorClaimResponse) {
-        option (google.api.http) = {
-            post: "/nlp/v1/vectors"
-            body: "*"
-        };
-    }
+  rpc MajorClaim(MajorClaimRequest) returns (MajorClaimResponse) {
+    option (google.api.http) = {
+      post: "/nlp/v1/vectors"
+      body: "*"
+    };
+  }
 }
 
 message MajorClaimRequest {
-    string language = 1;
-    repeated string major_claims = 2;
-    // Implementation-specific information can be encoded here
-    google.protobuf.Struct extras = 15;
+  string language = 1;
+  repeated string major_claims = 2;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
 }
 
 message MajorClaimResponse {
-    repeated MajorClaimResult major_claims = 1;
-    // Implementation-specific information can be encoded here
-    google.protobuf.Struct extras = 15;
+  repeated MajorClaimResult major_claims = 1;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
 }
 
 message MajorClaimResult {
-    map<string, double> similarities = 1;
-    repeated bool keywords = 2;
+  map<string, double> similarities = 1;
+  repeated bool keywords = 2;
 }

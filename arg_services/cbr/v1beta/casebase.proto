@@ -3,16 +3,16 @@ syntax = "proto3";
 package arg_services.cbr.v1beta;
 
 import "arg_services/cbr/v1beta/model.proto";
-import "google/protobuf/struct.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
 
 service CasebaseService {
-  rpc Casebase (CasebaseRequest) returns (CasebaseResponse) {
-        option (google.api.http) = {
-            post: "/cbr/v1beta/casebase"
-            body: "*"
-        };
-    }
+  rpc Casebase(CasebaseRequest) returns (CasebaseResponse) {
+    option (google.api.http) = {
+      post: "/cbr/v1beta/casebase"
+      body: "*"
+    };
+  }
 }
 
 message CasebaseRequest {
