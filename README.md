@@ -6,6 +6,7 @@ Along with the Protobuf files, the project also contains code for generating lib
 
 - [Python](https://pypi.org/project/arg-services/)
 - [TypeScript](https://www.npmjs.com/package/arg-services)
+- [Java](https://search.maven.org/artifact/de.uni-trier.recap/arg-services)
 
 Documentation can be found at the [Buf Schema Registry](https://buf.build/recap/arg-services).
 
