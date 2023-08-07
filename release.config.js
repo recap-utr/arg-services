@@ -35,6 +35,10 @@ const config = {
           // "buf lint",
           // "buf breaking --against 'https://github.com/recap-utr/arg-services.git#branch=main,ref=HEAD~1'",
           "buf mod update",
+          "mkdir images",
+          "buf build -o images/arg-services.binpb",
+          "buf build -o images/arg-services.txtpb",
+          "buf build -o images/arg-services.json",
           "cp README.md buf.md",
         ].join(" && "),
         publishCmd: "buf push --tag v${nextRelease.version}",
@@ -43,6 +47,7 @@ const config = {
     [
       "@semantic-release/github",
       {
+        assets: ["images/*"],
         failComment: false,
         successComment: false,
         addReleases: "bottom",
