@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/recap-utr/arg-services/compare/v1.4.0...v1.4.1) (2023-08-07)
+
+
+### Bug Fixes
+
+* build and publish buf images on release ([bbf5d66](https://github.com/recap-utr/arg-services/commit/bbf5d66c0b69cbbb655b1c5a2195252ac31520db))
+* commit buf.lock during release ([243b0b8](https://github.com/recap-utr/arg-services/commit/243b0b80c8928096b1e9b108299783a860f8d63e))
+
 ## [1.4.0](https://github.com/recap-utr/arg-services/compare/v1.3.1...v1.4.0) (2023-06-20)
 
 
