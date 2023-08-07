@@ -57,7 +57,7 @@ const config = {
       "@semantic-release/git",
       {
         message: "chore(release): ${nextRelease.version}",
-        assets: ["CHANGELOG.md"],
+        assets: ["buf.lock", "CHANGELOG.md"],
       },
     ],
     ,
