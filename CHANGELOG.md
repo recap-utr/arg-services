@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/recap-utr/arg-services/compare/v1.4.1...v1.4.2) (2023-10-26)
+
+
+### Bug Fixes
+
+* **mining:** add context to entailment ([dc61186](https://github.com/recap-utr/arg-services/commit/dc611868e307f6f4c3e578c794ebd447fcf3c2f4))
+
 ## [1.4.1](https://github.com/recap-utr/arg-services/compare/v1.4.0...v1.4.1) (2023-08-07)
 
 
