@@ -32,6 +32,12 @@ message EntailmentsResponse {
 message EntailmentQuery {
   string premise_id = 1;
   string claim_id = 2;
+  EntailmentQueryContext context = 3;
+}
+
+message EntailmentQueryContext {
+  string adu_id = 1;
+  float weight = 2;
 }
 
 message Entailment {
