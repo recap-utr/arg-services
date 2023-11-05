@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.4](https://github.com/recap-utr/arg-services/compare/v1.4.3...v1.4.4) (2023-11-05)
+
+
+### Bug Fixes
+
+* make entailment context repeated ([f58a268](https://github.com/recap-utr/arg-services/commit/f58a268cfa246de6dccdee6dda8628467a49be2a))
+
 ## [1.4.3](https://github.com/recap-utr/arg-services/compare/v1.4.2...v1.4.3) (2023-11-05)
 
 
