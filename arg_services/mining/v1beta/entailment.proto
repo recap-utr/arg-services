@@ -32,7 +32,7 @@ message EntailmentsResponse {
 message EntailmentQuery {
   string premise_id = 1;
   string claim_id = 2;
-  EntailmentContext context = 3;
+  repeated EntailmentContext context = 3;
 }
 
 enum EntailmentContextType {
