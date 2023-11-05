@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/recap-utr/arg-services/compare/v1.4.2...v1.4.3) (2023-11-05)
+
+
+### Bug Fixes
+
+* add entailment context type ([1922c4e](https://github.com/recap-utr/arg-services/commit/1922c4ea49388ed8cce8ed515279c5a3017cb775))
+
 ## [1.4.2](https://github.com/recap-utr/arg-services/compare/v1.4.1...v1.4.2) (2023-10-26)
 
 
