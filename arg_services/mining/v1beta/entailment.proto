@@ -32,12 +32,20 @@ message EntailmentsResponse {
 message EntailmentQuery {
   string premise_id = 1;
   string claim_id = 2;
-  EntailmentQueryContext context = 3;
+  EntailmentContext context = 3;
 }
 
-message EntailmentQueryContext {
+enum EntailmentContextType {
+  ENTAILMENT_CONTEXT_TYPE_UNSPECIFIED = 0;
+  ENTAILMENT_CONTEXT_TYPE_PARENT = 1;
+  ENTAILMENT_CONTEXT_TYPE_CHILD = 2;
+  ENTAILMENT_CONTEXT_TYPE_SIBLING = 3;
+}
+
+message EntailmentContext {
   string adu_id = 1;
   float weight = 2;
+  EntailmentContextType type = 3;
 }
 
 message Entailment {
