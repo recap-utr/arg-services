@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/recap-utr/arg-services/compare/v1.4.4...v1.5.0) (2023-11-25)
+
+
+### Features
+
+* add quality and ranking services ([3b40ddc](https://github.com/recap-utr/arg-services/commit/3b40ddca9bc5cf4c3ee489402dcdf9748fc8ff4c))
+
 ## [1.4.4](https://github.com/recap-utr/arg-services/compare/v1.4.3...v1.4.4) (2023-11-05)
 
 
