@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package arg_services.quality.v1beta;
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+
+service QualityExplanationService {
+  rpc Explain(ExplainRequest) returns (ExplainResponse) {
+    option (google.api.http) = {
+      post: "/quality/v1beta/explain"
+      body: "*"
+    };
+  }
+}
+
+message ExplainRequest {
+  string claim = 1;
+  string premise1 = 2;
+  string premise2 = 3;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message ExplainResponse {
+  PremiseConvincingness global_convincingness = 1;
+  // key: name of dimension
+  map<string, QualityDimension> dimensions = 2;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message QualityDimension {
+  PremiseConvincingness convincingness = 1;
+  double premise1 = 2;
+  double premise2 = 3;
+  string explanation = 4;
+  repeated string methods = 5;
+}
+
+enum PremiseConvincingness {
+  PREMISE_CONVINCINGNESS_UNSPECIFIED = 0;
+  PREMISE_CONVINCINGNESS_PREMISE_1 = 1;
+  PREMISE_CONVINCINGNESS_PREMISE_2 = 2;
+  PREMISE_CONVINCINGNESS_PREMISE_EQUAL = 3;
+}

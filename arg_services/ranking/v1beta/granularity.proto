@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package arg_services.ranking.v1beta;
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+
+service GranularityService {
+  rpc FineGranularClustering(FineGranularClusteringRequest) returns (FineGranularClusteringResponse) {
+    option (google.api.http) = {
+      post: "/ranking/v1beta/fine_granular_clustering"
+      body: "*"
+    };
+  }
+}
+
+message FineGranularClusteringRequest {
+  string query = 1;
+  repeated string adus = 2;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message FineGranularClusteringResponse {
+  repeated GranularityPrediction predictions = 1;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message GranularityPrediction {
+  double stance = 1;
+  double frame = 2;
+  double meaning = 3;
+  double hierarchic = 4;
+}

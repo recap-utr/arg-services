@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package arg_services.quality.v1beta;
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+
+service ExpertSuitabilityService {
+  rpc ExpertSuitable(ExpertSuitableRequest) returns (ExpertSuitableResponse) {
+    option (google.api.http) = {
+      post: "/quality/v1beta/expert_suitable"
+      body: "*"
+    };
+  }
+}
+
+message ExpertSuitableRequest {
+  // The premise to be validated
+  string premise = 1;
+  // Google scholar id of the expert
+  string scholar_id = 2;
+  // key: feature name, value: text of the feature
+  map<string, string> features = 3;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message ExpertSuitableResponse {
+  SuitabilityType type = 1;
+  repeated SuitabilityPrediction predictions = 2;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message SuitabilityPrediction {
+  double probability = 1;
+  SuitabilityType type = 2;
+}
+
+enum SuitabilityType {
+  SUITABILITY_TYPE_UNSPECIFIED = 0;
+  SUITABILITY_TYPE_NO_EXPERT = 1;
+  SUITABILITY_TYPE_SOMEWHAT_EXPERT = 2;
+  SUITABILITY_TYPE_ABSOLUTE_EXPERT = 3;
+}

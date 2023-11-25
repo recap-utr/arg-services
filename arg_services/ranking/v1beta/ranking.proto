@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package arg_services.ranking.v1beta;
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+
+service RankingService {
+  rpc QualityRanking(QualityRankingRequest) returns (QualityRankingResponse) {
+    option (google.api.http) = {
+      post: "/ranking/v1beta/quality"
+      body: "*"
+    };
+  }
+  rpc StatisticalRanking(StatisticalRankingRequest) returns (StatisticalRankingResponse) {
+    option (google.api.http) = {
+      post: "/ranking/v1beta/statistical"
+      body: "*"
+    };
+  }
+}
+
+message QualityRankingRequest {
+  string query = 1;
+  map<string, string> adus = 2;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message QualityRankingResponse {
+  repeated QualityRankedAdu ranked_adus = 1;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message QualityRankedAdu {
+  string id = 1;
+  string text = 2;
+  double global_quality = 3;
+  map<string, double> quality_dimensions = 4;
+  ArgumentStance stance = 5;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message StatisticalRankingRequest {
+  string query = 1;
+  map<string, string> adus = 2;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message StatisticalRankingResponse {
+  repeated StatisticalRankedAdu ranked_adus = 1;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message StatisticalRankedAdu {
+  string id = 1;
+  string text = 2;
+  double score = 3;
+  ArgumentStance stance = 5;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+enum ArgumentStance {
+  ARGUMENT_STANCE_UNSPECIFIED = 0;
+  ARGUMENT_STANCE_PRO = 1;
+  ARGUMENT_STANCE_CON = 2;
+}

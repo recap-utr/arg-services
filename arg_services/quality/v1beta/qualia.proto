@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package arg_services.quality.v1beta;
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+
+service QualiaService {
+  rpc QualiaAnnotations(QualiaAnnotationsRequest) returns (QualiaAnnotationsResponse) {
+    option (google.api.http) = {
+      post: "/quality/v1beta/qualia_annotations"
+      body: "*"
+    };
+  }
+}
+
+message QualiaAnnotationsRequest {
+  string text = 1;
+  repeated QualiaInputPattern patterns = 2;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message QualiaAnnotationsResponse {
+  string constituency_tree = 1;
+  repeated QualiaOutputPattern patterns = 2;
+  // Implementation-specific information can be encoded here
+  google.protobuf.Struct extras = 15;
+}
+
+message QualiaInputPattern {
+  string pattern = 1;
+  QualiaRole role = 2;
+  repeated string allowed_pos_tags = 3;
+}
+
+message QualiaOutputPattern {
+  string text = 1;
+  QualiaRole role = 2;
+}
+
+enum QualiaRole {
+  QUALIA_ROLE_UNSPECIFIED = 0;
+  QUALIA_ROLE_FORMAL = 1;
+  QUALIA_ROLE_CONSITIUTIVE = 2;
+  QUALIA_ROLE_TELIC = 3;
+  QUALIA_ROLE_AGENTIVE = 4;
+}
