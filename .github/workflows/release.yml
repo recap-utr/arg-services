@@ -20,7 +20,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BUF_TOKEN: ${{ secrets.BUF_TOKEN }}
         with:
-          semantic_version: 22
+          semantic_version: 23
           extra_plugins: |
             @semantic-release/git@10
             @semantic-release/changelog@6
