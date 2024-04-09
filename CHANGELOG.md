@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/recap-utr/arg-services/compare/v1.5.0...v1.5.1) (2024-04-09)
+
+
+### Bug Fixes
+
+* update qualia message fields ([e37c9da](https://github.com/recap-utr/arg-services/commit/e37c9dac124822aad9c8e5e45295cfaefbfaef6e))
+
 ## [1.5.0](https://github.com/recap-utr/arg-services/compare/v1.4.4...v1.5.0) (2023-11-25)
 
 
