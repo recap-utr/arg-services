@@ -17,6 +17,8 @@ service QualiaService {
 message QualiaAnnotationsRequest {
   string text = 1;
   repeated QualiaInputPattern patterns = 2;
+  string language = 3;
+  repeated string queries = 4;
   // Implementation-specific information can be encoded here
   google.protobuf.Struct extras = 15;
 }
@@ -35,9 +37,9 @@ message QualiaInputPattern {
 }
 
 message QualiaOutputPattern {
-  string inputPatternMatch = 1;
-  string queryText = 2;
-  string qualiaText = 3;
+  string input_pattern_match = 1;
+  string query_text = 2;
+  string qualia_text = 3;
   QualiaRole role = 4;
 }
 
