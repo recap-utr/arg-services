@@ -35,8 +35,10 @@ message QualiaInputPattern {
 }
 
 message QualiaOutputPattern {
-  string text = 1;
-  QualiaRole role = 2;
+  string inputPatternMatch = 1;
+  string queryText = 2;
+  string qualiaText = 3;
+  QualiaRole role = 4;
 }
 
 enum QualiaRole {
