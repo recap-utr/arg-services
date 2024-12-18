@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.2](https://github.com/recap-utr/arg-services/compare/v1.5.1...v1.5.2) (2024-12-18)
+
+
+### Bug Fixes
+
+* **cbr:** add new options ([e922b8e](https://github.com/recap-utr/arg-services/commit/e922b8ef56b27edee51f5e2a8a9ce7461ffae775))
+* **cbr:** spelling mistake in http endpoint ([ecfbe9a](https://github.com/recap-utr/arg-services/commit/ecfbe9a47978e19f69063385c3a19cd053118ac4))
+* **nlp:** add new options ([52ac923](https://github.com/recap-utr/arg-services/commit/52ac9236e7615595e0a17150344917b91033cacd))
+
 ## [1.5.1](https://github.com/recap-utr/arg-services/compare/v1.5.0...v1.5.1) (2024-04-09)
 
 
