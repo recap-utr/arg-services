@@ -15,3 +15,10 @@ Documentation can be found at the [Buf Schema Registry](https://buf.build/recap/
 - NLP: 50100
 - Retrieval: 50200
 - Adaptation: 50300
+- Mining: 50500
+
+## Useful Links and References
+
+- AIFdb all schemes: <https://aifdb.org/schemes/all>
+- AIFdb scheme: <https://aifdb.org/schemes/$ID>
+- AIFdb descriptor: <https://aifdb.org/descriptors/$ID>
