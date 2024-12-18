@@ -10,13 +10,13 @@ import "google/protobuf/struct.proto";
 service RetrievalService {
   rpc Retrieve(RetrieveRequest) returns (RetrieveResponse) {
     option (google.api.http) = {
-      post: "/crb/v1/retrieve"
+      post: "/cbr/v1/retrieve"
       body: "*"
     };
   }
   rpc Similarities(SimilaritiesRequest) returns (SimilaritiesResponse) {
     option (google.api.http) = {
-      post: "/crb/v1/similarities"
+      post: "/cbr/v1/similarities"
       body: "*"
     };
   }
