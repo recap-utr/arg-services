@@ -25,7 +25,7 @@ service RetrievalService {
 message RetrieveRequest {
   CasebaseFilter casebase_filter = 1;
   map<string, AnnotatedGraph> cases = 2;
-  repeated AnnotatedGraph queries = 3;
+  map<string, AnnotatedGraph> queries = 3;
   arg_services.nlp.v1.NlpConfig nlp_config = 5;
   int32 limit = 6;
   bool semantic_retrieval = 7;
@@ -38,7 +38,7 @@ message RetrieveRequest {
 }
 
 message RetrieveResponse {
-  repeated QueryResponse query_responses = 1;
+  map<string, QueryResponse> query_responses = 1;
   google.protobuf.Struct extras = 15;
 }
 
@@ -53,12 +53,15 @@ enum MappingAlgorithm {
   MAPPING_ALGORITHM_ASTAR = 1;
   MAPPING_ALGORITHM_GREEDY = 2;
   MAPPING_ALGORITHM_ISOMORPHISM = 3;
+  MAPPING_ALGORITHM_HUNGARIAN = 4;
+  MAPPING_ALGORITHM_BRUTE_FORCE = 5;
 }
 
 enum SchemeHandling {
   SCHEME_HANDLING_UNSPECIFIED = 0;
   SCHEME_HANDLING_BINARY = 1;
   SCHEME_HANDLING_TAXONOMY = 2;
+  SCHEME_HANDLING_EXACT = 3;
 }
 
 message RetrievedCase {
