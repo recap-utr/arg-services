@@ -87,6 +87,10 @@ enum SimilarityMethod {
   SIMILARITY_METHOD_JACCARD = 8;
   // Angular distance. [Wikipedia](https://en.wikipedia.org/wiki/Angular_distance).
   SIMILARITY_METHOD_ANGULAR = 9;
+  // Manhattan distance. [Wikipedia](https://en.wikipedia.org/wiki/Taxicab_geometry).
+  SIMILARITY_METHOD_MANHATTAN = 10;
+  // Euclidean distance. [Wikipedia](https://en.wikipedia.org/wiki/Euclidean_distance).
+  SIMILARITY_METHOD_EUCLIDEAN = 11;
 }
 
 // Store a pair of strings.
@@ -234,6 +238,12 @@ enum EmbeddingType {
   EMBEDDING_TYPE_SENTENCE_TRANSFORMERS = 3;
   // Tensorflow Hub. Example: [Universal Sentence Encoder](https://tfhub.dev/google/universal-sentence-encoder/4).
   EMBEDDING_TYPE_TENSORFLOW_HUB = 4;
-  // [OpenAI](https://platform.openai.com/docs/guides/embeddings/use-cases).
+  // [OpenAI](https://platform.openai.com/docs/models/embeddings).
   EMBEDDING_TYPE_OPENAI = 5;
+  // [Ollama](https://ollama.com/blog/embedding-models)
+  EMBEDDING_TYPE_OLLAMA = 6;
+  // [Cohere](https://docs.cohere.com/reference/embed)
+  EMBEDDING_TYPE_COHERE = 7;
+  // [VoyageAI](https://docs.voyageai.com/docs/embeddings)
+  EMBEDDING_TYPE_VOYAGEAI = 8;
 }
