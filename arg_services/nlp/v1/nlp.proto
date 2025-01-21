@@ -91,6 +91,8 @@ enum SimilarityMethod {
   SIMILARITY_METHOD_MANHATTAN = 10;
   // Euclidean distance. [Wikipedia](https://en.wikipedia.org/wiki/Euclidean_distance).
   SIMILARITY_METHOD_EUCLIDEAN = 11;
+  // Dot product. [Wikipedia](https://en.wikipedia.org/wiki/Dot_product).
+  SIMILARITY_METHOD_DOT = 12;
 }
 
 // Store a pair of strings.
