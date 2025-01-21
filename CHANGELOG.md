@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.3](https://github.com/recap-utr/arg-services/compare/v1.5.2...v1.5.3) (2025-01-21)
+
+
+### Bug Fixes
+
+* **nlp:** add similarity method dot ([c683a2d](https://github.com/recap-utr/arg-services/commit/c683a2d37c59e79f0efd285263b3f52d3b8de688))
+
 ## [1.5.2](https://github.com/recap-utr/arg-services/compare/v1.5.1...v1.5.2) (2024-12-18)
 
 
