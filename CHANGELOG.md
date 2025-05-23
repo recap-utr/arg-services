@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4](https://github.com/recap-utr/arg-services/compare/v1.5.3...v1.5.4) (2025-05-23)
+
+
+### Bug Fixes
+
+* **cbr:** add edit-path-based mapping algorithm ([a9e68ff](https://github.com/recap-utr/arg-services/commit/a9e68ffd9ccf8d44a1761e95a104ca694ec596fd))
+
 ## [1.5.3](https://github.com/recap-utr/arg-services/compare/v1.5.2...v1.5.3) (2025-01-21)
 
 
