@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.5](https://github.com/recap-utr/arg-services/compare/v1.5.4...v1.5.5) (2025-05-27)
+
+
+### Bug Fixes
+
+* **cbr/retrieval:** update response types ([61989f8](https://github.com/recap-utr/arg-services/commit/61989f8568098f17ee5cd5b5d331b719788bc9e0))
+* **cbr/retrieval:** use correct field numbers ([790a95a](https://github.com/recap-utr/arg-services/commit/790a95afa431cb37df69f50e9ca1e616acd6ad4a))
+
 ## [1.5.4](https://github.com/recap-utr/arg-services/compare/v1.5.3...v1.5.4) (2025-05-23)
 
 
