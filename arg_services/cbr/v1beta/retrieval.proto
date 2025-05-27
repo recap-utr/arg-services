@@ -72,8 +72,9 @@ message RetrievedCase {
 }
 
 message RetrievedMapping {
-  RetrievedCase case = 1;
+  string id = 1;
   repeated MappedElement node_mappings = 2;
+  repeated MappedElement edge_mappings = 2;
 }
 
 message MappedElement {
@@ -99,7 +100,6 @@ message SimilaritiesResponse {
 }
 
 message SimilarityResponse {
-  double semantic_similarity = 1;
-  double structural_similarity = 2;
-  repeated RetrievedMapping structural_mapping = 3;
+  double similarity = 1;
+  RetrievedMapping mapping = 3;
 }
