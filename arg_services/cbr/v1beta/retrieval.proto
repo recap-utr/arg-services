@@ -74,7 +74,7 @@ message RetrievedCase {
 message RetrievedMapping {
   string id = 1;
   repeated MappedElement node_mappings = 2;
-  repeated MappedElement edge_mappings = 2;
+  repeated MappedElement edge_mappings = 3;
 }
 
 message MappedElement {
