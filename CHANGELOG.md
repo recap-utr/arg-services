@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.6](https://github.com/recap-utr/arg-services/compare/v1.5.5...v1.5.6) (2025-06-01)
+
+
+### Bug Fixes
+
+* **cbr/retrieval:** update mapping algorithms ([1094fdd](https://github.com/recap-utr/arg-services/commit/1094fdd753dc10fa10d3c116ca04d76860385f79))
+
 ## [1.5.5](https://github.com/recap-utr/arg-services/compare/v1.5.4...v1.5.5) (2025-05-27)
 
 
