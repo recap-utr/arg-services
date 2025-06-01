@@ -34,14 +34,15 @@ module.exports = {
           // These are added to the release workflow in an attempt to mitigate rate limits by GitHub
           // "buf lint",
           // "buf breaking --against 'https://github.com/recap-utr/arg-services.git#branch=main,ref=HEAD~1'",
-          "buf mod update",
+          "buf dep update",
           "mkdir images",
           "buf build -o images/arg-services.binpb",
           "buf build -o images/arg-services.txtpb",
           "buf build -o images/arg-services.json",
           "cp README.md buf.md",
         ].join(" && "),
-        publishCmd: "buf push --tag v${nextRelease.version}",
+        // "--label v${nextRelease.version}"
+        publishCmd: "buf push --git-metadata",
       },
     ],
     [

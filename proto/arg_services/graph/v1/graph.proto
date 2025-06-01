@@ -164,6 +164,7 @@ message Scheme {
 
 // Argumentation schemes for type support.
 // Source: Walton, Douglas, Christopher Reed, and Fabrizio Macagno. 2008. Argumentation Schemes. Cambridge University Press.
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum Support {
   SUPPORT_DEFAULT = 0;
   SUPPORT_POSITION_TO_KNOW = 1;
@@ -233,16 +234,19 @@ enum Support {
 }
 
 // Argumentation schemes for type attack.
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum Attack {
   ATTACK_DEFAULT = 0;
 }
 
 // Argumentation schemes for type preference.
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum Preference {
   PREFERENCE_DEFAULT = 0;
 }
 
 // Argumentation schemes for type rephrase.
+// buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum Rephrase {
   REPHRASE_DEFAULT = 0;
 }

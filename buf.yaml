@@ -1,12 +1,11 @@
-version: v1
-name: buf.build/recap/arg-services
+version: v2
+modules:
+  - path: proto
+    name: buf.build/recap/arg-services
 deps:
   - buf.build/googleapis/googleapis
 lint:
-  ignore_only:
-    ENUM_ZERO_VALUE_SUFFIX:
-      - arg_services/graph/v1/graph.proto
   use:
-    - DEFAULT
+    - STANDARD
 breaking:
   ignore_unstable_packages: true
