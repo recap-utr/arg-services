@@ -29,4 +29,4 @@ jobs:
             @semantic-release/git@^11
             @semantic-release/changelog@^7
             @semantic-release/exec@^7
-            conventional-changelog-conventionalcommits@^10
+            conventional-changelog-conventionalcommits@^9
