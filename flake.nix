@@ -4,30 +4,27 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     systems.url = "github:nix-systems/default";
   };
-  outputs = inputs @ {
-    nixpkgs,
-    flake-parts,
-    systems,
-    ...
-  }:
-    flake-parts.lib.mkFlake {inherit inputs;} {
+  outputs =
+    inputs@{
+      flake-parts,
+      systems,
+      ...
+    }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import systems;
-      perSystem = {
-        pkgs,
-        system,
-        lib,
-        self',
-        ...
-      }: {
-        packages = {
-          releaseEnv = pkgs.buildEnv {
+      perSystem =
+        { pkgs, ... }:
+        let
+          packages = [ pkgs.buf ];
+        in
+        {
+          packages.release-env = pkgs.buildEnv {
             name = "release-env";
-            paths = with pkgs; [buf];
+            paths = packages;
+          };
+          devShells.default = pkgs.mkShell {
+            inherit packages;
           };
         };
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [buf];
-        };
-      };
     };
 }
