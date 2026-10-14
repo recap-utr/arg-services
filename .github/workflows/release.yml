@@ -5,24 +5,28 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      BUF_TOKEN: ${{ secrets.BUF_TOKEN }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-      - uses: bufbuild/buf-setup-action@v1
+      - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+      - uses: cachix/cachix-action@38b082610b782e7e93e209c35fd730d399dee866 # v17
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: bufbuild/buf-lint-action@v1
-      - uses: bufbuild/buf-breaking-action@v1
-        with:
-          against: "https://github.com/recap-utr/arg-services.git#branch=main,ref=HEAD~1"
-      - uses: cycjimmy/semantic-release-action@b12c8f6015dc215fe37bc154d4ad456dd3833c90 # v6.0.0
-        id: semantic-release
+          name: recap
+          authToken: ${{ secrets.CACHIX_TOKEN }}
+      - run: nix profile install .#release-env
+      - run: buf lint
+      - run: buf format --diff --exit-code
+      - run: buf breaking --against-registry
+      - uses: cycjimmy/semantic-release-action@9e1f8a3ef91f1097285028e799a5fb8bb90e8899 # v8
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BUF_TOKEN: ${{ secrets.BUF_TOKEN }}
         with:
-          semantic_version: 23
+          semantic_version: ^25
           extra_plugins: |
-            @semantic-release/git@10
-            @semantic-release/changelog@6
-            @semantic-release/exec@6
-            conventional-changelog-conventionalcommits@7
+            @semantic-release/git@^11
+            @semantic-release/changelog@^7
+            @semantic-release/exec@^7
+            conventional-changelog-conventionalcommits@^10

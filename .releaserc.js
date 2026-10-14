@@ -31,17 +31,12 @@ module.exports = {
       "@semantic-release/exec",
       {
         prepareCmd: [
-          // These are added to the release workflow in an attempt to mitigate rate limits by GitHub
-          // "buf lint",
-          // "buf breaking --against 'https://github.com/recap-utr/arg-services.git#branch=main,ref=HEAD~1'",
-          "buf dep update",
-          "mkdir images",
+          "mkdir -p images",
           "buf build -o images/arg-services.binpb",
-          "buf build -o images/arg-services.txtpb",
-          "buf build -o images/arg-services.json",
-          "cp README.md buf.md",
+          "buf build images/arg-services.binpb -o images/arg-services.txtpb",
+          "buf build images/arg-services.binpb -o images/arg-services.json",
         ].join(" && "),
-        // "--label v${nextRelease.version}"
+        // labels the commit with the release tag
         publishCmd: "buf push --git-metadata",
       },
     ],
@@ -58,9 +53,8 @@ module.exports = {
       "@semantic-release/git",
       {
         message: "chore(release): ${nextRelease.version}",
-        assets: ["buf.lock", "CHANGELOG.md"],
+        assets: ["CHANGELOG.md"],
       },
     ],
-    ,
   ],
 };
