@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package arg_services.mining_explanation.v1beta;
 
-// import "arg_services/mining/v1beta/adu.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 
