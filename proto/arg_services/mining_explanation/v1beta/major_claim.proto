@@ -9,7 +9,7 @@ import "google/protobuf/struct.proto";
 service MajorClaimExplanationService {
   rpc MajorClaim(MajorClaimRequest) returns (MajorClaimResponse) {
     option (google.api.http) = {
-      post: "/nlp/v1/vectors"
+      post: "/mining_explanation/v1beta/major_claim"
       body: "*"
     };
   }
