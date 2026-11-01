@@ -8,8 +8,8 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
 // Main message to store the argument graph.
-// Each attribute having of type `map<string, X>` is a dictionary where a unique ID points to a message.
-// The ID does not follow a specific format, but we reccomend to use UUIDv1 everywhere.
+// Each attribute of type `map<string, X>` is a dictionary where a unique ID points to a message.
+// The ID does not follow a specific format, but we recommend random UUIDs (version 4) everywhere.
 // An alternative could be to use a counter for each attribute, but this is error prone and not recommended.
 // The ID should be treated the same way as a primary key in a database and may be referenced in other places of the argument.
 // For instance, edges only store the IDs of connected nodes.
@@ -26,10 +26,10 @@ message Graph {
   map<string, Analyst> analysts = 5;
   // ID of the atom node being the major claim of the graph.
   optional string major_claim = 6;
-  // Version of the protobuf schema. Should be always `1`.
+  // Version of the protobuf schema, currently always `1`.
   uint32 schema_version = 7;
   // Library used for serializing the graph.
-  // Should be unique accross programming languages (e.g., `arguebuf-python:1.2.0`).
+  // Should be unique across programming languages (e.g., `arguebuf-python:1.2.0`).
   string library_version = 8;
   // Store programmatic data like creation times.
   Metadata metadata = 14;
@@ -44,7 +44,7 @@ message Graph {
 message Metadata {
   // Creation time of the element.
   google.protobuf.Timestamp created = 1;
-  // Update time of the element
+  // Update time of the element.
   google.protobuf.Timestamp updated = 2;
 }
 
@@ -56,7 +56,7 @@ message Resource {
   string text = 1;
   // Title (if available) of the source.
   optional string title = 2;
-  // URL or other unique attribute to find/identify the resource
+  // URL or other unique attribute to find/identify the resource.
   optional string source = 3;
   // Creation time of the resource.
   google.protobuf.Timestamp timestamp = 4;
@@ -69,7 +69,7 @@ message Resource {
 
 // A participant is a person/user that contributed to the original argument (e.g., an expert providing a statement).
 message Participant {
-  // Full name.
+  // Full name, an empty string means that it is unknown.
   string name = 1;
   // Optional: username.
   optional string username = 2;
@@ -91,7 +91,7 @@ message Participant {
 // Analysts are the persons that transform the textual argument to an argument graph.
 // They are also known as annotators.
 message Analyst {
-  // Full name.
+  // Full name, an empty string means that it is unknown.
   string name = 1;
   // Optional: email address.
   optional string email = 2;
@@ -103,6 +103,8 @@ message Analyst {
 }
 
 // An edge serves as a connection between two nodes.
+// Edges must not connect two atom nodes or a node with itself,
+// and there must be at most one edge from a given source to a given target.
 message Edge {
   // ID of the source node.
   string source = 1;
@@ -143,9 +145,10 @@ message Atom {
 
 // References are used to store links between atom nodes and resources.
 message Reference {
-  // Optional: ID of the related resouce.
+  // Optional: ID of the related resource.
   optional string resource = 1;
   // Optional: Starting point of the atom's text within the resource's text.
+  // It counts Unicode code points, not bytes or UTF-16 code units.
   optional uint32 offset = 2;
   // Original text of the related resource used for the atom.
   string text = 3;
@@ -160,8 +163,8 @@ message Scheme {
     Preference preference = 3;
     Rephrase rephrase = 4;
   }
-  // List of atom ID's to assign the connected premises to their role in the argumentation scheme.
-  // Please note: The order of the ID's is important here and should correspond the one found in the underlying literature used for a specific project.
+  // List of atom IDs to assign the connected premises to their role in the argumentation scheme.
+  // Please note: The order of the IDs is important here and should correspond the one found in the underlying literature used for a specific project.
   repeated string premise_descriptors = 15;
 }
 
