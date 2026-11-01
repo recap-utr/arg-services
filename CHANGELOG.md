@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/recap-utr/arg-services/compare/v1.5.6...v1.6.0) (2026-11-01)
+
+### Features
+
+* **graph:** add labels of argumentation schemes as enum value option ([c4e05db](https://github.com/recap-utr/arg-services/commit/c4e05db8d20e1854f9fd9e7339f3d35ac6d6b890))
+* **graph:** add metadata to analysts ([f7a6dbe](https://github.com/recap-utr/arg-services/commit/f7a6dbebb9cbdbbb65a954f040f7c23367c9325e))
+
+### Bug Fixes
+
+* **cbr:** use v1beta http routes for retrieval ([c3bb5bd](https://github.com/recap-utr/arg-services/commit/c3bb5bd3f935b96a57b5a788da28b3edbc6f3de0))
+* **mining_explanation:** give major claim explanations their own http route ([4cf5db4](https://github.com/recap-utr/arg-services/commit/4cf5db416a07c4e92c080b6c5b88fcb41e55258c))
+
 ## [1.5.6](https://github.com/recap-utr/arg-services/compare/v1.5.5...v1.5.6) (2025-06-01)
 
 
