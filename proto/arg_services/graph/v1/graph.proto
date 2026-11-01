@@ -95,6 +95,8 @@ message Analyst {
   string name = 1;
   // Optional: email address.
   optional string email = 2;
+  // Store programmatic data like creation times.
+  Metadata metadata = 14;
   // Store arbitrary data as needed by a user.
   // May contain all valid JSON values.
   google.protobuf.Struct userdata = 15;
