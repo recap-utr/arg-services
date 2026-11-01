@@ -3,6 +3,7 @@ syntax = "proto3";
 // Definition of the `Arguebuf` format for storing structured argument graphs.
 package arg_services.graph.v1;
 
+import "google/protobuf/descriptor.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -166,87 +167,93 @@ message Scheme {
 // Source: Walton, Douglas, Christopher Reed, and Fabrizio Macagno. 2008. Argumentation Schemes. Cambridge University Press.
 // buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum Support {
-  SUPPORT_DEFAULT = 0;
-  SUPPORT_POSITION_TO_KNOW = 1;
-  SUPPORT_EXPERT_OPINION = 2;
-  SUPPORT_WITNESS_TESTIMONY = 3;
-  SUPPORT_POPULAR_OPINION = 4;
-  SUPPORT_POPULAR_PRACTICE = 5;
-  SUPPORT_EXAMPLE = 6;
-  SUPPORT_ANALOGY = 7;
-  SUPPORT_PRACTICAL_REASONING_FROM_ANALOGY = 8;
-  SUPPORT_COMPOSITION = 9;
-  SUPPORT_DIVISION = 10;
-  SUPPORT_OPPOSITIONS = 11;
-  SUPPORT_RHETORICAL_OPPOSITIONS = 12;
-  SUPPORT_ALTERNATIVES = 13;
-  SUPPORT_VERBAL_CLASSIFICATION = 14;
-  SUPPORT_VERBAL_CLASSIFICATION_DEFINITION = 15;
-  SUPPORT_VERBAL_CLASSIFICATION_VAGUENESS = 16;
-  SUPPORT_VERBAL_CLASSIFICATION_ARBITRARINESS = 17;
-  SUPPORT_INTERACTION_OF_ACT_AND_PERSON = 18;
-  SUPPORT_VALUES = 19;
-  SUPPORT_POSITIVE_VALUES = 61;
-  SUPPORT_NEGATIVE_VALUES = 62;
-  SUPPORT_SACRIFICE = 20;
-  SUPPORT_THE_GROUP_AND_ITS_MEMBERS = 21;
-  SUPPORT_PRACTICAL_REASONING = 22;
-  SUPPORT_TWO_PERSON_PRACTICAL_REASONING = 23;
-  SUPPORT_WASTE = 24;
-  SUPPORT_SUNK_COSTS = 25;
-  SUPPORT_IGNORANCE = 26;
-  SUPPORT_EPISTEMIC_IGNORANCE = 27;
-  SUPPORT_CAUSE_TO_EFFECT = 28;
-  SUPPORT_CORRELATION_TO_CAUSE = 29;
-  SUPPORT_SIGN = 30;
-  SUPPORT_ABDUCTIVE = 31;
-  SUPPORT_EVIDENCE_TO_HYPOTHESIS = 32;
-  SUPPORT_CONSEQUENCES = 33;
-  SUPPORT_POSITIVE_CONSEQUENCES = 63;
-  SUPPORT_NEGATIVE_CONSEQUENCES = 64;
-  SUPPORT_PRAGMATIC_ALTERNATIVES = 34;
-  SUPPORT_THREAT = 35;
-  SUPPORT_FEAR_APPEAL = 36;
-  SUPPORT_DANGER_APPEAL = 37;
-  SUPPORT_NEED_FOR_HELP = 38;
-  SUPPORT_DISTRESS = 39;
-  SUPPORT_COMMITMENT = 40;
-  SUPPORT_ETHOTIC = 41;
-  SUPPORT_GENERIC_AD_HOMINEM = 42;
-  SUPPORT_PRAGMATIC_INCONSISTENCY = 43;
-  SUPPORT_INCONSISTENT_COMMITMENT = 44;
-  SUPPORT_CIRCUMSTANTIAL_AD_HOMINEM = 45;
-  SUPPORT_BIAS = 46;
-  SUPPORT_BIAS_AD_HOMINEM = 47;
-  SUPPORT_GRADUALISM = 48;
-  SUPPORT_SLIPPERY_SLOPE = 49;
-  SUPPORT_PRECEDENT_SLIPPERY_SLOPE = 50;
-  SUPPORT_SORITES_SLIPPERY_SLOPE = 51;
-  SUPPORT_VERBAL_SLIPPERY_SLOPE = 52;
-  SUPPORT_FULL_SLIPPERY_SLOPE = 53;
-  SUPPORT_CONSTITUTIVE_RULE_CLAIMS = 54;
-  SUPPORT_RULES = 55;
-  SUPPORT_EXCEPTIONAL_CASE = 56;
-  SUPPORT_PRECEDENT = 57;
-  SUPPORT_PLEA_FOR_EXCUSE = 58;
-  SUPPORT_PERCEPTION = 59;
-  SUPPORT_MEMORY = 60;
+  SUPPORT_DEFAULT = 0 [(label) = "Default"];
+  SUPPORT_POSITION_TO_KNOW = 1 [(label) = "Position to Know"];
+  SUPPORT_EXPERT_OPINION = 2 [(label) = "Expert Opinion"];
+  SUPPORT_WITNESS_TESTIMONY = 3 [(label) = "Witness Testimony"];
+  SUPPORT_POPULAR_OPINION = 4 [(label) = "Popular Opinion"];
+  SUPPORT_POPULAR_PRACTICE = 5 [(label) = "Popular Practice"];
+  SUPPORT_EXAMPLE = 6 [(label) = "Example"];
+  SUPPORT_ANALOGY = 7 [(label) = "Analogy"];
+  SUPPORT_PRACTICAL_REASONING_FROM_ANALOGY = 8 [(label) = "Practical Reasoning from Analogy"];
+  SUPPORT_COMPOSITION = 9 [(label) = "Composition"];
+  SUPPORT_DIVISION = 10 [(label) = "Division"];
+  SUPPORT_OPPOSITIONS = 11 [(label) = "Oppositions"];
+  SUPPORT_RHETORICAL_OPPOSITIONS = 12 [(label) = "Rhetorical Oppositions"];
+  SUPPORT_ALTERNATIVES = 13 [(label) = "Alternatives"];
+  SUPPORT_VERBAL_CLASSIFICATION = 14 [(label) = "Verbal Classification"];
+  SUPPORT_VERBAL_CLASSIFICATION_DEFINITION = 15 [(label) = "Definition to Verbal Classification"];
+  SUPPORT_VERBAL_CLASSIFICATION_VAGUENESS = 16 [(label) = "Vagueness of a Verbal Classification"];
+  SUPPORT_VERBAL_CLASSIFICATION_ARBITRARINESS = 17 [(label) = "Arbitrariness of a Verbal Classification"];
+  SUPPORT_INTERACTION_OF_ACT_AND_PERSON = 18 [(label) = "Interaction of Act and Person"];
+  SUPPORT_VALUES = 19 [(label) = "Values"];
+  SUPPORT_POSITIVE_VALUES = 61 [(label) = "Positive Values"];
+  SUPPORT_NEGATIVE_VALUES = 62 [(label) = "Negative Values"];
+  SUPPORT_SACRIFICE = 20 [(label) = "Sacrifice"];
+  SUPPORT_THE_GROUP_AND_ITS_MEMBERS = 21 [(label) = "The Group and its Members"];
+  SUPPORT_PRACTICAL_REASONING = 22 [(label) = "Practical Reasoning"];
+  SUPPORT_TWO_PERSON_PRACTICAL_REASONING = 23 [(label) = "Two-Person Practical Reasoning"];
+  SUPPORT_WASTE = 24 [(label) = "Waste"];
+  SUPPORT_SUNK_COSTS = 25 [(label) = "Sunk Costs"];
+  SUPPORT_IGNORANCE = 26 [(label) = "Ignorance"];
+  SUPPORT_EPISTEMIC_IGNORANCE = 27 [(label) = "Epistemic Ignorance"];
+  SUPPORT_CAUSE_TO_EFFECT = 28 [(label) = "Cause to Effect"];
+  SUPPORT_CORRELATION_TO_CAUSE = 29 [(label) = "Correlation to Cause"];
+  SUPPORT_SIGN = 30 [(label) = "Sign"];
+  SUPPORT_ABDUCTIVE = 31 [(label) = "Abductive"];
+  SUPPORT_EVIDENCE_TO_HYPOTHESIS = 32 [(label) = "Evidence to Hypothesis"];
+  SUPPORT_CONSEQUENCES = 33 [(label) = "Consequences"];
+  SUPPORT_POSITIVE_CONSEQUENCES = 63 [(label) = "Positive Consequences"];
+  SUPPORT_NEGATIVE_CONSEQUENCES = 64 [(label) = "Negative Consequences"];
+  SUPPORT_PRAGMATIC_ALTERNATIVES = 34 [(label) = "Pragmatic Alternatives"];
+  SUPPORT_THREAT = 35 [(label) = "Threat"];
+  SUPPORT_FEAR_APPEAL = 36 [(label) = "Fear Appeal"];
+  SUPPORT_DANGER_APPEAL = 37 [(label) = "Danger Appeal"];
+  SUPPORT_NEED_FOR_HELP = 38 [(label) = "Need for Help"];
+  SUPPORT_DISTRESS = 39 [(label) = "Distress"];
+  SUPPORT_COMMITMENT = 40 [(label) = "Commitment"];
+  SUPPORT_ETHOTIC = 41 [(label) = "Ethotic"];
+  SUPPORT_GENERIC_AD_HOMINEM = 42 [(label) = "Generic ad Hominem"];
+  SUPPORT_PRAGMATIC_INCONSISTENCY = 43 [(label) = "Pragmatic Inconsistency"];
+  SUPPORT_INCONSISTENT_COMMITMENT = 44 [(label) = "Inconsistent Commitment"];
+  SUPPORT_CIRCUMSTANTIAL_AD_HOMINEM = 45 [(label) = "Circumstantial Ad Hominem"];
+  SUPPORT_BIAS = 46 [(label) = "Bias"];
+  SUPPORT_BIAS_AD_HOMINEM = 47 [(label) = "Bias Ad Hominem"];
+  SUPPORT_GRADUALISM = 48 [(label) = "Gradualism"];
+  SUPPORT_SLIPPERY_SLOPE = 49 [(label) = "Slippery Slope"];
+  SUPPORT_PRECEDENT_SLIPPERY_SLOPE = 50 [(label) = "Precedent Slippery Slope"];
+  SUPPORT_SORITES_SLIPPERY_SLOPE = 51 [(label) = "Sorites Slippery Slope"];
+  SUPPORT_VERBAL_SLIPPERY_SLOPE = 52 [(label) = "Verbal Slippery Slope"];
+  SUPPORT_FULL_SLIPPERY_SLOPE = 53 [(label) = "Full Slippery Slope"];
+  SUPPORT_CONSTITUTIVE_RULE_CLAIMS = 54 [(label) = "Constitutive Rule Claims"];
+  SUPPORT_RULES = 55 [(label) = "Rules"];
+  SUPPORT_EXCEPTIONAL_CASE = 56 [(label) = "Exceptional Case"];
+  SUPPORT_PRECEDENT = 57 [(label) = "Precedent"];
+  SUPPORT_PLEA_FOR_EXCUSE = 58 [(label) = "Plea for Excuse"];
+  SUPPORT_PERCEPTION = 59 [(label) = "Perception"];
+  SUPPORT_MEMORY = 60 [(label) = "Memory"];
 }
 
 // Argumentation schemes for type attack.
 // buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum Attack {
-  ATTACK_DEFAULT = 0;
+  ATTACK_DEFAULT = 0 [(label) = "Default"];
 }
 
 // Argumentation schemes for type preference.
 // buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum Preference {
-  PREFERENCE_DEFAULT = 0;
+  PREFERENCE_DEFAULT = 0 [(label) = "Default"];
 }
 
 // Argumentation schemes for type rephrase.
 // buf:lint:ignore ENUM_ZERO_VALUE_SUFFIX
 enum Rephrase {
-  REPHRASE_DEFAULT = 0;
+  REPHRASE_DEFAULT = 0 [(label) = "Default"];
+}
+
+// Options of enum values.
+extend google.protobuf.EnumValueOptions {
+  // Human-readable label of the enum value, e.g. `Expert Opinion` for `SUPPORT_EXPERT_OPINION`.
+  string label = 51000;
 }
