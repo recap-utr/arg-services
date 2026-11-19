@@ -24,7 +24,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          semantic_version: ^25
+          semantic_version: ^26.0.0
           extra_plugins: |
             @semantic-release/git@^11
             @semantic-release/changelog@^7
